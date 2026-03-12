@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator Inwestycji — Portfel ETF, IKE/IKZE, Monte Carlo | InvestCalc</title>
+<meta name="description" content="Darmowy kalkulator inwestycji online. Zbuduj portfel ETF, oblicz zyski z uwzględnieniem podatku Belki, symulacji Monte Carlo, IKE/IKZE i historycznych krachów.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investcalc.pl/">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #4E6280;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text2);
+  border:1px solid var(--border2);
+  padding:3px 9px;border-radius:4px;
+  letter-spacing:0.5px;
+}
+.header-disclaimer{
+  font-size:11px;color:var(--text2);
+}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.main{max-width:1320px;margin:0 auto;padding:32px 24px 80px;}
+.page-title{
+  font-family:'Outfit',sans-serif;
+  font-size:26px;font-weight:700;
+  letter-spacing:-0.4px;margin-bottom:4px;
+  color:var(--text);
+}
+.page-sub{color:var(--text2);font-size:13px;margin-bottom:36px;}
+
+/* ── SECTION LABEL ──────────────────────────────────── */
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;margin-top:28px;
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--blue);
+  opacity:0.7;letter-spacing:1px;
+}
+.section-title{
+  font-size:10px;font-weight:600;
+  letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--text2);
+}
+.section-line{
+  flex:1;height:1px;
+  background:var(--border);
+}
+
+/* ── GRID ────────────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* ── CARD ────────────────────────────────────────────── */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 22px;
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:var(--border2);}
+.card-title{
+  font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text2);
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-title-bar{
+  width:3px;height:12px;
+  background:var(--blue);
+  border-radius:2px;flex-shrink:0;
+}
+.card-title-bar.green{background:var(--green);}
+.card-title-bar.red{background:var(--red);}
+.card-title-bar.amber{background:var(--amber);}
+
+/* ── FORM ────────────────────────────────────────────── */
+label{display:block;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:500;letter-spacing:0.3px;}
+input[type=number],input[type=text],select{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:8px;padding:9px 11px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  appearance:none;-webkit-appearance:none;
+}
+input[type=number]:focus,input[type=text]:focus,select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(75,130,226,0.10);
+}
+select option{background:var(--card2);color:var(--text);}
+.input-group{margin-bottom:14px;}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-suffix{position:relative;}
+.input-suffix input{padding-right:34px;}
+.suffix-label{
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  color:var(--text2);font-size:11px;font-family:'JetBrains Mono',monospace;
+}
+
+/* ── TABS ────────────────────────────────────────────── */
+.tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:8px;margin-bottom:14px;}
+.tab-btn{
+  flex:1;padding:7px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;
+  border-radius:5px;transition:all 0.2s;font-family:'Outfit',sans-serif;
+}
+.tab-btn.active{
+  background:var(--card2);color:var(--text);
+  border:1px solid var(--border2);
+}
+
+/* ── TOGGLE ──────────────────────────────────────────── */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;color:var(--text);font-weight:400;}
+.toggle-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{
+  position:absolute;inset:0;
+  background:var(--border2);border-radius:22px;transition:0.25s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;
+  width:16px;height:16px;left:3px;top:3px;
+  background:var(--text2);border-radius:50%;transition:0.25s;
+}
+.toggle input:checked+.toggle-slider{background:var(--blue);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff;}
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:8px;border:none;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:all 0.18s;text-decoration:none;
+  font-family:'Outfit',sans-serif;
+}
+.btn-primary{
+  background:var(--blue);color:#fff;
+}
+.btn-primary:hover{background:#3a72d4;transform:translateY(-1px);}
+.btn-outline{
+  background:transparent;border:1px solid var(--border2);color:var(--text);
+}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-ghost{
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+  padding:7px 12px;
+}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);}
+.btn-danger{
+  background:var(--red2);border:1px solid transparent;color:var(--red);
+  padding:6px 10px;font-size:11px;
+}
+.btn-danger:hover{border-color:var(--red);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn-full{width:100%;justify-content:center;}
+.btn-calc{
+  background:var(--blue);
+  color:#fff;font-family:'Outfit',sans-serif;
+  font-size:15px;font-weight:700;
+  padding:15px 28px;border-radius:10px;border:none;cursor:pointer;
+  width:100%;margin-top:20px;
+  transition:all 0.2s;letter-spacing:0.3px;
+  box-shadow:0 4px 20px rgba(75,130,226,0.25);
+}
+.btn-calc:hover{
+  background:#3a72d4;transform:translateY(-1px);
+  box-shadow:0 8px 28px rgba(75,130,226,0.35);
+}
+
+/* ── PORTFOLIO ───────────────────────────────────────── */
+.instrument-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.instrument-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:grid;grid-template-columns:auto 1fr auto auto;
+  gap:10px;align-items:center;
+  transition:border-color 0.2s;
+}
+.instrument-item:hover{border-color:var(--border2);}
+.inst-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.inst-info{min-width:0;}
+.inst-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inst-category{font-size:10px;color:var(--text2);margin-top:1px;letter-spacing:0.3px;}
+.inst-return{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--green);white-space:nowrap;
+}
+.inst-pct-wrap{display:flex;align-items:center;gap:6px;}
+.inst-pct-input{
+  width:64px;background:var(--card);border:1px solid var(--border2);
+  border-radius:6px;padding:6px 8px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;text-align:center;
+}
+.inst-pct-input:focus{border-color:var(--blue);}
+.pct-symbol{color:var(--text2);font-size:12px;}
+
+/* ── ALLOC BAR ───────────────────────────────────────── */
+.alloc-bar-wrap{margin-bottom:16px;}
+.alloc-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;}
+.alloc-total{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.alloc-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.alloc-fill{height:100%;border-radius:2px;transition:width 0.4s ease;background:var(--blue);}
+.alloc-fill.over{background:var(--red);}
+.alloc-msg{font-size:10px;margin-top:4px;color:var(--text2);}
+
+/* ── MODAL ───────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;width:min(540px,95vw);max-height:82vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:scale(0.96);transition:transform 0.2s;
+}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-header{
+  padding:18px 22px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:5px 9px;cursor:pointer;
+  color:var(--text2);font-size:12px;font-family:'Outfit',sans-serif;
+}
+.modal-close:hover{color:var(--red);border-color:var(--red);}
+.modal-search{padding:14px 22px;border-bottom:1px solid var(--border);}
+.modal-search input{width:100%;}
+.modal-body{overflow-y:auto;flex:1;padding:10px 22px 18px;}
+.modal-category{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--text2);padding:10px 0 5px;
+}
+.modal-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:background 0.12s;margin-bottom:2px;
+}
+.modal-item:hover{background:var(--card2);}
+.modal-item.selected{
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.18);
+}
+.mi-icon{
+  width:30px;height:30px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.mi-info{flex:1;}
+.mi-name{font-size:13px;font-weight:500;}
+.mi-desc{font-size:10px;color:var(--text2);margin-top:1px;}
+.mi-ret{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);white-space:nowrap;}
+
+/* ── RESULTS ─────────────────────────────────────────── */
+.results-section{display:none;}
+.results-section.visible{display:block;}
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:12px;margin-bottom:20px;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;
+}
+.stat-label{
+  font-size:10px;color:var(--text2);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:6px;
+}
+.stat-value{
+  font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;
+  color:var(--text);line-height:1.2;
+}
+.stat-value.amber{color:var(--amber);}
+.stat-value.green{color:var(--green);}
+.stat-value.blue{color:var(--blue);}
+.stat-sub{font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── CHART ───────────────────────────────────────────── */
+.chart-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:20px 22px;margin-bottom:16px;
+}
+.chart-title{
+  font-size:13px;font-weight:600;
+  margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;
+  color:var(--text);
+}
+.chart-container{position:relative;height:270px;}
+
+/* ── TABLE ───────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border2);}
+th{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.8px;color:var(--text2);
+  padding:9px 11px;text-align:right;white-space:nowrap;
+}
+th:first-child{text-align:left;}
+td{
+  padding:9px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  text-align:right;border-bottom:1px solid var(--border);color:var(--text2);
+}
+td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-pos{color:var(--green);}
+.td-neg{color:var(--red);}
+
+/* ── RISK METER ──────────────────────────────────────── */
+.risk-bar{display:flex;gap:3px;margin:8px 0;}
+.risk-seg{height:4px;flex:1;border-radius:2px;background:var(--border2);}
+.risk-seg.active-1{background:#2AC97E;}
+.risk-seg.active-2{background:#86efac;}
+.risk-seg.active-3{background:#f0b429;}
+.risk-seg.active-4{background:#fb923c;}
+.risk-seg.active-5{background:#E85959;}
+
+/* ── SCENARIOS ───────────────────────────────────────── */
+.scenario-card{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.sc-title{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:var(--amber);}
+.sc-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+/* ── PIE LEGEND ──────────────────────────────────────── */
+.pie-legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.pie-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ── INFO NOTE ───────────────────────────────────────── */
+.info-note{
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.15);
+  border-radius:8px;padding:11px 13px;font-size:12px;
+  color:#8BAEE8;
+  display:flex;gap:8px;align-items:flex-start;margin-top:12px;line-height:1.6;
+}
+.info-note .ni{flex-shrink:0;margin-top:2px;color:var(--blue);opacity:0.7;}
+
+/* ── RANGE SLIDER ────────────────────────────────────── */
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:3px;
+  background:var(--border2);border-radius:2px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:var(--blue);border-radius:50%;cursor:pointer;
+  border:2px solid var(--bg);
+}
+.range-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── PRESETS ─────────────────────────────────────────── */
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.preset-btn{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 11px;font-size:11px;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;
+}
+.preset-btn:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ── EMPTY STATE ─────────────────────────────────────── */
+.empty-state{
+  text-align:center;padding:28px 16px;color:var(--text2);
+}
+.empty-state .es-icon{
+  width:44px;height:44px;
+  margin:0 auto 10px;
+  color:var(--text3);
+}
+.empty-state p{font-size:12px;color:var(--text2);}
+
+/* ── TOOLTIP ─────────────────────────────────────────── */
+[data-tip]{position:relative;}
+[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 9px;font-size:10px;color:var(--text2);
+  white-space:nowrap;z-index:999;pointer-events:none;
+}
+
+/* ── SECTION GAP ─────────────────────────────────────── */
+.section-gap{margin-top:20px;}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:900px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  header{padding:14px 18px;}
+  .main{padding:20px 14px 56px;}
+  .page-title{font-size:22px;}
+}
+@media(max-width:600px){
+  .input-row,.input-row3{grid-template-columns:1fr;}
+  .results-grid{grid-template-columns:1fr 1fr;}
+  .ike-grid{grid-template-columns:1fr;}
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.results-section.visible{animation:fadeUp 0.35s ease;}
+.instrument-item{animation:fadeUp 0.2s ease;}
+
+/* ── CONTRIB PANELS ──────────────────────────────────── */
+.contrib-panel{display:none;}
+.contrib-panel.active{display:block;}
+
+/* ── MONTE CARLO ─────────────────────────────────────── */
+.mc-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:11px;}
+.mc-leg{display:flex;align-items:center;gap:6px;color:var(--text2);}
+.mc-dot{width:22px;height:4px;border-radius:2px;}
+.mc-stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:14px;}
+.mc-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.mc-stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:4px;}
+.mc-stat-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;}
+.mc-note{font-size:11px;color:var(--text2);margin-top:10px;line-height:1.65;}
+
+/* ── CRASH TIMELINE ──────────────────────────────────── */
+.crash-timeline{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.crash-event{
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+}
+.crash-badge{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--red2);border:1px solid rgba(232,89,89,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;font-weight:600;color:var(--red);
+  flex-shrink:0;letter-spacing:0.5px;
+}
+.crash-info{flex:1;}
+.crash-name{font-size:13px;font-weight:500;color:var(--text);}
+.crash-year{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-impact{text-align:right;}
+.crash-drop{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--red);font-weight:600;}
+.crash-recov{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-prob{
+  background:var(--red2);border:1px solid rgba(232,89,89,0.12);
+  border-radius:7px;padding:10px 13px;font-size:12px;color:var(--text2);
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+
+/* ── IKE / IKZE ──────────────────────────────────────── */
+.ike-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.ike-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;
+}
+.ike-card.highlight{border-color:var(--green);background:rgba(42,201,126,0.05);}
+.ike-card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:7px;}
+.ike-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:500;color:var(--text);}
+.ike-val.green{color:var(--green);}
+.ike-val.blue{color:var(--blue);}
+.ike-sub{font-size:10px;color:var(--text2);margin-top:3px;}
+.ike-saving{
+  background:rgba(42,201,126,0.08);border:1px solid rgba(42,201,126,0.18);
+  border-radius:6px;padding:7px 11px;font-size:11px;color:var(--green);
+  display:flex;align-items:center;gap:5px;margin-top:9px;
+}
+.pit-tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;margin-top:7px;width:fit-content;}
+.pit-tab{
+  padding:4px 11px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;
+}
+.pit-tab.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.ike-chart-wrap{height:190px;margin-top:12px;position:relative;}
+
+/* ── DISCLAIMER BAR ──────────────────────────────────── */
+.disclaimer-bar{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;
+  font-size:11px;color:var(--text2);
+  margin-bottom:24px;line-height:1.55;
+}
+
+/* ── LANG SWITCH ─────────────────────────────────────── */
+.lang-switch{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;border:1px solid var(--border);}
+.lang-btn{
+  padding:4px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;letter-spacing:0.5px;
+}
+.lang-btn.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <div class="logo-text">Invest<span>Calc</span></div>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer" data-i18n="disclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('pl')">PL</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <span class="header-badge">PRO · v2.0</span>
+  </div>
+</header>
+
+<div class="main">
+  <div class="page-title" data-i18n="pageTitle">Kalkulator Inwestycji</div>
+  <div class="page-sub" data-i18n="pageSub">Zaplanuj portfel, oblicz zwroty i porównaj scenariusze inwestycyjne</div>
+
+  <!-- SECTION 1: PARAMETRY -->
+  <div class="section-label">
+    <span class="section-num">01</span>
+    <span class="section-title" data-i18n="sec1Title">Parametry inwestycji</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid2">
+    <!-- Left: kwota, horyzont, wpłaty -->
+    <div class="card">
+      <div class="card-title"><span class="card-title-bar"></span> <span data-i18n="cardCapital">Kapitał i horyzont</span></div>
+
+      <div class="input-row">
+        <div class="input-group input-suffix">
+          <label data-i18n="labelInit">Inwestycja początkowa</label>
+          <input type="number" id="initAmount" value="10000" min="0" step="100">
+          <span class="suffix-label" data-i18n="suffixCurrency">PLN</span>
+        </div>
+        <div class="input-group input-suffix">
+          <label data-i18n="labelHorizon">Horyzont inwestycji</label>
+          <input type="number" id="years" value="20" min="1" max="50">
+          <span class="suffix-label" data-i18n="suffixYears">lat</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label data-i18n="labelContrib">Regularne wpłaty</label>
+        <div class="tabs" id="contribTabs">
+          <button class="tab-btn active" data-period="monthly" onclick="switchContrib(this)" data-i18n="tabMonthly">Miesięcznie</button>
+          <button class="tab-btn" data-period="quarterly" onclick="switchContrib(this)" data-i18n="tabQuarterly">Kwartalnie</button>
+          <button class="tab-btn" data-period="yearly" onclick="switchContrib(this)" data-i18n="tabYearly">Rocznie</button>
+          <button class="tab-btn" data-period="none" onclick="switchContrib(this)" data-i18n="tabNone">Bez wpłat</button>
+        </div>
+        <div class="contrib-panel active" id="panel-monthly">
+          <div class="input-suffix">
+            <input type="number" id="contribMonthly" value="500" min="0" step="50">
+            <span class="suffix-label" data-i18n="suffixCurrency">PLN</span>
+          </div>
+        </div>
+        <div class="contrib-panel" id="panel-quarterly">
+          <div class="input-suffix">
+            <input type="number" id="contribQuarterly" value="1500" min="0" step="50">
+            <span class="suffix-label" data-i18n="suffixCurrency">PLN</span>
+          </div>
+        </div>
+        <div class="contrib-panel" id="panel-yearly">
+          <div class="input-suffix">
+            <input type="number" id="contribYearly" value="6000" min="0" step="100">
+            <span class="suffix-label" data-i18n="suffixCurrency">PLN</span>
+          </div>
+        </div>
+        <div class="contrib-panel" id="panel-none">
+          <p style="font-size:12px;color:var(--text2);padding:7px 0;" data-i18n="noContribText">Tylko jednorazowa inwestycja początkowa.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: return offset + options -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title"><span class="card-title-bar amber"></span> <span data-i18n="cardReturnAdj">Korekta zwrotu</span></div>
+        <div class="input-group">
+          <label style="display:flex;justify-content:space-between;">
+            <span data-i18n="labelReturnAdj">Koryguj oczekiwany zwrot portfela</span>
+            <span id="returnOffsetLabel" style="color:var(--blue);font-family:'JetBrains Mono',monospace;">0%</span>
+          </label>
+          <input type="range" id="returnOffset" min="-5" max="5" step="0.5" value="0"
+            oninput="document.getElementById('returnOffsetLabel').textContent=this.value+'%'">
+          <div class="range-row"><span data-i18n="rangePessim">–5% (pesymistycznie)</span><span data-i18n="rangeOptim">+5% (optymistycznie)</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="card-title-bar"></span> <span data-i18n="cardOptions">Opcje i podatki</span></div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleBelka">Podatek Belki (19%)</div>
+            <div class="toggle-sub" data-i18n="toggleBelkaSub">Podatek od zysków kapitałowych w Polsce</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="taxBelka" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleInflation">Uwzględnij inflację</div>
+            <div class="toggle-sub" data-i18n="toggleInflationSub">Realna wartość nabywcza pieniądza (2.5% r/r)</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="inflation"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row" id="inflRateRow" style="display:none;">
+          <div style="flex:1">
+            <label data-i18n="labelInflRate">Oczekiwana inflacja (%/rok)</label>
+            <input type="number" id="inflRate" value="2.5" min="0" max="20" step="0.5" style="margin-top:5px;">
+          </div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleDRIP">Reinwestycja dywidend (DRIP)</div>
+            <div class="toggle-sub" data-i18n="toggleDRIPSub">Automatyczne reinwestowanie wypłat</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="drip" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleTER">Opłaty funduszu (TER)</div>
+            <div class="toggle-sub" data-i18n="toggleTERSub">Typowy roczny koszt ETF: 0.07–0.5%</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="ter"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row" id="terRateRow" style="display:none;">
+          <div style="flex:1">
+            <label data-i18n="labelTERRate">Łączna opłata TER (%/rok)</label>
+            <input type="number" id="terRate" value="0.2" min="0" max="3" step="0.05" style="margin-top:5px;">
+          </div>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleDeposit">Porównaj z lokatą bankową</div>
+            <div class="toggle-sub" data-i18n="toggleDepositSub">Pokaż wyniki dla lokaty 3.5% r/r</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="compareDeposit" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label" data-i18n="toggleIKE">Symulacja IKE / IKZE</div>
+            <div class="toggle-sub" data-i18n="toggleIKESub">Porównaj konto standardowe vs IKE vs IKZE</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="useIKE"><span class="toggle-slider"></span></label>
+        </div>
+        <div id="ikeOptions" style="display:none;padding-top:8px;">
+          <label style="font-size:11px;color:var(--text2);margin-bottom:4px;display:block;" data-i18n="labelPIT">Stawka PIT (do kalkulacji IKZE)</label>
+          <div class="pit-tabs" id="pitTabs">
+            <button class="pit-tab active" data-pit="0.12" onclick="switchPIT(this)">12%</button>
+            <button class="pit-tab" data-pit="0.32" onclick="switchPIT(this)">32%</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PORTFEL -->
+  <div class="section-label">
+    <span class="section-num">02</span>
+    <span class="section-title" data-i18n="sec2Title">Kreator portfela</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="card-title-bar amber"></span> <span data-i18n="cardPortfolio">Skład portfela</span></div>
+
+    <div class="alloc-bar-wrap">
+      <div class="alloc-bar-header">
+        <span style="color:var(--text2);font-size:12px;" data-i18n="allocLabel">Alokacja portfela</span>
+        <span class="alloc-total" id="allocTotal">0%</span>
+      </div>
+      <div class="alloc-bar"><div class="alloc-fill" id="allocFill" style="width:0%"></div></div>
+      <div class="alloc-msg" id="allocMsg" data-i18n="allocMsg">Dodaj instrumenty i przypisz procenty (suma = 100%)</div>
+    </div>
+
+    <div class="instrument-list" id="instrumentList">
+      <div class="empty-state">
+        <div class="es-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2.5"/>
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+            <line x1="12" y1="12" x2="12" y2="16"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+          </svg>
+        </div>
+        <p data-i18n="emptyPortfolio">Brak instrumentów — kliknij „Dodaj instrument"</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-outline" onclick="openModal()" style="flex:1;justify-content:center;min-width:160px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span data-i18n="btnAddInstrument">Dodaj instrument</span>
+      </button>
+      <button class="btn btn-ghost btn-sm" onclick="autoBalance()" data-i18n="btnBalance">Wyrównaj</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearPortfolio()" data-i18n="btnClear">Wyczyść</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadPresetPortfolio('passive')" data-i18n="btnPreset">Przykład pasywny</button>
+    </div>
+  </div>
+
+  <!-- CALCULATE -->
+  <button class="btn-calc" onclick="calculate()" data-i18n="btnCalc">Oblicz wyniki portfela</button>
+
+  <!-- RESULTS -->
+  <div class="results-section section-gap" id="resultsSection">
+
+    <div class="section-label" style="margin-top:32px;">
+      <span class="section-num">03</span>
+      <span class="section-title" data-i18n="sec3Title">Wyniki prognozy</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="results-grid" id="statCards"></div>
+
+    <!-- CHARTS -->
+    <div class="grid2">
+      <div class="chart-wrap">
+        <div class="chart-title">
+          <span data-i18n="chartGrowthTitle">Wzrost kapitału w czasie</span>
+          <div style="display:flex;gap:10px;font-size:11px;color:var(--text2);">
+            <span id="chartLeg1" style="display:flex;align-items:center;gap:4px;">
+              <span style="width:14px;height:3px;background:var(--amber);display:inline-block;border-radius:2px;"></span><span data-i18n="legPortfolio">Portfel</span>
+            </span>
+            <span id="chartLeg2" style="display:flex;align-items:center;gap:4px;">
+              <span style="width:14px;height:3px;background:var(--blue);display:inline-block;border-radius:2px;"></span><span data-i18n="legDeposit">Lokata</span>
+            </span>
+          </div>
+        </div>
+        <div class="chart-container"><canvas id="growthChart"></canvas></div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-title" data-i18n="chartPieTitle">Skład portfela</div>
+        <div class="chart-container" style="height:210px;"><canvas id="pieChart"></canvas></div>
+        <div class="pie-legend" id="pieLegend"></div>
+      </div>
+    </div>
+
+    <!-- SCENARIOS -->
+    <div class="chart-wrap section-gap" id="scenarioWrap">
+      <div class="chart-title" data-i18n="chartScenariosTitle">Porównanie scenariuszy</div>
+      <div class="grid3" id="scenarioCards" style="gap:12px;"></div>
+    </div>
+
+    <!-- RISK -->
+    <div class="card section-gap">
+      <div class="card-title"><span class="card-title-bar amber"></span> <span data-i18n="cardRisk">Ocena ryzyka portfela</span></div>
+      <div id="riskContent"></div>
+    </div>
+
+    <!-- IKE/IKZE -->
+    <div class="card section-gap" id="ikeSection" style="display:none;">
+      <div class="card-title"><span class="card-title-bar green"></span> <span data-i18n="cardIKE">Porównanie IKE / IKZE vs Konto Standardowe</span></div>
+      <div id="ikeContent"></div>
+    </div>
+
+    <!-- MONTE CARLO -->
+    <div class="chart-wrap section-gap">
+      <div class="chart-title">
+        <span data-i18n="chartMCTitle">Monte Carlo — 1 000 ścieżek</span>
+        <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text2);font-weight:400;" data-i18n="chartMCSub"> z modelowaniem krachów i zmienności</span>
+        <span id="mcRunBadge" style="font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;"></span>
+      </div>
+      <div class="chart-container" style="height:290px;"><canvas id="mcChart"></canvas></div>
+      <div class="mc-legend">
+        <div class="mc-leg"><div class="mc-dot" style="background:rgba(200,168,75,0.2);border:1px solid rgba(200,168,75,0.35);height:12px;border-radius:3px;"></div><span data-i18n="mcLeg1">Zakres P10–P90</span></div>
+        <div class="mc-leg"><div class="mc-dot" style="background:rgba(200,168,75,0.45);border:1px solid rgba(200,168,75,0.55);height:8px;border-radius:2px;"></div><span data-i18n="mcLeg2">Zakres P25–P75</span></div>
+        <div class="mc-leg"><div class="mc-dot" style="background:var(--amber);height:3px;"></div><span data-i18n="mcLeg3">Mediana (P50)</span></div>
+        <div class="mc-leg"><div class="mc-dot" style="background:var(--blue);height:2px;"></div><span data-i18n="mcLeg4">Deterministyczny</span></div>
+      </div>
+      <div class="mc-stats-row" id="mcStatsRow"></div>
+      <div class="mc-note" id="mcNote"></div>
+    </div>
+
+    <!-- CRASH EVENTS -->
+    <div class="card section-gap">
+      <div class="card-title"><span class="card-title-bar red"></span> <span data-i18n="cardCrash">Historyczne krachy — wpływ na portfel</span></div>
+      <div id="crashContent"></div>
+    </div>
+
+    <!-- YEARLY TABLE -->
+    <div class="card section-gap">
+      <div class="card-title"><span class="card-title-bar"></span> <span data-i18n="cardTable">Zestawienie roczne</span></div>
+      <div class="table-wrap">
+        <table id="yearTable">
+          <thead>
+            <tr>
+              <th data-i18n="thYear">Rok</th><th data-i18n="thDeposited">Wpłacono</th><th data-i18n="thValue">Wartość portfela</th>
+              <th data-i18n="thGrossProfit">Zysk brutto</th><th data-i18n="thTax">Podatek</th><th data-i18n="thNetProfit">Zysk netto</th>
+              <th>ROI</th><th id="inflColHeader" style="display:none;" data-i18n="thReal">Wartość realna</th>
+            </tr>
+          </thead>
+          <tbody id="yearBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /results -->
+
+  <!-- DISCLAIMER -->
+  <div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);">
+    <p style="font-size:11px;color:var(--text2);line-height:1.7;" data-i18n="legalDisclaimer">
+      <strong style="color:var(--text);">Zastrzeżenie prawne:</strong> Wszelkie informacje, kalkulacje i prognozy prezentowane na tej stronie mają charakter wyłącznie edukacyjny i informacyjny. Nie stanowią porady inwestycyjnej, rekomendacji zakupu ani sprzedaży jakichkolwiek instrumentów finansowych w rozumieniu Ustawy o obrocie instrumentami finansowymi. Wyniki historyczne nie są gwarancją przyszłych zysków. Inwestowanie wiąże się z ryzykiem utraty części lub całości zainwestowanego kapitału. Przed podjęciem decyzji inwestycyjnych skonsultuj się z licencjonowanym doradcą finansowym.
+    </p>
+  </div>
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="modalTitle">Wybierz instrument</div>
+      <button class="modal-close" onclick="closeModal()" data-i18n="modalClose">✕ Zamknij</button>
+    </div>
+    <div class="modal-search">
+      <input type="text" id="modalSearch" placeholder="Szukaj: S&P 500, Złoto, Obligacje, BTC..." data-i18n-placeholder="modalSearchPlaceholder" oninput="filterModal()">
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  TRANSLATIONS
+// ============================================================
+let currentLang = 'pl';
+
+const TRANSLATIONS = {
+  pl: {
+    // Header
+    disclaimer: 'Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej',
+    // Page
+    pageTitle: 'Kalkulator Inwestycji',
+    pageSub: 'Zaplanuj portfel, oblicz zwroty i porównaj scenariusze inwestycyjne',
+    // Sections
+    sec1Title: 'Parametry inwestycji',
+    sec2Title: 'Kreator portfela',
+    sec3Title: 'Wyniki prognozy',
+    // Cards
+    cardCapital: 'Kapitał i horyzont',
+    cardReturnAdj: 'Korekta zwrotu',
+    cardOptions: 'Opcje i podatki',
+    cardPortfolio: 'Skład portfela',
+    cardRisk: 'Ocena ryzyka portfela',
+    cardIKE: 'Porównanie IKE / IKZE vs Konto Standardowe',
+    cardCrash: 'Historyczne krachy — wpływ na portfel',
+    cardTable: 'Zestawienie roczne',
+    // Labels
+    labelInit: 'Inwestycja początkowa',
+    labelHorizon: 'Horyzont inwestycji',
+    labelContrib: 'Regularne wpłaty',
+    labelReturnAdj: 'Koryguj oczekiwany zwrot portfela',
+    labelInflRate: 'Oczekiwana inflacja (%/rok)',
+    labelTERRate: 'Łączna opłata TER (%/rok)',
+    labelPIT: 'Stawka PIT (do kalkulacji IKZE)',
+    // Range
+    rangePessim: '–5% (pesymistycznie)',
+    rangeOptim: '+5% (optymistycznie)',
+    // Tabs
+    tabMonthly: 'Miesięcznie',
+    tabQuarterly: 'Kwartalnie',
+    tabYearly: 'Rocznie',
+    tabNone: 'Bez wpłat',
+    noContribText: 'Tylko jednorazowa inwestycja początkowa.',
+    // Toggles
+    toggleBelka: 'Podatek Belki (19%)',
+    toggleBelkaSub: 'Podatek od zysków kapitałowych w Polsce',
+    toggleInflation: 'Uwzględnij inflację',
+    toggleInflationSub: 'Realna wartość nabywcza pieniądza (2.5% r/r)',
+    toggleDRIP: 'Reinwestycja dywidend (DRIP)',
+    toggleDRIPSub: 'Automatyczne reinwestowanie wypłat',
+    toggleTER: 'Opłaty funduszu (TER)',
+    toggleTERSub: 'Typowy roczny koszt ETF: 0.07–0.5%',
+    toggleDeposit: 'Porównaj z lokatą bankową',
+    toggleDepositSub: 'Pokaż wyniki dla lokaty 3.5% r/r',
+    toggleIKE: 'Symulacja IKE / IKZE',
+    toggleIKESub: 'Porównaj konto standardowe vs IKE vs IKZE',
+    // Portfolio
+    allocLabel: 'Alokacja portfela',
+    allocMsg: 'Dodaj instrumenty i przypisz procenty (suma = 100%)',
+    allocOver: 'Przekroczono 100% — zmniejsz alokacje',
+    allocComplete: 'Portfel skompletowany (100%)',
+    allocRemaining: 'Pozostało do przypisania',
+    emptyPortfolio: 'Brak instrumentów — kliknij „Dodaj instrument"',
+    // Buttons
+    btnAddInstrument: 'Dodaj instrument',
+    btnBalance: 'Wyrównaj',
+    btnClear: 'Wyczyść',
+    btnPreset: 'Przykład pasywny',
+    btnCalc: 'Oblicz wyniki portfela',
+    // Chart titles
+    chartGrowthTitle: 'Wzrost kapitału w czasie',
+    chartPieTitle: 'Skład portfela',
+    chartScenariosTitle: 'Porównanie scenariuszy',
+    chartMCTitle: 'Monte Carlo — 1 000 ścieżek',
+    chartMCSub: ' z modelowaniem krachów i zmienności',
+    // Chart legends
+    legPortfolio: 'Portfel',
+    legDeposit: 'Lokata',
+    // MC
+    mcLeg1: 'Zakres P10–P90',
+    mcLeg2: 'Zakres P25–P75',
+    mcLeg3: 'Mediana (P50)',
+    mcLeg4: 'Deterministyczny',
+    // Table headers
+    thYear: 'Rok',
+    thDeposited: 'Wpłacono',
+    thValue: 'Wartość portfela',
+    thGrossProfit: 'Zysk brutto',
+    thTax: 'Podatek',
+    thNetProfit: 'Zysk netto',
+    thReal: 'Wartość realna',
+    // Modal
+    modalTitle: 'Wybierz instrument',
+    modalClose: '✕ Zamknij',
+    modalSearchPlaceholder: 'Szukaj: S&P 500, Złoto, Obligacje, BTC...',
+    modalNoResults: 'Brak wyników',
+    // Legal
+    legalDisclaimer: '<strong style="color:var(--text);">Zastrzeżenie prawne:</strong> Wszelkie informacje, kalkulacje i prognozy prezentowane na tej stronie mają charakter wyłącznie edukacyjny i informacyjny. Nie stanowią porady inwestycyjnej, rekomendacji zakupu ani sprzedaży jakichkolwiek instrumentów finansowych w rozumieniu Ustawy o obrocie instrumentami finansowymi. Wyniki historyczne nie są gwarancją przyszłych zysków. Inwestowanie wiąże się z ryzykiem utraty części lub całości zainwestowanego kapitału. Przed podjęciem decyzji inwestycyjnych skonsultuj się z licencjonowanym doradcą finansowym.',
+    // JS dynamic — stat cards
+    statFinalValue: 'Wartość końcowa',
+    statAfterTax: 'po podatku Belki',
+    statYears: 'lat',
+    statTotalDeposited: 'Łącznie wpłacono',
+    statOwnCapital: 'Kapitał własny',
+    statNetProfit: 'Zysk netto',
+    statROI: 'ROI',
+    statReturn: 'Zwrot portfela',
+    statWeightedAnnual: 'Ważony roczny (est.)',
+    statRealValue: 'Wartość realna',
+    statPurchasingPower: 'Siła nabywcza (inflacja',
+    statAdvantage: 'Przewaga nad lokatą',
+    statVsDeposit: 'vs. lokata 3.5% r/r',
+    // Scenarios
+    scenPessim: 'Pesymistyczny',
+    scenBase: 'Bazowy',
+    scenOptim: 'Optymistyczny',
+    scenProfit: 'Zysk',
+    // Risk
+    riskPortfolioLevel: 'Poziom ryzyka portfela',
+    riskLabels: ['', 'Bardzo niskie', 'Niskie', 'Umiarkowane', 'Wysokie', 'Bardzo wysokie'],
+    riskTip: 'Oczekiwany zwrot roczny',
+    riskLabel: 'Ryzyko',
+    portfela: 'portfela',
+    // Risk descriptions
+    riskDesc1: 'Portfel o bardzo niskim ryzyku — dominują bezpieczne aktywa. Odpowiedni dla konserwatywnych inwestorów lub krótkoterminowych celów.',
+    riskDesc2: 'Portfel zrównoważony o niskim-umiarkowanym ryzyku. Dobry dla inwestorów długoterminowych szukających stabilności z potencjałem wzrostu.',
+    riskDesc3: 'Portfel o umiarkowanym ryzyku z potencjałem wyższych zwrotów. Odpowiedni dla inwestorów z horyzontem 10+ lat akceptujących wahania cen.',
+    riskDesc4: 'Portfel o wysokim ryzyku — silna ekspozycja na zmienne aktywa. Wymaga silnych nerwów przy korektach i długiego horyzontu (15+ lat).',
+    riskDesc5: 'Portfel bardzo ryzykowny. Możliwe straty przekraczające 50% w złych latach. Tylko dla doświadczonych inwestorów z horyzontem 20+ lat.',
+    riskCrypto: ' Uwaga: Kryptowaluty mogą stracić 80-90% wartości w bessie.',
+    riskBonds: ' Obligacje obniżają ryzyko portfela.',
+    riskGold: ' Złoto/srebro pełni funkcję hedgingu w portfelu.',
+    // MC stats
+    mcP10: 'P10 — pesymistyczny',
+    mcP25: 'P25 — ostrożny',
+    mcP50: 'P50 — mediana',
+    mcP75: 'P75 — optymistyczny',
+    mcP90: 'P90 — szczęśliwy',
+    mcAvgCrashes: 'Śr. liczba krachów',
+    mcBadge: 'symulacji · vol',
+    mcPerYear: '/rok',
+    mcNoteTitle: 'Jak czytać wykres:',
+    mcNoteText: 'Złoty pas to zakres między 10. a 90. percentylem — 80% symulacji mieści się w tym przedziale. Grubszy pas wewnętrzny to P25–P75 (połowa wyników). Przerywana linia niebieska to klasyczny wynik deterministyczny (bez losowości). W',
+    mcNoteText2: '% ścieżek wystąpił co najmniej jeden krach rynkowy. Zmienność portfela:',
+    mcNoteText3: 'rocznie',
+    // Crash
+    crashProbText: 'Szacowane prawdopodobieństwo krachu w dowolnym roku:',
+    crashExpected: 'Oczekiwana liczba krachów w',
+    crashYears: 'latach',
+    crashRecov: 'Odrobienie: ~',
+    crashMonths: 'mies.',
+    crashGain: 'Portfel zyska',
+    crashMore: 'więcej…',
+    crashNote: 'Wartości to historyczne dane per-instrument (Bloomberg / Yahoo Finance). Wynik portfela to średnia ważona udziałami. Kwota PLN wyliczona od kapitału początkowego. Czas odrobienia skalowany wagą obligacji i złota w portfelu.',
+    crashGreenNote: 'Zielone',
+    crashGreenText: 'wartości = instrument zyskiwał podczas krachu (np. obligacje skarbowe, złoto, ropa w 2022). Krachy są normalną częścią inwestowania — każdy z 7 powyższych został historycznie odrobiony.',
+    // IKE
+    ikeTitle: 'Konto Standardowe',
+    ikeAfterTax: 'po podatku Belki 19%',
+    ikeTotalTax: 'Podatek łącznie:',
+    ikeTitle2: 'IKE — brak podatku Belki',
+    ikeLimit: 'Limit:',
+    ikeMoreThanStd: 'więcej niż konto std.',
+    ikeTitle3: 'IKZE — odliczenie PIT',
+    ikeExitTax: 'podatek wyjścia 10%',
+    ikeDesc: 'Porównanie trzech wariantów podatkowych dla tych samych wpłat i portfela.',
+    ikeLimits: 'Limity 2024: IKE =',
+    ikeYear: 'PLN/rok',
+    ikeIKZE: '· IKZE =',
+    ikeWithin: 'Twoje wpłaty mieszczą się w limicie IKE — pełna korzyść podatkowa!',
+    ikeExceed: 'Twoje wpłaty przekraczają limit — nadwyżka trafia na zwykłe konto.',
+    ikeNoteIKE: 'zyski wolne od podatku Belki przy wypłacie po 60. roku życia. Brak odliczenia od PIT.',
+    ikeNoteIKZE: 'wpłaty odliczasz od podstawy PIT (zwrot',
+    ikeNoteIKZE2: 'PLN/rok), ale przy wypłacie płacisz 10% podatku ryczałtowego. Dla długich horyzontów i wyższych stóp PIT (32%) IKZE jest często korzystniejsze.',
+    ikeBestIKE: 'Dla Ciebie optymalny jest',
+    ikeBestIKZE: 'przy stawce',
+    ikeBestPIT: '% PIT.',
+    ikeBestSame: 'Przy tej kwocie wpłat i stawce PIT konta dają podobny wynik.',
+    // Table row
+    tableYear: 'Rok',
+    // Chart labels
+    chartPortfolio: 'Portfel',
+    chartDeposit35: 'Lokata 3.5%',
+    chartDeposits: 'Wpłaty',
+    chartStdAccount: 'Konto std.',
+    chartIKE: 'IKE',
+    chartIKZE: 'IKZE',
+    chartMedian: 'Mediana (P50)',
+    chartDeterministic: 'Deterministyczny',
+    // Alerts
+    alertNoInstruments: 'Dodaj co najmniej jeden instrument do portfela!',
+    alertAllocation: 'Alokacja portfela wynosi',
+    alertShouldBe: ', a powinna wynosić 100%. Popraw alokacje.',
+    suffixCurrency: 'PLN',
+    suffixYears: 'lat',
+  },
+  en: {
+    // Header
+    disclaimer: 'For educational purposes only — not investment advice',
+    // Page
+    pageTitle: 'Investment Calculator',
+    pageSub: 'Plan your portfolio, calculate returns and compare investment scenarios',
+    // Sections
+    sec1Title: 'Investment Parameters',
+    sec2Title: 'Portfolio Builder',
+    sec3Title: 'Forecast Results',
+    // Cards
+    cardCapital: 'Capital & Horizon',
+    cardReturnAdj: 'Return Adjustment',
+    cardOptions: 'Options & Taxes',
+    cardPortfolio: 'Portfolio Composition',
+    cardRisk: 'Portfolio Risk Assessment',
+    cardIKE: 'IKE / IKZE vs Standard Account Comparison',
+    cardCrash: 'Historical Crashes — Portfolio Impact',
+    cardTable: 'Yearly Breakdown',
+    // Labels
+    labelInit: 'Initial Investment',
+    labelHorizon: 'Investment Horizon',
+    labelContrib: 'Regular Contributions',
+    labelReturnAdj: 'Adjust expected portfolio return',
+    labelInflRate: 'Expected inflation (%/yr)',
+    labelTERRate: 'Total TER fee (%/yr)',
+    labelPIT: 'PIT rate (for IKZE calculation)',
+    // Range
+    rangePessim: '–5% (pessimistic)',
+    rangeOptim: '+5% (optimistic)',
+    // Tabs
+    tabMonthly: 'Monthly',
+    tabQuarterly: 'Quarterly',
+    tabYearly: 'Yearly',
+    tabNone: 'No contributions',
+    noContribText: 'One-time initial investment only.',
+    // Toggles
+    toggleBelka: 'Capital Gains Tax (19%)',
+    toggleBelkaSub: 'Polish capital gains tax (Podatek Belki)',
+    toggleInflation: 'Adjust for inflation',
+    toggleInflationSub: 'Real purchasing power (2.5% p.a.)',
+    toggleDRIP: 'Dividend reinvestment (DRIP)',
+    toggleDRIPSub: 'Automatic reinvestment of payouts',
+    toggleTER: 'Fund fees (TER)',
+    toggleTERSub: 'Typical annual ETF cost: 0.07–0.5%',
+    toggleDeposit: 'Compare with bank deposit',
+    toggleDepositSub: 'Show results for 3.5% p.a. deposit',
+    toggleIKE: 'IKE / IKZE simulation',
+    toggleIKESub: 'Compare standard account vs IKE vs IKZE',
+    // Portfolio
+    allocLabel: 'Portfolio allocation',
+    allocMsg: 'Add instruments and assign percentages (sum = 100%)',
+    allocOver: 'Exceeds 100% — reduce allocations',
+    allocComplete: 'Portfolio complete (100%)',
+    allocRemaining: 'Remaining to assign',
+    emptyPortfolio: 'No instruments — click "Add instrument"',
+    // Buttons
+    btnAddInstrument: 'Add instrument',
+    btnBalance: 'Balance',
+    btnClear: 'Clear',
+    btnPreset: 'Passive example',
+    btnCalc: 'Calculate portfolio results',
+    // Chart titles
+    chartGrowthTitle: 'Capital growth over time',
+    chartPieTitle: 'Portfolio composition',
+    chartScenariosTitle: 'Scenario comparison',
+    chartMCTitle: 'Monte Carlo — 1,000 paths',
+    chartMCSub: ' with crash and volatility modelling',
+    // Chart legends
+    legPortfolio: 'Portfolio',
+    legDeposit: 'Deposit',
+    // MC
+    mcLeg1: 'Range P10–P90',
+    mcLeg2: 'Range P25–P75',
+    mcLeg3: 'Median (P50)',
+    mcLeg4: 'Deterministic',
+    // Table headers
+    thYear: 'Year',
+    thDeposited: 'Deposited',
+    thValue: 'Portfolio value',
+    thGrossProfit: 'Gross profit',
+    thTax: 'Tax',
+    thNetProfit: 'Net profit',
+    thReal: 'Real value',
+    // Modal
+    modalTitle: 'Select instrument',
+    modalClose: '✕ Close',
+    modalSearchPlaceholder: 'Search: S&P 500, Gold, Bonds, BTC...',
+    modalNoResults: 'No results',
+    // Legal
+    legalDisclaimer: '<strong style="color:var(--text);">Legal disclaimer:</strong> All information, calculations and projections presented on this page are for educational and informational purposes only. They do not constitute investment advice, a recommendation to buy or sell any financial instruments. Past performance is not a guarantee of future results. Investing involves the risk of losing part or all of the invested capital. Before making investment decisions, please consult a licensed financial advisor.',
+    // JS dynamic — stat cards
+    statFinalValue: 'Final value',
+    statAfterTax: 'after capital gains tax',
+    statYears: 'years',
+    statTotalDeposited: 'Total deposited',
+    statOwnCapital: 'Own capital',
+    statNetProfit: 'Net profit',
+    statROI: 'ROI',
+    statReturn: 'Portfolio return',
+    statWeightedAnnual: 'Weighted annual (est.)',
+    statRealValue: 'Real value',
+    statPurchasingPower: 'Purchasing power (inflation',
+    statAdvantage: 'Advantage over deposit',
+    statVsDeposit: 'vs. 3.5% p.a. deposit',
+    // Scenarios
+    scenPessim: 'Pessimistic',
+    scenBase: 'Base',
+    scenOptim: 'Optimistic',
+    scenProfit: 'Profit',
+    // Risk
+    riskPortfolioLevel: 'Portfolio risk level',
+    riskLabels: ['', 'Very low', 'Low', 'Moderate', 'High', 'Very high'],
+    riskTip: 'Expected annual return',
+    riskLabel: 'Risk',
+    portfela: 'of portfolio',
+    // Risk descriptions
+    riskDesc1: 'Very low risk portfolio — dominated by safe assets. Suitable for conservative investors or short-term goals.',
+    riskDesc2: 'Balanced portfolio with low-to-moderate risk. Good for long-term investors seeking stability with growth potential.',
+    riskDesc3: 'Moderate risk portfolio with potential for higher returns. Suitable for investors with 10+ year horizon who accept price fluctuations.',
+    riskDesc4: 'High risk portfolio — strong exposure to volatile assets. Requires strong nerves during corrections and a long horizon (15+ years).',
+    riskDesc5: 'Very high risk portfolio. Possible losses exceeding 50% in bad years. Only for experienced investors with 20+ year horizon.',
+    riskCrypto: ' Warning: Cryptocurrencies can lose 80-90% of value in a bear market.',
+    riskBonds: ' Bonds reduce portfolio risk.',
+    riskGold: ' Gold/silver serves as a hedge in the portfolio.',
+    // MC stats
+    mcP10: 'P10 — pessimistic',
+    mcP25: 'P25 — cautious',
+    mcP50: 'P50 — median',
+    mcP75: 'P75 — optimistic',
+    mcP90: 'P90 — lucky',
+    mcAvgCrashes: 'Avg. crashes',
+    mcBadge: 'simulations · vol',
+    mcPerYear: '/yr',
+    mcNoteTitle: 'How to read the chart:',
+    mcNoteText: 'The golden band is the range between the 10th and 90th percentile — 80% of simulations fall within this range. The thicker inner band is P25–P75 (half of results). The dashed blue line is the classic deterministic result (no randomness). In',
+    mcNoteText2: '% of paths at least one market crash occurred. Portfolio volatility:',
+    mcNoteText3: 'per year',
+    // Crash
+    crashProbText: 'Estimated probability of a crash in any given year:',
+    crashExpected: 'Expected number of crashes over',
+    crashYears: 'years',
+    crashRecov: 'Recovery: ~',
+    crashMonths: 'mo.',
+    crashGain: 'Portfolio gains',
+    crashMore: 'more…',
+    crashNote: 'Values are historical per-instrument data (Bloomberg / Yahoo Finance). Portfolio result is the weighted average by allocation. PLN amount calculated from initial capital. Recovery time scaled by bond and gold weight in portfolio.',
+    crashGreenNote: 'Green',
+    crashGreenText: 'values = instrument gained during the crash (e.g. government bonds, gold, oil in 2022). Crashes are a normal part of investing — all 7 above have been historically recovered.',
+    // IKE
+    ikeTitle: 'Standard Account',
+    ikeAfterTax: 'after 19% capital gains tax',
+    ikeTotalTax: 'Total tax:',
+    ikeTitle2: 'IKE — no capital gains tax',
+    ikeLimit: 'Limit:',
+    ikeMoreThanStd: 'more than standard account',
+    ikeTitle3: 'IKZE — PIT deduction',
+    ikeExitTax: '10% exit tax',
+    ikeDesc: 'Comparison of three tax options for the same contributions and portfolio.',
+    ikeLimits: 'Limits 2024: IKE =',
+    ikeYear: '/yr',
+    ikeIKZE: '· IKZE =',
+    ikeWithin: 'Your contributions fit within the IKE limit — full tax benefit!',
+    ikeExceed: 'Your contributions exceed the limit — surplus goes to a regular account.',
+    ikeNoteIKE: 'gains exempt from capital gains tax when withdrawn after age 60. No PIT deduction.',
+    ikeNoteIKZE: 'contributions are deducted from PIT base (refund',
+    ikeNoteIKZE2: 'PLN/yr), but a 10% flat tax applies on withdrawal. For long horizons and higher PIT rates (32%) IKZE is often more beneficial.',
+    ikeBestIKE: 'For you the optimal choice is',
+    ikeBestIKZE: 'at rate',
+    ikeBestPIT: '% PIT.',
+    ikeBestSame: 'At this contribution amount and PIT rate both accounts give similar results.',
+    // Table row
+    tableYear: 'Year',
+    // Chart labels
+    chartPortfolio: 'Portfolio',
+    chartDeposit35: 'Deposit 3.5%',
+    chartDeposits: 'Deposits',
+    chartStdAccount: 'Std. account',
+    chartIKE: 'IKE',
+    chartIKZE: 'IKZE',
+    chartMedian: 'Median (P50)',
+    chartDeterministic: 'Deterministic',
+    // Alerts
+    alertNoInstruments: 'Add at least one instrument to the portfolio!',
+    alertAllocation: 'Portfolio allocation is',
+    alertShouldBe: ', but should be 100%. Please fix the allocations.',
+    suffixCurrency: '',
+    suffixYears: 'yrs',
+  }
+};
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key] !== undefined)
+    ? TRANSLATIONS[currentLang][key]
+    : (TRANSLATIONS['pl'][key] || key);
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  // Update buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  // Update all static [data-i18n] elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (el.tagName === 'P' || el.innerHTML.includes('<')) {
+      el.innerHTML = val;
+    } else {
+      el.textContent = val;
+    }
+  });
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
+  // Update document title
+  document.title = lang === 'en'
+    ? 'Investment Calculator — ETF Portfolio, IKE/IKZE, Monte Carlo | InvestCalc'
+    : 'Kalkulator Inwestycji — Portfel ETF, IKE/IKZE, Monte Carlo | InvestCalc';
+  // Re-render dynamic alloc bar message
+  updateAllocBar();
+  // Re-render portfolio (updates categories)
+  if(portfolio.length) renderPortfolio();
+  // Re-render modal if open
+  if(document.getElementById('modalOverlay').classList.contains('open')){
+    renderModal(document.getElementById('modalSearch').value.toLowerCase());
+  }
+}
+
+// ============================================================
+//  INSTRUMENTS DATABASE
+// ============================================================
+const INSTRUMENTS = [
+  {id:'gold',cat:'Metale szlachetne',name:'Złoto (XAU)',icon:'🥇',color:'#f0b429',ret:8.0,risk:3,desc:'Fizyczne złoto / ETF złota — SPDR Gold (GLD)'},
+  {id:'silver',cat:'Metale szlachetne',name:'Srebro (XAG)',icon:'🥈',color:'#94a3b8',ret:7.0,risk:4,desc:'Fizyczne srebro / ETF srebra — iShares Silver (SLV)'},
+  {id:'plat',cat:'Metale szlachetne',name:'Platyna (XPT)',icon:'⬜',color:'#e2e8f0',ret:4.5,risk:4,desc:'Platyna przemysłowa — Aberdeen Physical Platinum'},
+  {id:'pall',cat:'Metale szlachetne',name:'Pallad (XPD)',icon:'🔘',color:'#cbd5e1',ret:5.5,risk:5,desc:'Pallad — Aberdeen Physical Palladium'},
+  {id:'copper',cat:'Metale szlachetne',name:'Miedź (CPER)',icon:'🟤',color:'#b45309',ret:4.5,risk:4,desc:'ETF na miedź przemysłową'},
+  {id:'spy',cat:'ETF — USA Szerokie',name:'S&P 500 (SPY / VOO)',icon:'🇺🇸',color:'#3b82f6',ret:10.5,risk:3,desc:'500 największych spółek USA — benchmark globalny'},
+  {id:'qqq',cat:'ETF — USA Szerokie',name:'NASDAQ 100 (QQQ)',icon:'💻',color:'#6366f1',ret:13.5,risk:4,desc:'100 spółek tech. NASDAQ — Apple, MSFT, NVDA, Meta...'},
+  {id:'dia',cat:'ETF — USA Szerokie',name:'Dow Jones 30 (DIA)',icon:'🏭',color:'#0891b2',ret:9.5,risk:3,desc:'30 blue-chipów przemysłowych'},
+  {id:'vti',cat:'ETF — USA Szerokie',name:'Total US Market (VTI)',icon:'🌐',color:'#0284c7',ret:10.5,risk:3,desc:'Cały rynek akcji USA — ~3800 spółek'},
+  {id:'vug',cat:'ETF — USA Szerokie',name:'US Growth (VUG)',icon:'📈',color:'#7c3aed',ret:12.5,risk:4,desc:'Spółki wzrostowe USA — duże kapitalizacje'},
+  {id:'vym',cat:'ETF — USA Szerokie',name:'US Dividend (VYM)',icon:'💰',color:'#059669',ret:8.0,risk:2,desc:'Spółki dywidendowe USA — wysoka stopa wypłat'},
+  {id:'vbr',cat:'ETF — USA Szerokie',name:'Small Cap Value (VBR)',icon:'📊',color:'#8b5cf6',ret:10.0,risk:4,desc:'Małe spółki wartościowe — efekt small-cap'},
+  {id:'vb',cat:'ETF — USA Szerokie',name:'Small Cap Blend (VB)',icon:'🔬',color:'#a855f7',ret:10.5,risk:4,desc:'Małe spółki USA — szeroki indeks'},
+  {id:'vo',cat:'ETF — USA Szerokie',name:'Mid Cap Blend (VO)',icon:'⚖️',color:'#6d28d9',ret:10.0,risk:3,desc:'Średnie spółki USA — dobre wyniki hist.'},
+  {id:'ivv',cat:'ETF — USA Szerokie',name:'iShares S&P 500 (IVV)',icon:'🇺🇸',color:'#1d4ed8',ret:10.5,risk:3,desc:'Tańsza alternatywa SPY — TER 0.03%'},
+  {id:'schd',cat:'ETF — USA Szerokie',name:'Schwab Dividend (SCHD)',icon:'💎',color:'#0f766e',ret:9.0,risk:2,desc:'Jakościowe dywidendowe — rosnące wypłaty'},
+  {id:'xlk',cat:'ETF — USA Sektorowe',name:'Technology (XLK)',icon:'⚡',color:'#4f46e5',ret:14.5,risk:4,desc:'Sektor tech USA — Apple, MSFT, NVIDIA'},
+  {id:'xlv',cat:'ETF — USA Sektorowe',name:'Healthcare (XLV)',icon:'🏥',color:'#ef4444',ret:9.5,risk:3,desc:'Ochrona zdrowia — pharma, biotech, medtech'},
+  {id:'xle',cat:'ETF — USA Sektorowe',name:'Energy (XLE)',icon:'⛽',color:'#f97316',ret:8.0,risk:4,desc:'Ropa i gaz — Exxon, Chevron, ConocoPhillips'},
+  {id:'xlf',cat:'ETF — USA Sektorowe',name:'Financials (XLF)',icon:'🏦',color:'#0ea5e9',ret:9.5,risk:3,desc:'Banki i ubezpieczenia USA'},
+  {id:'xli',cat:'ETF — USA Sektorowe',name:'Industrials (XLI)',icon:'⚙️',color:'#64748b',ret:9.0,risk:3,desc:'Przemysł ciężki — Boeing, Caterpillar, GE'},
+  {id:'xlp',cat:'ETF — USA Sektorowe',name:'Consumer Staples (XLP)',icon:'🛒',color:'#65a30d',ret:7.5,risk:2,desc:'Dobra podstawowe — P&G, Walmart, Coca-Cola'},
+  {id:'xly',cat:'ETF — USA Sektorowe',name:'Consumer Disc. (XLY)',icon:'🛍',color:'#f59e0b',ret:10.5,risk:4,desc:'Dobra luksusowe — Amazon, Tesla, Nike'},
+  {id:'xlb',cat:'ETF — USA Sektorowe',name:'Materials (XLB)',icon:'🧱',color:'#92400e',ret:8.5,risk:3,desc:'Materiały i surowce przemysłowe'},
+  {id:'xlre',cat:'ETF — USA Sektorowe',name:'Real Estate (XLRE)',icon:'🏢',color:'#dc2626',ret:8.5,risk:3,desc:'REITs — nieruchomości USA'},
+  {id:'xlu',cat:'ETF — USA Sektorowe',name:'Utilities (XLU)',icon:'💡',color:'#0891b2',ret:7.0,risk:2,desc:'Spółki użyteczności publicznej — defensywne'},
+  {id:'xlc',cat:'ETF — USA Sektorowe',name:'Communication (XLC)',icon:'📡',color:'#7c3aed',ret:11.0,risk:4,desc:'Telekomunikacja i media — Alphabet, Meta'},
+  {id:'soxx',cat:'ETF — USA Sektorowe',name:'Semiconductors (SOXX)',icon:'🔲',color:'#6366f1',ret:16.0,risk:5,desc:'Półprzewodniki — NVIDIA, AMD, Intel, TSMC'},
+  {id:'arkk',cat:'ETF — USA Sektorowe',name:'ARK Innovation (ARKK)',icon:'🧬',color:'#ec4899',ret:12.0,risk:5,desc:'Innowacje disruptywne — AI, biotech, fintech'},
+  {id:'ibb',cat:'ETF — USA Sektorowe',name:'Biotech (IBB)',icon:'🔬',color:'#14b8a6',ret:10.5,risk:5,desc:'Spółki biotechnologiczne — wysokie ryzyko/zysk'},
+  {id:'hack',cat:'ETF — USA Sektorowe',name:'Cybersecurity (HACK)',icon:'🔐',color:'#1e40af',ret:11.5,risk:4,desc:'Cyberbezpieczeństwo — rosnący sektor'},
+  {id:'icln',cat:'ETF — USA Sektorowe',name:'Clean Energy (ICLN)',icon:'🌿',color:'#16a34a',ret:7.5,risk:5,desc:'Czysta energia — OZE, baterie, EV'},
+  {id:'robo',cat:'ETF — USA Sektorowe',name:'Robotics & AI (ROBO)',icon:'🤖',color:'#8b5cf6',ret:12.5,risk:4,desc:'Robotyka i automatyzacja — globalny'},
+  {id:'finx',cat:'ETF — USA Sektorowe',name:'Fintech (FINX)',icon:'💳',color:'#0891b2',ret:10.0,risk:4,desc:'Fintech — płatności, neobanki, insurtech'},
+  {id:'vxus',cat:'ETF — Świat bez USA',name:'Total Intl Stock (VXUS)',icon:'🌍',color:'#0891b2',ret:7.5,risk:3,desc:'Cały świat z wyłączeniem USA — ~8000 spółek'},
+  {id:'exus',cat:'ETF — Świat bez USA',name:'MSCI World ex-USA (DBXW)',icon:'🌐',color:'#0284c7',ret:7.0,risk:3,desc:'Rynki rozwinięte bez ekspozycji na USA'},
+  {id:'efa',cat:'ETF — Świat bez USA',name:'iShares MSCI EAFE (EFA)',icon:'🌏',color:'#1d4ed8',ret:7.0,risk:3,desc:'Europa, Australazja i Daleki Wschód'},
+  {id:'efav',cat:'ETF — Świat bez USA',name:'MSCI EAFE Value (EFV)',icon:'📉',color:'#1e40af',ret:7.5,risk:3,desc:'EAFE spółki wartościowe — niskie wyceny'},
+  {id:'vgk',cat:'ETF — Świat bez USA',name:'Europe (VGK)',icon:'🇪🇺',color:'#1d4ed8',ret:7.0,risk:3,desc:'Akcje europejskie — Stoxx Europe 600'},
+  {id:'ezu',cat:'ETF — Świat bez USA',name:'Eurozone (EZU)',icon:'💶',color:'#2563eb',ret:7.0,risk:3,desc:'Strefa euro — Niemcy, Francja, Holandia'},
+  {id:'ewg',cat:'ETF — Świat bez USA',name:'Germany (EWG)',icon:'🇩🇪',color:'#374151',ret:7.5,risk:3,desc:'Akcje niemieckie — DAX, Siemens, SAP, BASF'},
+  {id:'ewq',cat:'ETF — Świat bez USA',name:'France (EWQ)',icon:'🇫🇷',color:'#1d4ed8',ret:7.0,risk:3,desc:'Akcje francuskie — LVMH, TotalEnergies, BNP'},
+  {id:'ewu',cat:'ETF — Świat bez USA',name:'United Kingdom (EWU)',icon:'🇬🇧',color:'#0f172a',ret:6.5,risk:3,desc:'Akcje brytyjskie — FTSE 100, Shell, HSBC'},
+  {id:'ewi',cat:'ETF — Świat bez USA',name:'Italy (EWI)',icon:'🇮🇹',color:'#16a34a',ret:7.0,risk:3,desc:'Akcje włoskie — Eni, Intesa, Ferrari'},
+  {id:'ewp',cat:'ETF — Świat bez USA',name:'Spain (EWP)',icon:'🇪🇸',color:'#dc2626',ret:6.5,risk:3,desc:'Akcje hiszpańskie — Santander, Iberdrola'},
+  {id:'ewn',cat:'ETF — Świat bez USA',name:'Netherlands (EWN)',icon:'🇳🇱',color:'#f97316',ret:8.0,risk:3,desc:'Akcje holenderskie — ASML, Shell, ING'},
+  {id:'ewl',cat:'ETF — Świat bez USA',name:'Switzerland (EWL)',icon:'🇨🇭',color:'#ef4444',ret:8.0,risk:2,desc:'Akcje szwajcarskie — Nestlé, Roche, Novartis'},
+  {id:'ews',cat:'ETF — Świat bez USA',name:'Sweden (EWS)',icon:'🇸🇪',color:'#0891b2',ret:8.5,risk:3,desc:'Akcje szwedzkie — Ericsson, Volvo, H&M'},
+  {id:'ewj',cat:'ETF — Świat bez USA',name:'Japan (EWJ)',icon:'🇯🇵',color:'#b91c1c',ret:5.5,risk:3,desc:'Akcje japońskie — Toyota, Sony, SoftBank'},
+  {id:'ewh',cat:'ETF — Świat bez USA',name:'Hong Kong (EWH)',icon:'🇭🇰',color:'#dc2626',ret:5.0,risk:4,desc:'Akcje z Hong Kongu — HSBC, AIA, Hang Seng'},
+  {id:'ewa',cat:'ETF — Świat bez USA',name:'Australia (EWA)',icon:'🇦🇺',color:'#f59e0b',ret:7.0,risk:3,desc:'Akcje australijskie — BHP, Commonwealth Bank'},
+  {id:'ewc',cat:'ETF — Świat bez USA',name:'Canada (EWC)',icon:'🇨🇦',color:'#ef4444',ret:7.5,risk:3,desc:'Akcje kanadyjskie — surowce i banki'},
+  {id:'ewz',cat:'ETF — Świat bez USA',name:'Brazil (EWZ)',icon:'🇧🇷',color:'#16a34a',ret:6.0,risk:5,desc:'Akcje brazylijskie — Petrobras, Vale'},
+  {id:'inda',cat:'ETF — Świat bez USA',name:'India (INDA)',icon:'🇮🇳',color:'#f97316',ret:9.0,risk:4,desc:'Akcje indyjskie — rosnąca gospodarka'},
+  {id:'mchi',cat:'ETF — Świat bez USA',name:'China (MCHI)',icon:'🇨🇳',color:'#dc2626',ret:5.5,risk:5,desc:'Akcje chińskie — Alibaba, Tencent, Meituan'},
+  {id:'ekor',cat:'ETF — Świat bez USA',name:'South Korea (EWY)',icon:'🇰🇷',color:'#0891b2',ret:7.5,risk:4,desc:'Akcje koreańskie — Samsung, SK Hynix, LG'},
+  {id:'epol',cat:'ETF — Świat bez USA',name:'Poland (EPOL)',icon:'🇵🇱',color:'#ef4444',ret:7.5,risk:4,desc:'Polskie akcje — iShares MSCI Poland'},
+  {id:'gxf',cat:'ETF — Świat bez USA',name:'Nordic Countries (GXF)',icon:'🌨',color:'#0284c7',ret:8.0,risk:3,desc:'Skandynawia — Dania, Szwecja, Finlandia'},
+  {id:'iemg',cat:'ETF — Świat bez USA',name:'Core Emerging Markets (IEMG)',icon:'🌱',color:'#16a34a',ret:6.5,risk:4,desc:'Rynki wschodzące — szeroki, tani ETF'},
+  {id:'eem',cat:'ETF — Świat bez USA',name:'Emerging Markets (EEM)',icon:'🌿',color:'#15803d',ret:6.0,risk:5,desc:'Rynki wschodzące — klasyczny benchmark'},
+  {id:'vwo',cat:'ETF — Świat bez USA',name:'FTSE Emerging (VWO)',icon:'🗺',color:'#166534',ret:6.5,risk:4,desc:'Rynki wschodzące Vanguard — EM bez Korei'},
+  {id:'fm',cat:'ETF — Świat bez USA',name:'Frontier Markets (FM)',icon:'🗾',color:'#854d0e',ret:7.5,risk:5,desc:'Rynki graniczne — Wietnam, Nigeria, Pakistan'},
+  {id:'iwda',cat:'ETF — Globalne',name:'MSCI World (IWDA)',icon:'🌍',color:'#0891b2',ret:9.0,risk:3,desc:'Rynki rozwinięte — ~1600 spółek (iShares)'},
+  {id:'vwra',cat:'ETF — Globalne',name:'FTSE All-World (VWRA)',icon:'🌏',color:'#0284c7',ret:9.0,risk:3,desc:'~4000 spółek — rozwinięte + wschodzące (Vanguard)'},
+  {id:'acwi',cat:'ETF — Globalne',name:'MSCI ACWI (ACWI)',icon:'🌐',color:'#2563eb',ret:8.5,risk:3,desc:'All Country World Index — pełna globalność'},
+  {id:'vt',cat:'ETF — Globalne',name:'Total World (VT)',icon:'🗺',color:'#1d4ed8',ret:9.0,risk:3,desc:'Vanguard Total World — wszystkie kraje i spółki'},
+  {id:'urth',cat:'ETF — Globalne',name:'MSCI World (URTH)',icon:'🌍',color:'#0f766e',ret:9.0,risk:3,desc:'iShares MSCI World — alternatywa IWDA'},
+  {id:'glre',cat:'ETF — Globalne',name:'Global Clean Energy (INRG)',icon:'☀️',color:'#16a34a',ret:7.5,risk:5,desc:'Czysta energia globalnie — OZE, wiatr, solar'},
+  {id:'dvy',cat:'ETF — Globalne',name:'Global Dividend (VIGI)',icon:'💵',color:'#059669',ret:8.0,risk:2,desc:'Globalny wzrost dywidend — spółki z 10+ lat wzrostów'},
+  {id:'iwmo',cat:'ETF — Globalne',name:'MSCI World Momentum (IWMO)',icon:'📈',color:'#7c3aed',ret:11.0,risk:4,desc:'Spółki z silnym momentum cenowym'},
+  {id:'iwfq',cat:'ETF — Globalne',name:'MSCI World Quality (IWFQ)',icon:'🏆',color:'#6d28d9',ret:10.0,risk:3,desc:'Spółki o wysokiej jakości — ROE, stabilność'},
+  {id:'val',cat:'ETF — Globalne',name:'MSCI World Value (EFV)',icon:'💲',color:'#1e40af',ret:8.5,risk:3,desc:'Niedowartościowane spółki globalne'},
+  {id:'igln',cat:'ETF — Globalne',name:'iShares Physical Gold (IGLN)',icon:'🥇',color:'#f0b429',ret:8.0,risk:3,desc:'Fizyczne złoto — ETF notowany w EUR'},
+  {id:'vss',cat:'ETF — Globalne',name:'FTSE All-World Small Cap (VSS)',icon:'🔍',color:'#8b5cf6',ret:9.0,risk:4,desc:'Małe spółki globalne — efekt size premium'},
+  {id:'gdx',cat:'ETF — Globalne',name:'Gold Miners (GDX)',icon:'⛏',color:'#d97706',ret:9.0,risk:5,desc:'Producenci złota — lewa ręka złota x2-3'},
+  {id:'uranusetf',cat:'ETF — Globalne',name:'Uranium ETF (URA)',icon:'☢️',color:'#7c2d12',ret:12.0,risk:5,desc:'Uran i energia jądrowa — perspektywiczny sektor'},
+  {id:'litm',cat:'ETF — Globalne',name:'Lithium & Battery (LIT)',icon:'🔋',color:'#16a34a',ret:11.0,risk:5,desc:'Lit i akumulatory — EV supply chain'},
+  {id:'skyy',cat:'ETF — Globalne',name:'Cloud Computing (SKYY)',icon:'☁️',color:'#0ea5e9',ret:12.0,risk:4,desc:'Chmura obliczeniowa — SaaS, IaaS, PaaS'},
+  {id:'botz',cat:'ETF — Globalne',name:'Global Robotics (BOTZ)',icon:'🦾',color:'#6366f1',ret:12.5,risk:4,desc:'Robotyka i AI — Fanuc, ABB, Keyence, NVIDIA'},
+  {id:'hcyp',cat:'ETF — Globalne',name:'Global Healthcare (IXJ)',icon:'💊',color:'#dc2626',ret:9.0,risk:3,desc:'Ochrona zdrowia globalnie — Johnson, Roche'},
+  {id:'ifsb',cat:'ETF — Globalne',name:'Global Financials (IXG)',icon:'🏦',color:'#0891b2',ret:8.5,risk:3,desc:'Finanse globalnie — banki, ubezpieczenia'},
+  {id:'ixn',cat:'ETF — Globalne',name:'Global Technology (IXN)',icon:'💻',color:'#4f46e5',ret:14.0,risk:4,desc:'Tech globalnie — USA, Korea, Tajwan, EU'},
+  {id:'ewxinfra',cat:'ETF — Globalne',name:'Global Infrastructure (IGF)',icon:'🏗',color:'#64748b',ret:7.5,risk:2,desc:'Infrastruktura — mosty, porty, autostrady'},
+  {id:'wndy',cat:'ETF — Globalne',name:'Global Wind Energy (FAN)',icon:'💨',color:'#0891b2',ret:8.0,risk:5,desc:'Energia wiatrowa — Vestas, Siemens Gamesa'},
+  {id:'age',cat:'ETF — Globalne',name:'Ageing Population (AGEM)',icon:'👴',color:'#9ca3af',ret:8.5,risk:3,desc:'Starzenie populacji — pharma, seniorzy, finanse'},
+  {id:'esgu',cat:'ETF — Globalne',name:'ESG World (ESGU)',icon:'♻️',color:'#16a34a',ret:9.0,risk:3,desc:'Spółki z wysokim ratingiem ESG — zrównoważone'},
+  {id:'defa',cat:'ETF — Globalne',name:'EAFE ex-UK Dividend (DEFA)',icon:'🌸',color:'#db2777',ret:7.5,risk:3,desc:'Dywidendy z Europy i Azji'},
+  {id:'ust10',cat:'Obligacje rządowe',name:'USA — Obligacje 10Y',icon:'🇺🇸',color:'#1d4ed8',ret:4.5,risk:1,desc:'US Treasury 10-letnie — benchmark globalny'},
+  {id:'ust30',cat:'Obligacje rządowe',name:'USA — Obligacje 30Y',icon:'🇺🇸',color:'#1e40af',ret:4.8,risk:2,desc:'US Treasury 30-letnie — długi koniec krzywej'},
+  {id:'bund10',cat:'Obligacje rządowe',name:'Niemcy — Bunds 10Y',icon:'🇩🇪',color:'#374151',ret:2.5,risk:1,desc:'Najbezpieczniejsze obligacje strefy euro'},
+  {id:'pol10',cat:'Obligacje rządowe',name:'Polska — Obligacje 10Y',icon:'🇵🇱',color:'#dc2626',ret:5.5,risk:2,desc:'Polskie obligacje skarbowe — EUR i PLN'},
+  {id:'uk10',cat:'Obligacje rządowe',name:'UK — Gilts 10Y',icon:'🇬🇧',color:'#0f172a',ret:4.2,risk:1,desc:'Brytyjskie gilts — wysoka płynność'},
+  {id:'fra10',cat:'Obligacje rządowe',name:'Francja — OAT 10Y',icon:'🇫🇷',color:'#1d4ed8',ret:3.2,risk:1,desc:'Obligacje rządowe francuskie'},
+  {id:'ita10',cat:'Obligacje rządowe',name:'Włochy — BTP 10Y',icon:'🇮🇹',color:'#16a34a',ret:4.0,risk:2,desc:'Włoskie BTP — spread nad Niemcami'},
+  {id:'jap10',cat:'Obligacje rządowe',name:'Japonia — JGB 10Y',icon:'🇯🇵',color:'#b91c1c',ret:0.7,risk:1,desc:'Japońskie JGB — historycznie niskie stopy'},
+  {id:'aus10',cat:'Obligacje rządowe',name:'Australia — Bonds 10Y',icon:'🇦🇺',color:'#f59e0b',ret:4.3,risk:1,desc:'Australijskie obligacje skarbowe'},
+  {id:'can10',cat:'Obligacje rządowe',name:'Kanada — Bonds 10Y',icon:'🇨🇦',color:'#ef4444',ret:3.8,risk:1,desc:'Kanadyjskie obligacje federalne'},
+  {id:'swe10',cat:'Obligacje rządowe',name:'Szwecja — Bonds 10Y',icon:'🇸🇪',color:'#0891b2',ret:2.8,risk:1,desc:'Szwedzkie obligacje rządowe'},
+  {id:'nor10',cat:'Obligacje rządowe',name:'Norwegia — Bonds 10Y',icon:'🇳🇴',color:'#1d4ed8',ret:3.5,risk:1,desc:'Norweskie obligacje — bogata gospodarka naftowa'},
+  {id:'swi10',cat:'Obligacje rządowe',name:'Szwajcaria — Bonds 10Y',icon:'🇨🇭',color:'#ef4444',ret:0.8,risk:1,desc:'Szwajcarskie obligacje — bezpieczna przystań CHF'},
+  {id:'em10',cat:'Obligacje rządowe',name:'Rynki Wschodzące — Bonds EM',icon:'🌱',color:'#16a34a',ret:6.5,risk:3,desc:'Zdywersyfikowane obligacje EM (iShares EMB)'},
+  {id:'corp_ig',cat:'Obligacje korporacyjne',name:'US Corp. Investment Grade',icon:'🏢',color:'#0891b2',ret:5.5,risk:2,desc:'Obligacje IG — LQD, Apple, MSFT, Johnson'},
+  {id:'corp_hy',cat:'Obligacje korporacyjne',name:'US High Yield (HYG)',icon:'📈',color:'#f97316',ret:7.0,risk:3,desc:'Junk bonds — wyższy kupon, wyższe ryzyko'},
+  {id:'tips',cat:'Obligacje korporacyjne',name:'US TIPS (inflacyjne)',icon:'🛡',color:'#0284c7',ret:3.5,risk:1,desc:'Obligacje indeksowane CPI — ochrona przed inflacją'},
+  {id:'eu_corp',cat:'Obligacje korporacyjne',name:'EU Corp. IG (IEAA)',icon:'🇪🇺',color:'#1d4ed8',ret:4.0,risk:2,desc:'Europejskie obligacje korporacyjne IG'},
+  {id:'reit_us',cat:'Nieruchomości (REIT)',name:'REITs USA — szeroki (VNQ)',icon:'🏘',color:'#dc2626',ret:8.5,risk:3,desc:'Vanguard Real Estate — ~160 REITs'},
+  {id:'reit_eu',cat:'Nieruchomości (REIT)',name:'REITs Europa (IPRP)',icon:'🏛',color:'#7c3aed',ret:6.0,risk:3,desc:'Europejskie REITs — Unibail, Land Securities'},
+  {id:'reit_gl',cat:'Nieruchomości (REIT)',name:'Global REITs (VNQI)',icon:'🌐',color:'#0891b2',ret:7.0,risk:3,desc:'Globalne nieruchomości bez USA'},
+  {id:'reit_data',cat:'Nieruchomości (REIT)',name:'Data Centers REIT (SRVR)',icon:'🖥',color:'#6366f1',ret:10.0,risk:4,desc:'Centra danych — Equinix, Digital Realty'},
+  {id:'reit_log',cat:'Nieruchomości (REIT)',name:'Logistics REIT (PROL)',icon:'📦',color:'#f59e0b',ret:9.5,risk:3,desc:'Magazyny i logistyka — Prologis, GLP'},
+  {id:'oil',cat:'Surowce i minerały',name:'Ropa naftowa WTI (OIL)',icon:'🛢',color:'#374151',ret:4.5,risk:5,desc:'Kontrakt terminowy na ropę WTI'},
+  {id:'natgas',cat:'Surowce i minerały',name:'Gaz ziemny (UNG)',icon:'🔥',color:'#f97316',ret:3.5,risk:5,desc:'Gaz ziemny USA — wysoka zmienność sezonowa'},
+  {id:'agri',cat:'Surowce i minerały',name:'Surowce rolne (DBA)',icon:'🌾',color:'#65a30d',ret:4.0,risk:4,desc:'Koszyk rolny — kukurydza, soja, pszenica, cukier'},
+  {id:'dbc',cat:'Surowce i minerały',name:'Commodities koszyk (DBC)',icon:'📦',color:'#b45309',ret:5.0,risk:4,desc:'Diversified commodities — ropa, gaz, metale, rolne'},
+  {id:'gsg',cat:'Surowce i minerały',name:'S&P GSCI (GSG)',icon:'🏗',color:'#92400e',ret:4.5,risk:4,desc:'Goldman Sachs Commodity Index — szeroki koszyk'},
+  {id:'btc',cat:'Kryptowaluty',name:'Bitcoin (BTC)',icon:'₿',color:'#f59e0b',ret:40.0,risk:5,desc:'Dominujące krypto — Bitcoin Spot ETF (BlackRock)'},
+  {id:'eth',cat:'Kryptowaluty',name:'Ethereum (ETH)',icon:'⟠',color:'#8b5cf6',ret:35.0,risk:5,desc:'Smart contracts — ETH Spot ETF'},
+  {id:'crypto_etf',cat:'Kryptowaluty',name:'Crypto Koszyk ETF',icon:'🔐',color:'#6366f1',ret:25.0,risk:5,desc:'Zdywersyfikowane krypto — BTC+ETH+inne'},
+  {id:'mmf',cat:'Rynek pieniężny',name:'Fundusz Pieniężny (MMF)',icon:'💵',color:'#059669',ret:4.0,risk:1,desc:'Niska zmienność, płynność dzienna'},
+  {id:'hys',cat:'Rynek pieniężny',name:'Lokata / High-Yield Savings',icon:'🏦',color:'#0891b2',ret:3.5,risk:1,desc:'Lokata bankowa lub konto oszczędnościowe'},
+  {id:'tbill',cat:'Rynek pieniężny',name:'US T-Bills 3M (BIL)',icon:'📄',color:'#1d4ed8',ret:4.8,risk:1,desc:'Krótkoterminowe obligacje USA — SPDR BIL'},
+  {id:'aapl',cat:'Akcje — Megacapy',name:'Apple (AAPL)',icon:'🍎',color:'#94a3b8',ret:14.5,risk:4,desc:'iPhone, Mac, Services — $3T market cap'},
+  {id:'msft',cat:'Akcje — Megacapy',name:'Microsoft (MSFT)',icon:'🪟',color:'#0ea5e9',ret:15.0,risk:4,desc:'Azure, Teams, Office, AI (Copilot)'},
+  {id:'nvda',cat:'Akcje — Megacapy',name:'NVIDIA (NVDA)',icon:'🎮',color:'#76b900',ret:28.0,risk:5,desc:'GPU, AI chips, data center — lider AI'},
+  {id:'googl',cat:'Akcje — Megacapy',name:'Alphabet / Google (GOOGL)',icon:'🔍',color:'#4285f4',ret:13.5,risk:4,desc:'Search, YouTube, GCP, Waymo, DeepMind'},
+  {id:'amzn',cat:'Akcje — Megacapy',name:'Amazon (AMZN)',icon:'📦',color:'#f59e0b',ret:14.0,risk:4,desc:'E-commerce + AWS cloud — dominacja logistyki'},
+  {id:'meta',cat:'Akcje — Megacapy',name:'Meta Platforms (META)',icon:'👤',color:'#1877f2',ret:16.0,risk:4,desc:'Facebook, Instagram, WhatsApp, VR/AR'},
+  {id:'tsla',cat:'Akcje — Megacapy',name:'Tesla (TSLA)',icon:'⚡',color:'#ef4444',ret:15.0,risk:5,desc:'EV, Autopilot, Energy — wysoka zmienność'},
+  {id:'brk',cat:'Akcje — Megacapy',name:'Berkshire Hathaway (BRK.B)',icon:'🏛',color:'#b45309',ret:11.5,risk:3,desc:'Konglomerat W. Buffetta — zdywersyfikowany'},
+  {id:'jpm',cat:'Akcje — Megacapy',name:'JPMorgan Chase (JPM)',icon:'🏦',color:'#0891b2',ret:11.0,risk:3,desc:'Największy bank USA — diversified financials'},
+  {id:'v',cat:'Akcje — Megacapy',name:'Visa (V)',icon:'💳',color:'#1a1f71',ret:12.0,risk:3,desc:'Globalny lider płatności — 4B kart'},
+  {id:'ma',cat:'Akcje — Megacapy',name:'Mastercard (MA)',icon:'🔴',color:'#eb001b',ret:12.5,risk:3,desc:'Płatności globalne — komplementarny do Visa'},
+  {id:'jnj',cat:'Akcje — Megacapy',name:'Johnson & Johnson (JNJ)',icon:'💊',color:'#d00e2b',ret:8.5,risk:2,desc:'Pharma i medtech — 60+ lat wzrostu dywidendy'},
+  {id:'unh',cat:'Akcje — Megacapy',name:'UnitedHealth (UNH)',icon:'🏥',color:'#0071ce',ret:13.5,risk:3,desc:'Ubezpieczenia zdrowotne USA — oligopol'},
+  {id:'pg',cat:'Akcje — Megacapy',name:'Procter & Gamble (PG)',icon:'🧴',color:'#003da5',ret:8.0,risk:2,desc:'FMCG — Pampers, Gillette, Tide — Dividend King'},
+  {id:'xom',cat:'Akcje — Megacapy',name:'ExxonMobil (XOM)',icon:'⛽',color:'#dc2626',ret:9.5,risk:3,desc:'Największa naftowa — dywidendy od 1882r.'},
+  {id:'asml',cat:'Akcje — Europejskie',name:'ASML Holding (ASML)',icon:'🔲',color:'#f97316',ret:16.5,risk:4,desc:'Monopol na maszyny EUV — serce półprzewodników'},
+  {id:'nestle',cat:'Akcje — Europejskie',name:'Nestlé (NESN)',icon:'🍫',color:'#8b4513',ret:7.5,risk:2,desc:'FMCG — Nescafé, KitKat, Purina — defensywne'},
+  {id:'lvmh',cat:'Akcje — Europejskie',name:'LVMH (MC)',icon:'👜',color:'#9d4edd',ret:11.0,risk:3,desc:'Luksus — Louis Vuitton, Dior, Moët, Tiffany'},
+  {id:'novo',cat:'Akcje — Europejskie',name:'Novo Nordisk (NOVO)',icon:'💉',color:'#00818a',ret:15.0,risk:4,desc:'Ozempic, Wegovy — lider leków na otyłość/cukrzycę'},
+  {id:'sap',cat:'Akcje — Europejskie',name:'SAP SE (SAP)',icon:'💻',color:'#0070f2',ret:10.5,risk:3,desc:'ERP — największa firma software z Europy'},
+  {id:'shell',cat:'Akcje — Europejskie',name:'Shell (SHEL)',icon:'🐚',color:'#f5c400',ret:9.0,risk:3,desc:'Energia — ropa, gaz LNG, transformacja OZE'},
+  {id:'siemens',cat:'Akcje — Europejskie',name:'Siemens (SIE)',icon:'⚡',color:'#009999',ret:10.0,risk:3,desc:'Automatyzacja, energetyka, cyfryzacja przemysłu'},
+  {id:'airbus',cat:'Akcje — Europejskie',name:'Airbus (AIR)',icon:'✈️',color:'#00205b',ret:10.5,risk:4,desc:'Duopol z Boeingiem — A320neo, A350, obrona'},
+  {id:'ferrari',cat:'Akcje — Europejskie',name:'Ferrari (RACE)',icon:'🐎',color:'#d00e2b',ret:14.0,risk:3,desc:'Luksusowe superauta — marża 25%+, pricing power'},
+  {id:'tsmcstk',cat:'Akcje — Azja',name:'TSMC (TSM)',icon:'🔲',color:'#1d4ed8',ret:15.5,risk:4,desc:'Największa odlewnia chipów — Apple, NVIDIA, AMD'},
+  {id:'samsung',cat:'Akcje — Azja',name:'Samsung Electronics (005930.KS)',icon:'📱',color:'#1428a0',ret:9.0,risk:4,desc:'Pamięci DRAM/NAND, smartfony, panele OLED'},
+  {id:'toyota',cat:'Akcje — Azja',name:'Toyota Motor (TM)',icon:'🚗',color:'#eb0a1e',ret:8.5,risk:3,desc:'Największy producent samochodów — hybrydy, wodór'},
+  {id:'sony',cat:'Akcje — Azja',name:'Sony Group (SONY)',icon:'🎵',color:'#003087',ret:10.5,risk:3,desc:'PlayStation, Music, Film, Sensory — diversified'},
+];
+
+const CATEGORIES = [...new Set(INSTRUMENTS.map(i=>i.cat))];
+
+// ============================================================
+//  INSTRUMENT TRANSLATIONS
+// ============================================================
+const CAT_EN = {
+  'Metale szlachetne':       'Precious Metals',
+  'ETF — USA Szerokie':      'ETF — US Broad Market',
+  'ETF — USA Sektorowe':     'ETF — US Sector',
+  'ETF — Świat bez USA':     'ETF — World ex-US',
+  'ETF — Globalne':          'ETF — Global',
+  'Obligacje rządowe':       'Government Bonds',
+  'Obligacje korporacyjne':  'Corporate Bonds',
+  'Nieruchomości (REIT)':    'Real Estate (REIT)',
+  'Surowce i minerały':      'Commodities & Minerals',
+  'Kryptowaluty':            'Cryptocurrencies',
+  'Rynek pieniężny':         'Money Market',
+  'Akcje — Megacapy':        'Stocks — Megacaps',
+  'Akcje — Europejskie':     'Stocks — European',
+  'Akcje — Azja':            'Stocks — Asia',
+};
+
+const DESC_EN = {
+  gold:'Physical gold / gold ETF — SPDR Gold (GLD)',
+  silver:'Physical silver / silver ETF — iShares Silver (SLV)',
+  plat:'Industrial platinum — Aberdeen Physical Platinum',
+  pall:'Palladium — Aberdeen Physical Palladium',
+  copper:'Industrial copper ETF',
+  spy:'500 largest US companies — global benchmark',
+  qqq:'100 NASDAQ tech stocks — Apple, MSFT, NVDA, Meta...',
+  dia:'30 industrial blue-chips',
+  vti:'Entire US stock market — ~3800 companies',
+  vug:'US growth stocks — large caps',
+  vym:'US dividend stocks — high payout ratio',
+  vbr:'Small cap value stocks — small-cap premium',
+  vb:'US small caps — broad index',
+  vo:'US mid cap blend — strong historical returns',
+  ivv:'Cheaper SPY alternative — TER 0.03%',
+  schd:'Quality dividend stocks — growing payouts',
+  xlk:'US tech sector — Apple, MSFT, NVIDIA',
+  xlv:'Healthcare — pharma, biotech, medtech',
+  xle:'Oil & gas — Exxon, Chevron, ConocoPhillips',
+  xlf:'US banks and insurance',
+  xli:'Heavy industry — Boeing, Caterpillar, GE',
+  xlp:'Consumer staples — P&G, Walmart, Coca-Cola',
+  xly:'Consumer discretionary — Amazon, Tesla, Nike',
+  xlb:'Materials and industrial commodities',
+  xlre:'REITs — US real estate',
+  xlu:'Utility companies — defensive',
+  xlc:'Telecom & media — Alphabet, Meta',
+  soxx:'Semiconductors — NVIDIA, AMD, Intel, TSMC',
+  arkk:'Disruptive innovation — AI, biotech, fintech',
+  ibb:'Biotech companies — high risk/reward',
+  hack:'Cybersecurity — growing sector',
+  icln:'Clean energy — renewables, batteries, EV',
+  robo:'Robotics & automation — global',
+  finx:'Fintech — payments, neobanks, insurtech',
+  vxus:'Entire world ex-US — ~8000 companies',
+  exus:'Developed markets ex-US',
+  efa:'Europe, Australasia and Far East',
+  efav:'EAFE value stocks — low valuations',
+  vgk:'European stocks — Stoxx Europe 600',
+  ezu:'Eurozone — Germany, France, Netherlands',
+  ewg:'German stocks — DAX, Siemens, SAP, BASF',
+  ewq:'French stocks — LVMH, TotalEnergies, BNP',
+  ewu:'UK stocks — FTSE 100, Shell, HSBC',
+  ewi:'Italian stocks — Eni, Intesa, Ferrari',
+  ewp:'Spanish stocks — Santander, Iberdrola',
+  ewn:'Dutch stocks — ASML, Shell, ING',
+  ewl:'Swiss stocks — Nestlé, Roche, Novartis',
+  ews:'Swedish stocks — Ericsson, Volvo, H&M',
+  ewj:'Japanese stocks — Toyota, Sony, SoftBank',
+  ewh:'Hong Kong stocks — HSBC, AIA, Hang Seng',
+  ewa:'Australian stocks — BHP, Commonwealth Bank',
+  ewc:'Canadian stocks — resources and banks',
+  ewz:'Brazilian stocks — Petrobras, Vale',
+  inda:'Indian stocks — fast-growing economy',
+  mchi:'Chinese stocks — Alibaba, Tencent, Meituan',
+  ekor:'South Korean stocks — Samsung, SK Hynix, LG',
+  epol:'Polish stocks — iShares MSCI Poland',
+  gxf:'Scandinavia — Denmark, Sweden, Finland',
+  iemg:'Emerging markets — broad, low-cost ETF',
+  eem:'Emerging markets — classic benchmark',
+  vwo:'Vanguard emerging markets — EM ex-Korea',
+  fm:'Frontier markets — Vietnam, Nigeria, Pakistan',
+  iwda:'Developed markets — ~1600 companies (iShares)',
+  vwra:'~4000 companies — developed + emerging (Vanguard)',
+  acwi:'All Country World Index — full global coverage',
+  vt:'Vanguard Total World — all countries and companies',
+  urth:'iShares MSCI World — IWDA alternative',
+  glre:'Global clean energy — renewables, wind, solar',
+  dvy:'Global dividend growth — 10+ years of increases',
+  iwmo:'Stocks with strong price momentum',
+  iwfq:'High quality stocks — ROE, stability',
+  val:'Undervalued global stocks',
+  igln:'Physical gold — ETF listed in EUR',
+  vss:'Global small caps — size premium effect',
+  gdx:'Gold miners — leveraged to gold x2-3',
+  uranusetf:'Uranium and nuclear energy — promising sector',
+  litm:'Lithium and batteries — EV supply chain',
+  skyy:'Cloud computing — SaaS, IaaS, PaaS',
+  botz:'Robotics & AI — Fanuc, ABB, Keyence, NVIDIA',
+  hcyp:'Global healthcare — Johnson, Roche',
+  ifsb:'Global financials — banks, insurance',
+  ixn:'Global tech — US, Korea, Taiwan, EU',
+  ewxinfra:'Infrastructure — bridges, ports, highways',
+  wndy:'Wind energy — Vestas, Siemens Gamesa',
+  age:'Ageing population — pharma, seniors, finance',
+  esgu:'High ESG-rated companies — sustainable',
+  defa:'Dividends from Europe and Asia',
+  ust10:'US Treasury 10Y — global benchmark',
+  ust30:'US Treasury 30Y — long end of curve',
+  bund10:'Safest Eurozone government bonds',
+  pol10:'Polish government bonds — EUR and PLN',
+  uk10:'UK gilts — high liquidity',
+  fra10:'French government bonds',
+  ita10:'Italian BTPs — spread over Germany',
+  jap10:'Japanese JGB — historically low rates',
+  aus10:'Australian government bonds',
+  can10:'Canadian federal bonds',
+  swe10:'Swedish government bonds',
+  nor10:'Norwegian bonds — oil-rich economy',
+  swi10:'Swiss bonds — safe haven CHF',
+  em10:'Diversified EM bonds (iShares EMB)',
+  corp_ig:'IG bonds — LQD, Apple, MSFT, Johnson',
+  corp_hy:'Junk bonds — higher coupon, higher risk',
+  tips:'CPI-linked bonds — inflation protection',
+  eu_corp:'European corporate IG bonds',
+  reit_us:'Vanguard Real Estate — ~160 REITs',
+  reit_eu:'European REITs — Unibail, Land Securities',
+  reit_gl:'Global real estate ex-US',
+  reit_data:'Data centers — Equinix, Digital Realty',
+  reit_log:'Logistics & warehouses — Prologis, GLP',
+  oil:'WTI crude oil futures',
+  natgas:'US natural gas — high seasonal volatility',
+  agri:'Agricultural basket — corn, soy, wheat, sugar',
+  dbc:'Diversified commodities — oil, gas, metals, agri',
+  gsg:'Goldman Sachs Commodity Index — broad basket',
+  btc:'Dominant crypto — Bitcoin Spot ETF (BlackRock)',
+  eth:'Smart contracts — ETH Spot ETF',
+  crypto_etf:'Diversified crypto — BTC+ETH+others',
+  mmf:'Low volatility, daily liquidity',
+  hys:'Bank deposit or savings account',
+  tbill:'Short-term US bonds — SPDR BIL',
+  aapl:'iPhone, Mac, Services — $3T market cap',
+  msft:'Azure, Teams, Office, AI (Copilot)',
+  nvda:'GPU, AI chips, data center — AI leader',
+  googl:'Search, YouTube, GCP, Waymo, DeepMind',
+  amzn:'E-commerce + AWS cloud — logistics dominance',
+  meta:'Facebook, Instagram, WhatsApp, VR/AR',
+  tsla:'EV, Autopilot, Energy — high volatility',
+  brk:"Buffett's conglomerate — diversified",
+  jpm:'Largest US bank — diversified financials',
+  v:'Global payments leader — 4B cards',
+  ma:'Global payments — complementary to Visa',
+  jnj:'Pharma & medtech — 60+ years of dividend growth',
+  unh:'US health insurance — oligopoly',
+  pg:'FMCG — Pampers, Gillette, Tide — Dividend King',
+  xom:'Largest oil major — dividends since 1882',
+  asml:'EUV machine monopoly — heart of semiconductors',
+  nestle:'FMCG — Nescafé, KitKat, Purina — defensive',
+  lvmh:'Luxury — Louis Vuitton, Dior, Moët, Tiffany',
+  novo:'Ozempic, Wegovy — obesity/diabetes drug leader',
+  sap:'ERP — largest software company in Europe',
+  shell:'Energy — oil, LNG, renewable transition',
+  siemens:'Automation, energy, industrial digitalization',
+  airbus:'Boeing duopoly — A320neo, A350, defense',
+  ferrari:'Luxury supercars — 25%+ margin, pricing power',
+  tsmcstk:'Largest chip foundry — Apple, NVIDIA, AMD',
+  samsung:'DRAM/NAND memory, smartphones, OLED panels',
+  toyota:'Largest automaker — hybrids, hydrogen',
+  sony:'PlayStation, Music, Film, Sensors — diversified',
+};
+
+const NAME_EN = {
+  // Precious metals
+  gold:       'Gold (XAU)',
+  silver:     'Silver (XAG)',
+  plat:       'Platinum (XPT)',
+  pall:       'Palladium (XPD)',
+  copper:     'Copper (CPER)',
+  // Government bonds
+  ust10:      'USA — Gov. Bonds 10Y',
+  ust30:      'USA — Gov. Bonds 30Y',
+  bund10:     'Germany — Bunds 10Y',
+  pol10:      'Poland — Gov. Bonds 10Y',
+  uk10:       'UK — Gilts 10Y',
+  fra10:      'France — OAT 10Y',
+  ita10:      'Italy — BTP 10Y',
+  jap10:      'Japan — JGB 10Y',
+  aus10:      'Australia — Bonds 10Y',
+  can10:      'Canada — Bonds 10Y',
+  swe10:      'Sweden — Bonds 10Y',
+  nor10:      'Norway — Bonds 10Y',
+  swi10:      'Switzerland — Bonds 10Y',
+  em10:       'Emerging Markets — Bonds EM',
+  // Corporate bonds
+  tips:       'US TIPS (inflation-linked)',
+  // REITs
+  reit_us:    'REITs USA — Broad (VNQ)',
+  reit_eu:    'REITs Europe (IPRP)',
+  reit_gl:    'Global REITs (VNQI)',
+  // Commodities
+  oil:        'Crude Oil WTI (OIL)',
+  natgas:     'Natural Gas (UNG)',
+  agri:       'Agricultural Commodities (DBA)',
+  dbc:        'Commodities Basket (DBC)',
+  gsg:        'S&P GSCI Commodities (GSG)',
+  // Crypto
+  crypto_etf: 'Crypto Basket ETF',
+  // Money market
+  mmf:        'Money Market Fund (MMF)',
+  hys:        'Bank Deposit / High-Yield Savings',
+};
+
+function getInstCat(inst){
+  return currentLang==='en' ? (CAT_EN[inst.cat]||inst.cat) : inst.cat;
+}
+function getInstDesc(inst){
+  return currentLang==='en' ? (DESC_EN[inst.id]||inst.desc) : inst.desc;
+}
+function getInstName(inst){
+  return currentLang==='en' ? (NAME_EN[inst.id]||inst.name) : inst.name;
+}
+
+// ============================================================
+//  STATE
+// ============================================================
+let portfolio = [];
+let growthChartInst = null;
+let pieChartInst = null;
+let currentContribPeriod = 'monthly';
+
+// ============================================================
+//  CONTRIB TABS
+// ============================================================
+function switchContrib(btn){
+  document.querySelectorAll('#contribTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentContribPeriod = btn.dataset.period;
+  document.querySelectorAll('.contrib-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+currentContribPeriod).classList.add('active');
+}
+
+// ============================================================
+//  ALLOCATION BAR
+// ============================================================
+function updateAllocBar(){
+  const total = portfolio.reduce((s,p)=>s+(parseFloat(p.pct)||0),0);
+  const fill = document.getElementById('allocFill');
+  const tot = document.getElementById('allocTotal');
+  const msg = document.getElementById('allocMsg');
+  const pct = Math.min(total,100);
+  fill.style.width = pct+'%';
+  tot.textContent = total.toFixed(1)+'%';
+  if(total>100){
+    fill.classList.add('over');
+    tot.style.color='var(--red)';
+    msg.style.color='var(--red)';
+    msg.textContent=t('allocOver');
+  } else if(Math.abs(total-100)<0.01){
+    fill.classList.remove('over');
+    tot.style.color='var(--green)';
+    msg.style.color='var(--green)';
+    msg.textContent=t('allocComplete');
+  } else {
+    fill.classList.remove('over');
+    tot.style.color='var(--amber)';
+    msg.style.color='var(--text2)';
+    msg.textContent=`${t('allocRemaining')}: ${(100-total).toFixed(1)}%`;
+  }
+}
+
+// ============================================================
+//  PORTFOLIO RENDER
+// ============================================================
+function renderPortfolio(){
+  const list = document.getElementById('instrumentList');
+  if(portfolio.length===0){
+    list.innerHTML=`<div class="empty-state"><div class="es-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2.5"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><p>${t('emptyPortfolio')}</p></div>`;
+    updateAllocBar(); return;
+  }
+  list.innerHTML = portfolio.map((p,i)=>{
+    const inst = p.instrument;
+    return `<div class="instrument-item">
+      <div class="inst-icon" style="background:${inst.color}22;color:${inst.color};">${inst.icon}</div>
+      <div class="inst-info">
+        <div class="inst-name">${getInstName(inst)}</div>
+        <div class="inst-category">${getInstCat(inst)}</div>
+      </div>
+      <div class="inst-return" data-tip="${t('riskTip')}">~${inst.ret}%/${currentLang==='en'?'yr':'rok'}</div>
+      <div class="inst-pct-wrap">
+        <input class="inst-pct-input" type="number" min="0" max="100" step="1"
+          value="${p.pct}" oninput="updatePct(${i},this.value)">
+        <span class="pct-symbol">%</span>
+        <button class="btn btn-danger btn-sm" onclick="removeInstrument(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  updateAllocBar();
+}
+
+function updatePct(i,val){ portfolio[i].pct=parseFloat(val)||0; updateAllocBar(); }
+function removeInstrument(i){ portfolio.splice(i,1); renderPortfolio(); }
+function autoBalance(){
+  if(!portfolio.length) return;
+  const equal=(100/portfolio.length);
+  portfolio.forEach(p=>p.pct=parseFloat(equal.toFixed(2)));
+  portfolio[portfolio.length-1].pct=parseFloat((100-equal*(portfolio.length-1)).toFixed(2));
+  renderPortfolio();
+}
+function clearPortfolio(){ portfolio=[]; renderPortfolio(); }
+function loadPresetPortfolio(type){
+  portfolio=[];
+  const presets={passive:[{id:'vwra',pct:60},{id:'ust10',pct:20},{id:'gold',pct:10},{id:'reit_us',pct:10}]};
+  (presets[type]||[]).forEach(p=>{
+    const inst=INSTRUMENTS.find(i=>i.id===p.id);
+    if(inst) portfolio.push({instrument:inst,pct:p.pct});
+  });
+  renderPortfolio();
+}
+
+// ============================================================
+//  MODAL
+// ============================================================
+function openModal(){
+  document.getElementById('modalSearch').value='';
+  renderModal('');
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+function closeModalOutside(e){ if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+function filterModal(){ renderModal(document.getElementById('modalSearch').value.toLowerCase()); }
+
+function renderModal(q){
+  const selectedIds=portfolio.map(p=>p.instrument.id);
+  const body=document.getElementById('modalBody');
+  const perYr=currentLang==='en'?'yr':'rok';
+  let html='';
+  CATEGORIES.forEach(cat=>{
+    const catLabel=currentLang==='en'?(CAT_EN[cat]||cat):cat;
+    const items=INSTRUMENTS.filter(i=>i.cat===cat&&(!q||
+      getInstName(i).toLowerCase().includes(q)||
+      getInstDesc(i).toLowerCase().includes(q)||
+      catLabel.toLowerCase().includes(q)||
+      cat.toLowerCase().includes(q)
+    ));
+    if(!items.length) return;
+    html+=`<div class="modal-category">${catLabel}</div>`;
+    items.forEach(inst=>{
+      const sel=selectedIds.includes(inst.id);
+      html+=`<div class="modal-item ${sel?'selected':''}" onclick="addInstrument('${inst.id}')">
+        <div class="mi-icon" style="background:${inst.color}22;color:${inst.color};">${inst.icon}</div>
+        <div class="mi-info">
+          <div class="mi-name">${getInstName(inst)}</div>
+          <div class="mi-desc">${getInstDesc(inst)}</div>
+        </div>
+        <div class="mi-ret">~${inst.ret}%/${perYr} ${sel?'✓':''}</div>
+      </div>`;
+    });
+  });
+  body.innerHTML=html||`<p style="color:var(--text2);padding:16px 0;font-size:13px;">${t('modalNoResults')}</p>`;
+}
+
+function addInstrument(id){
+  const inst=INSTRUMENTS.find(i=>i.id===id);
+  if(!inst) return;
+  if(portfolio.find(p=>p.instrument.id===id)){
+    portfolio=portfolio.filter(p=>p.instrument.id!==id);
+  } else {
+    portfolio.push({instrument:inst,pct:0});
+  }
+  const selectedIds=portfolio.map(p=>p.instrument.id);
+  document.querySelectorAll('.modal-item').forEach(el=>{
+    const onclick=el.getAttribute('onclick');
+    const eid=onclick.match(/'([^']+)'/)?.[1];
+    if(!eid) return;
+    el.classList.toggle('selected',selectedIds.includes(eid));
+    const retEl=el.querySelector('.mi-ret');
+    const inst2=INSTRUMENTS.find(i=>i.id===eid);
+    if(retEl&&inst2) retEl.textContent=`~${inst2.ret}%/${currentLang==='en'?'yr':'rok'} ${selectedIds.includes(eid)?'✓':''}`;
+  });
+  renderPortfolio();
+}
+
+// ============================================================
+//  OPTIONS TOGGLES
+// ============================================================
+document.getElementById('inflation').addEventListener('change',function(){
+  document.getElementById('inflRateRow').style.display=this.checked?'flex':'none';
+});
+document.getElementById('ter').addEventListener('change',function(){
+  document.getElementById('terRateRow').style.display=this.checked?'flex':'none';
+});
+document.getElementById('useIKE').addEventListener('change',function(){
+  document.getElementById('ikeOptions').style.display=this.checked?'block':'none';
+});
+
+let currentPIT=0.12;
+function switchPIT(btn){
+  document.querySelectorAll('#pitTabs .pit-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPIT=parseFloat(btn.dataset.pit);
+}
+
+// ============================================================
+//  CALCULATION ENGINE
+// ============================================================
+function getContribPerYear(){
+  if(currentContribPeriod==='none') return 0;
+  if(currentContribPeriod==='monthly') return (parseFloat(document.getElementById('contribMonthly').value)||0)*12;
+  if(currentContribPeriod==='quarterly') return (parseFloat(document.getElementById('contribQuarterly').value)||0)*4;
+  if(currentContribPeriod==='yearly') return (parseFloat(document.getElementById('contribYearly').value)||0);
+  return 0;
+}
+
+function weightedReturn(){
+  if(!portfolio.length) return 0;
+  return portfolio.reduce((s,p)=>s+p.instrument.ret*(p.pct/100),0);
+}
+
+function getRiskLevel(){
+  if(!portfolio.length) return 0;
+  return portfolio.reduce((s,p)=>s+p.instrument.risk*(p.pct/100),0);
+}
+
+function fmt(n){
+  if(currentLang==='en'){
+    return new Intl.NumberFormat('en-US',{maximumFractionDigits:0}).format(n);
+  }
+  return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN',maximumFractionDigits:0}).format(n);
+}
+function fmtPct(n){ return n.toFixed(2)+'%'; }
+
+function simulate(annualReturn,initAmount,contribPerYear,years,useTax,useInflation,inflRate,useTER,terRate){
+  let value=initAmount;
+  const rows=[];
+  let totalDeposited=initAmount;
+  const annualRate=(annualReturn/100)-(useTER?terRate/100:0);
+  const monthlyRate=Math.pow(1+annualRate,1/12)-1;
+  const contribMonthly=contribPerYear/12;
+  for(let y=1;y<=years;y++){
+    for(let m=0;m<12;m++){
+      value=value*(1+monthlyRate)+contribMonthly;
+    }
+    totalDeposited+=contribPerYear;
+    const grossProfit=value-totalDeposited;
+    const tax=useTax?Math.max(0,grossProfit*0.19):0;
+    const netValue=value-tax;
+    const netProfit=netValue-totalDeposited;
+    const realValue=useInflation?netValue/Math.pow(1+inflRate/100,y):null;
+    rows.push({year:y,deposited:totalDeposited,grossValue:value,grossProfit,tax,netValue,netProfit,roi:((netValue/totalDeposited-1)*100),realValue});
+  }
+  return rows;
+}
+
+function calculate(){
+  const total=portfolio.reduce((s,p)=>s+(parseFloat(p.pct)||0),0);
+  if(portfolio.length===0){alert(t('alertNoInstruments'));return;}
+  if(Math.abs(total-100)>0.1){alert(`${t('alertAllocation')} ${total.toFixed(1)}%${t('alertShouldBe')}`);return;}
+
+  const initAmount=parseFloat(document.getElementById('initAmount').value)||10000;
+  const years=parseInt(document.getElementById('years').value)||20;
+  const useTax=document.getElementById('taxBelka').checked;
+  const useInflation=document.getElementById('inflation').checked;
+  const inflRate=parseFloat(document.getElementById('inflRate').value)||2.5;
+  const useTER=document.getElementById('ter').checked;
+  const terRate=parseFloat(document.getElementById('terRate').value)||0.2;
+  const returnOffset=parseFloat(document.getElementById('returnOffset').value)||0;
+  const compareDeposit=document.getElementById('compareDeposit').checked;
+  const contribPerYear=getContribPerYear();
+  const wReturn=weightedReturn()+returnOffset;
+
+  const rows=simulate(wReturn,initAmount,contribPerYear,years,useTax,useInflation,inflRate,useTER,terRate);
+  const depositRows=simulate(3.5,initAmount,contribPerYear,years,useTax,useInflation,inflRate,false,0);
+
+  const last=rows[rows.length-1];
+  const dlast=depositRows[depositRows.length-1];
+  const totalDeposited=last.deposited;
+  const advantage=last.netValue-dlast.netValue;
+
+  // STAT CARDS
+  document.getElementById('statCards').innerHTML=`
+    <div class="stat-card">
+      <div class="stat-label">${t('statFinalValue')}</div>
+      <div class="stat-value amber">${fmt(last.netValue)}</div>
+      <div class="stat-sub">${useTax?t('statAfterTax')+' · ':''} ${years} ${t('statYears')}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">${t('statTotalDeposited')}</div>
+      <div class="stat-value">${fmt(totalDeposited)}</div>
+      <div class="stat-sub">${t('statOwnCapital')}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">${t('statNetProfit')}</div>
+      <div class="stat-value green">${fmt(last.netProfit)}</div>
+      <div class="stat-sub">${t('statROI')}: ${fmtPct(last.roi)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">${t('statReturn')}</div>
+      <div class="stat-value">${fmtPct(wReturn)}</div>
+      <div class="stat-sub">${t('statWeightedAnnual')}</div>
+    </div>
+    ${useInflation?`<div class="stat-card">
+      <div class="stat-label">${t('statRealValue')}</div>
+      <div class="stat-value blue">${fmt(last.realValue)}</div>
+      <div class="stat-sub">${t('statPurchasingPower')} ${inflRate}%)</div>
+    </div>`:''}
+    ${compareDeposit?`<div class="stat-card">
+      <div class="stat-label">${t('statAdvantage')}</div>
+      <div class="stat-value ${advantage>=0?'green':''}" style="${advantage<0?'color:var(--red)':''}">
+        ${advantage>=0?'+':''}${fmt(advantage)}
+      </div>
+      <div class="stat-sub">${t('statVsDeposit')}</div>
+    </div>`:''}
+  `;
+
+  // GROWTH CHART
+  const labels=rows.map(r=>`${t('tableYear')} ${r.year}`);
+  const portfolioData=rows.map(r=>r.netValue);
+  const depositedData=rows.map(r=>r.deposited);
+  const depositData=depositRows.map(r=>r.netValue);
+
+  if(growthChartInst){growthChartInst.destroy();}
+  const ctx=document.getElementById('growthChart').getContext('2d');
+  const grad=ctx.createLinearGradient(0,0,0,270);
+  grad.addColorStop(0,'rgba(200,168,75,0.18)');
+  grad.addColorStop(1,'rgba(200,168,75,0)');
+  const grad2=ctx.createLinearGradient(0,0,0,270);
+  grad2.addColorStop(0,'rgba(75,130,226,0.12)');
+  grad2.addColorStop(1,'rgba(75,130,226,0)');
+  const datasets=[
+    {label:t('chartPortfolio'),data:portfolioData,borderColor:'#C8A84B',backgroundColor:grad,fill:true,tension:0.4,pointRadius:0,borderWidth:2},
+    {label:t('chartDeposits'),data:depositedData,borderColor:'#2A3848',backgroundColor:'transparent',fill:false,tension:0,pointRadius:0,borderWidth:1.5,borderDash:[4,4]}
+  ];
+  if(compareDeposit){
+    datasets.splice(1,0,{label:t('chartDeposit35'),data:depositData,borderColor:'#4B82E2',backgroundColor:grad2,fill:true,tension:0.4,pointRadius:0,borderWidth:1.5});
+  }
+  document.getElementById('chartLeg2').style.display=compareDeposit?'flex':'none';
+  growthChartInst=new Chart(ctx,{
+    type:'line',data:{labels,datasets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#182032',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,
+          titleColor:'#4E6280',bodyColor:'#D8E2F0',padding:10,
+          callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`}
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#2A3848',font:{size:10}},grid:{color:'rgba(255,255,255,0.02)'}},
+        y:{ticks:{color:'#2A3848',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.03)'}}
+      }
+    }
+  });
+
+  // PIE CHART
+  if(pieChartInst){pieChartInst.destroy();}
+  const pieCtx=document.getElementById('pieChart').getContext('2d');
+  pieChartInst=new Chart(pieCtx,{
+    type:'doughnut',
+    data:{
+      labels:portfolio.map(p=>getInstName(p.instrument)),
+      datasets:[{data:portfolio.map(p=>p.pct),backgroundColor:portfolio.map(p=>p.instrument.color),borderColor:'#121928',borderWidth:2}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'68%',
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#182032',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,
+          bodyColor:'#D8E2F0',padding:10,
+          callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}%`}
+        }
+      }
+    }
+  });
+  const legend=document.getElementById('pieLegend');
+  legend.innerHTML=portfolio.map(p=>`<div class="pie-leg-item"><div class="pie-dot" style="background:${p.instrument.color};"></div>${getInstName(p.instrument)} (${p.pct}%)</div>`).join('');
+
+  // SCENARIOS
+  const pessimist=simulate(Math.max(0.5,wReturn-3),initAmount,contribPerYear,years,useTax,useInflation,inflRate,useTER,terRate);
+  const optimist=simulate(wReturn+3,initAmount,contribPerYear,years,useTax,useInflation,inflRate,useTER,terRate);
+  const sc=document.getElementById('scenarioCards');
+  sc.innerHTML=`
+    <div class="scenario-card">
+      <div class="sc-title">${t('scenPessim')} — ${fmtPct(Math.max(0.5,wReturn-3))} r/r</div>
+      <div class="sc-val" style="color:var(--red);">${fmt(pessimist[years-1].netValue)}</div>
+      <div class="sc-sub">${t('scenProfit')}: ${fmt(pessimist[years-1].netProfit)}</div>
+    </div>
+    <div class="scenario-card" style="border-color:rgba(200,168,75,0.3);background:rgba(200,168,75,0.05);">
+      <div class="sc-title">${t('scenBase')} — ${fmtPct(wReturn)} r/r</div>
+      <div class="sc-val">${fmt(last.netValue)}</div>
+      <div class="sc-sub">${t('scenProfit')}: ${fmt(last.netProfit)}</div>
+    </div>
+    <div class="scenario-card" style="border-color:rgba(42,201,126,0.3);background:rgba(42,201,126,0.04);">
+      <div class="sc-title">${t('scenOptim')} — ${fmtPct(wReturn+3)} r/r</div>
+      <div class="sc-val" style="color:var(--green);">${fmt(optimist[years-1].netValue)}</div>
+      <div class="sc-sub">${t('scenProfit')}: ${fmt(optimist[years-1].netProfit)}</div>
+    </div>
+  `;
+
+  // YEARLY TABLE
+  const showInfl=useInflation;
+  document.getElementById('inflColHeader').style.display=showInfl?'':'none';
+  const tbody=document.getElementById('yearBody');
+  const showRows=rows.filter(r=>r.year<=10||r.year%5===0||r.year===years);
+  tbody.innerHTML=showRows.map(r=>`
+    <tr>
+      <td>${t('tableYear')} ${r.year}</td>
+      <td>${fmt(r.deposited)}</td>
+      <td>${fmt(r.netValue)}</td>
+      <td class="td-pos">+${fmt(r.grossProfit)}</td>
+      <td class="${useTax?'td-neg':''}">${useTax?'-'+fmt(r.tax):'—'}</td>
+      <td class="td-pos">+${fmt(r.netProfit)}</td>
+      <td class="td-pos">${r.roi.toFixed(1)}%</td>
+      ${showInfl?`<td style="color:var(--blue)">${fmt(r.realValue)}</td>`:''}
+    </tr>
+  `).join('');
+
+  // RISK ASSESSMENT
+  const risk=getRiskLevel();
+  const riskLabels=t('riskLabels');
+  const riskColors=['','#2AC97E','#86efac','#f0b429','#fb923c','#E85959'];
+  const riskLevel=Math.round(risk);
+  const riskDiv=document.getElementById('riskContent');
+  const segs=[1,2,3,4,5].map(n=>`<div class="risk-seg ${n<=riskLevel?'active-'+n:''}"></div>`).join('');
+  riskDiv.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:14px;font-weight:500;">${t('riskPortfolioLevel')}</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:${riskColors[riskLevel]}">${riskLabels[riskLevel]||'—'} (${risk.toFixed(1)}/5)</span>
+    </div>
+    <div class="risk-bar">${segs}</div>
+    <div style="font-size:12px;color:var(--text2);margin-top:10px;line-height:1.6;">
+      ${getRiskDescription(risk,portfolio)}
+    </div>
+    <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;">
+      ${portfolio.map(p=>`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;">
+        <div style="font-size:10px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${getInstName(p.instrument)}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:3px;color:${riskColors[p.instrument.risk]};">${t('riskLabel')} ${p.instrument.risk}/5</div>
+        <div style="font-size:10px;color:var(--text2);">${p.pct}% ${t('portfela')}</div>
+      </div>`).join('')}
+    </div>
+  `;
+
+  document.getElementById('resultsSection').classList.add('visible');
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'});
+
+  const vol=getWeightedVolatility();
+  const mcData=runMonteCarlo(wReturn,vol,initAmount,contribPerYear,years,1000);
+  renderMonteCarloChart(mcData,rows,years);
+  renderCrashEvents(initAmount,wReturn,years);
+
+  if(document.getElementById('useIKE').checked){
+    renderIKEIKZE(wReturn,initAmount,contribPerYear,years,useTER,terRate,currentPIT,rows);
+  } else {
+    document.getElementById('ikeSection').style.display='none';
+  }
+}
+
+function getRiskDescription(risk,portfolio){
+  const hasCrypto=portfolio.some(p=>['btc','eth','crypto_etf'].includes(p.instrument.id));
+  const hasBonds=portfolio.some(p=>p.instrument.cat.includes('Obligacje'));
+  const hasGold=portfolio.some(p=>p.instrument.id==='gold'||p.instrument.id==='silver');
+  let text='';
+  if(risk<2) text=t('riskDesc1');
+  else if(risk<3) text=t('riskDesc2');
+  else if(risk<4) text=t('riskDesc3');
+  else if(risk<4.5) text=t('riskDesc4');
+  else text=t('riskDesc5');
+  if(hasCrypto) text+=t('riskCrypto');
+  if(hasBonds) text+=t('riskBonds');
+  if(hasGold) text+=t('riskGold');
+  return text;
+}
+
+// ============================================================
+//  VOLATILITY MAP
+// ============================================================
+function getWeightedVolatility(){
+  if(!portfolio.length) return 0.15;
+  const riskVols=[0,0.04,0.08,0.14,0.22,0.38];
+  return portfolio.reduce((s,p)=>s+riskVols[p.instrument.risk]*(p.pct/100),0);
+}
+
+// BOX-MULLER GAUSSIAN
+function gaussianRandom(){
+  let u=0,v=0;
+  while(u===0) u=Math.random();
+  while(v===0) v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);
+}
+
+// ============================================================
+//  CRASH DATABASE
+// ============================================================
+const CRASH_META=[
+  {id:'dotcom',name:'Dot-com',period:'2000–2002',icon:'DC',desc:'Pęknięcie bańki tech. NASDAQ -83%.',descEn:'Tech bubble burst. NASDAQ -83%.',recovery:56},
+  {id:'gfc',name:'Kryzys 2008',nameEn:'2008 Crisis',period:'2008–2009',icon:'GFC',desc:'Upadek Lehman Brothers. Globalny kryzys bankowy.',descEn:'Lehman Brothers collapse. Global banking crisis.',recovery:49},
+  {id:'flash',name:'Flash Crash',period:'2010',icon:'FC',desc:'Błyskawiczny krach algorytmiczny. Odrobiony w tygodnie.',descEn:'Algorithmic flash crash. Recovered within weeks.',recovery:3},
+  {id:'eu2011',name:'Kryzys EU',nameEn:'EU Debt Crisis',period:'2011',icon:'EU',desc:'Kryzys długu europejskiego. Grecja, Włochy, Hiszpania.',descEn:'European debt crisis. Greece, Italy, Spain.',recovery:18},
+  {id:'q42018',name:'Korekta Q4',nameEn:'Q4 Correction',period:'2018',icon:'Q4',desc:'Obawy o stopy Fed i wojnę handlową.',descEn:'Fed rate fears and trade war concerns.',recovery:7},
+  {id:'covid',name:'COVID Crash',period:'2020',icon:'CV',desc:'Najszybszy krach w historii. S&P -34% w 23 dni robocze.',descEn:'Fastest crash in history. S&P -34% in 23 trading days.',recovery:5},
+  {id:'bear2022',name:'Bear Market',period:'2022',icon:'BM',desc:'Inflacja + podwyżki stóp. S&P -25%, obligacje -17%.',descEn:'Inflation + rate hikes. S&P -25%, bonds -17%.',recovery:16},
+];
+
+// [dotcom, gfc, flash, eu2011, q42018, covid, bear2022]
+const CRASH_DATA={
+  gold:[-15,+25,+5,+15,-8,+8,-2],silver:[-30,-30,+5,-45,-15,-18,-12],
+  plat:[-20,-60,-5,-25,-18,-22,-15],pall:[-35,-65,-8,-20,+55,+15,-40],copper:[-30,-60,-12,-25,-20,-28,-15],
+  spy:[-49,-57,-15,-21,-20,-34,-25],qqq:[-83,-54,-13,-17,-18,-29,-33],dia:[-38,-54,-14,-20,-19,-37,-21],
+  vti:[-49,-57,-15,-20,-20,-34,-25],vug:[-60,-55,-16,-22,-23,-34,-33],vym:[-30,-45,-12,-16,-15,-30,-15],
+  vbr:[-55,-60,-14,-25,-22,-35,-26],vb:[-55,-60,-14,-25,-22,-36,-26],vo:[-52,-58,-14,-23,-21,-35,-25],
+  ivv:[-49,-57,-15,-21,-20,-34,-25],schd:[null,-42,-12,-14,-14,-28,-12],
+  xlk:[-83,-54,-13,-17,-18,-29,-33],xlv:[-25,-40,-10,-12,-10,-20,-16],xle:[-40,-58,-14,-23,-30,-45,+55],
+  xlf:[-40,-82,-18,-30,-25,-40,-22],xli:[-45,-55,-14,-24,-21,-40,-22],xlp:[-15,-28,-8,-8,-7,-20,-5],
+  xly:[-55,-60,-15,-25,-23,-40,-37],xlb:[-40,-58,-15,-27,-24,-38,-20],xlre:[-35,-68,-15,-22,-22,-40,-26],
+  xlu:[-20,-32,-8,-10,-8,-22,-5],xlc:[-55,-48,-13,-18,-17,-28,-40],soxx:[-85,-60,-12,-20,-22,-32,-35],
+  arkk:[null,null,null,null,-60,-30,-75],ibb:[-50,-45,-12,-13,-8,-25,-25],hack:[null,null,null,null,-22,-24,-30],
+  icln:[-55,-45,null,-20,-22,-25,-50],robo:[null,null,null,null,-22,-28,-35],finx:[null,null,null,null,-20,-30,-35],
+  vxus:[-45,-54,-14,-22,-18,-33,-23],exus:[-45,-54,-14,-22,-18,-33,-23],efa:[-45,-56,-15,-22,-18,-33,-22],
+  efav:[-35,-52,-13,-20,-16,-30,-18],vgk:[-45,-58,-16,-28,-18,-34,-22],ezu:[-45,-58,-16,-29,-19,-34,-22],
+  ewg:[-68,-54,-17,-33,-22,-35,-20],ewq:[-60,-56,-17,-30,-20,-34,-18],ewu:[-45,-50,-14,-22,-16,-30,-18],
+  ewi:[-55,-62,-18,-37,-22,-35,-20],ewp:[-52,-60,-17,-35,-20,-33,-20],ewn:[-50,-52,-16,-28,-19,-33,-17],
+  ewl:[-40,-46,-14,-20,-16,-28,-15],ews:[-60,-56,-17,-28,-22,-35,-25],ewj:[-60,-48,-16,-20,-20,-30,-20],
+  ewh:[-55,-55,-16,-22,-22,-28,-30],ewa:[-30,-55,-14,-22,-18,-35,-22],ewc:[-40,-55,-14,-25,-20,-35,-18],
+  ewz:[-55,-60,-18,-30,-30,-50,-35],inda:[-55,-65,-15,-28,-25,-38,-28],mchi:[-55,-52,-16,-22,-23,-18,-35],
+  ekor:[-75,-58,-15,-25,-22,-30,-30],epol:[-65,-60,-18,-42,-22,-35,-30],iemg:[-45,-55,-16,-25,-22,-34,-25],
+  eem:[-45,-55,-16,-25,-22,-34,-25],vwo:[-45,-55,-16,-25,-22,-34,-25],fm:[-50,-58,-17,-28,-25,-40,-28],
+  gxf:[-55,-52,-16,-26,-20,-34,-22],
+  iwda:[-47,-55,-14,-21,-19,-33,-24],vwra:[-47,-55,-14,-21,-19,-33,-24],acwi:[-47,-55,-14,-21,-19,-33,-24],
+  vt:[-47,-55,-14,-21,-19,-33,-24],urth:[-47,-55,-14,-21,-19,-33,-24],glre:[-55,-45,null,-20,-22,-25,-50],
+  dvy:[-30,-42,-12,-14,-14,-28,-12],iwmo:[-55,-58,-15,-23,-20,-34,-28],iwfq:[-40,-48,-12,-18,-16,-28,-20],
+  val:[-35,-58,-13,-20,-18,-35,-15],igln:[+15,+25,+5,+15,-8,+8,-2],vss:[-50,-60,-15,-25,-22,-36,-28],
+  gdx:[-60,-28,-18,-22,-18,-22,-8],uranusetf:[-70,-70,-20,-30,-30,-40,+30],litm:[null,-55,-15,-25,-25,-35,-65],
+  skyy:[null,-45,-12,-15,-18,-25,-45],botz:[null,null,null,null,-22,-28,-35],hcyp:[-25,-40,-10,-12,-10,-20,-16],
+  ifsb:[-40,-65,-16,-28,-22,-38,-20],ixn:[-75,-52,-13,-18,-20,-29,-34],ewxinfra:[-35,-55,-12,-20,-18,-32,-12],
+  wndy:[-50,-42,null,-18,-20,-22,-48],age:[-30,-38,-10,-14,-12,-25,-14],esgu:[-47,-55,-14,-21,-19,-33,-24],
+  defa:[-40,-50,-13,-20,-16,-30,-18],
+  ust10:[+10,+14,+4,+8,+5,+12,-17],ust30:[+25,+25,+6,+14,+8,+20,-34],bund10:[+8,+12,+3,+6,+4,+8,-22],
+  pol10:[-5,-10,+2,-8,+2,+5,-15],uk10:[+8,+12,+3,+5,+4,+10,-25],fra10:[+5,+8,+2,-5,+3,+7,-20],
+  ita10:[+2,-5,+1,-18,+2,+5,-22],jap10:[+5,+8,+2,+3,+2,+3,-3],aus10:[+5,+10,+3,+5,+3,+10,-15],
+  can10:[+8,+12,+3,+6,+4,+10,-15],swe10:[+6,+10,+3,+5,+3,+8,-20],nor10:[+5,+10,+2,+5,+3,+8,-12],
+  swi10:[+8,+12,+3,+6,+3,+8,-10],em10:[-15,-20,-5,-12,-8,-10,-20],corp_ig:[-8,-22,-3,-8,-5,-10,-16],
+  corp_hy:[-25,-40,-8,-15,-12,-20,-15],tips:[+5,+10,+3,+5,+3,+8,-12],eu_corp:[-8,-20,-3,-10,-5,-10,-15],
+  reit_us:[-35,-68,-15,-22,-22,-40,-26],reit_eu:[-40,-65,-15,-28,-20,-38,-30],reit_gl:[-38,-65,-15,-24,-20,-38,-27],
+  reit_data:[null,null,null,null,-15,-18,-5],reit_log:[null,-55,-12,-20,-18,-28,-8],
+  oil:[-40,-65,-10,-25,-40,-67,+80],natgas:[-50,-70,-20,-35,-45,-40,+100],agri:[-20,-30,-8,-15,-10,-12,+15],
+  dbc:[-30,-55,-10,-20,-20,-35,+30],gsg:[-30,-55,-10,-20,-20,-38,+30],
+  btc:[null,-80,-30,-55,-85,-65,-77],eth:[null,null,null,null,-95,-80,-80],crypto_etf:[null,null,null,null,-85,-75,-75],
+  mmf:[+2,+2,0,+1,+2,+1,+4],hys:[+2,+2,0,+1,+2,+1,+4],tbill:[+2,+3,+1,+1,+2,+1,+4],
+  aapl:[-80,-60,-8,-15,-30,-25,-27],msft:[-65,-56,-12,-20,-16,-20,-29],nvda:[-80,-64,-15,-25,-30,-15,-50],
+  googl:[null,-55,-12,-18,-23,-28,-39],amzn:[-93,-55,-12,-18,-26,-5,-51],meta:[null,null,null,-50,-44,-38,-65],
+  tsla:[null,null,-25,-45,-38,-60,-65],brk:[-35,-50,-10,-18,-15,-28,-12],jpm:[-40,-67,-14,-28,-18,-38,-20],
+  v:[null,-35,-10,-18,-15,-35,-20],ma:[null,-45,-10,-18,-15,-35,-22],jnj:[-15,-30,-8,-10,-8,-18,-10],
+  unh:[-30,-38,-8,-12,-10,-20,-20],pg:[-15,-28,-7,-10,-8,-20,-8],xom:[-35,-55,-12,-22,-22,-45,+70],
+  asml:[-65,-45,-12,-20,-20,-28,-25],nestle:[-20,-30,-8,-12,-10,-20,-8],lvmh:[-50,-45,-12,-18,-18,-32,-20],
+  novo:[-20,-25,-8,-10,-5,-15,+20],sap:[-55,-45,-12,-18,-15,-28,-25],shell:[-35,-58,-12,-22,-20,-48,+45],
+  siemens:[-55,-55,-14,-28,-20,-35,-20],airbus:[-60,-55,-15,-28,-22,-48,-15],ferrari:[null,null,null,null,-22,-35,-20],
+  tsmcstk:[-70,-55,-14,-22,-25,-30,-35],samsung:[-65,-55,-14,-22,-22,-25,-30],toyota:[-50,-55,-14,-22,-18,-30,-20],
+  sony:[-65,-60,-14,-22,-20,-28,-22],
+};
+
+const CRASH_CAT_FALLBACK={
+  'ETF — USA':[-55,-56,-14,-20,-20,-33,-27],'ETF — Świat':[-48,-55,-15,-23,-19,-33,-23],
+  'ETF — Globalne':[-48,-55,-14,-22,-19,-33,-24],'Obligacje':[+5,+10,+2,+4,+3,+8,-18],
+  'Akcje':[-50,-55,-12,-20,-20,-32,-28],'Kryptowaluty':[null,-75,-28,-50,-85,-70,-75],
+  'Surowce':[-30,-50,-10,-20,-22,-35,+20],'Nieruchomości':[-35,-65,-14,-22,-20,-38,-26],
+  'Metale':[-5,-15,+3,-5,-5,-5,-10],'Rynek':[+2,+2,0,+1,+2,+1,+4],
+};
+
+function getCrashValue(instId,cat,ci){
+  const d=CRASH_DATA[instId];
+  if(d){const v=d[ci];if(v!==null&&v!==undefined) return v;}
+  for(const key of Object.keys(CRASH_CAT_FALLBACK)){
+    if(cat.includes(key)){const fb=CRASH_CAT_FALLBACK[key][ci];if(fb!==null&&fb!==undefined) return fb;}
+  }
+  return CRASH_CAT_FALLBACK['ETF — USA'][ci];
+}
+
+function portfolioDropForCrash(ci){
+  let w=0,wt=0;
+  portfolio.forEach(p=>{const v=getCrashValue(p.instrument.id,p.instrument.cat,ci);if(v!==null&&v!==undefined){w+=v*(p.pct/100);wt+=p.pct/100;}});
+  return wt===0?null:w/wt;
+}
+
+function portfolioRecoveryMultiplier(){
+  const bondPct=portfolio.reduce((s,p)=>s+(p.instrument.cat.includes('Obligacje')?p.pct/100:0),0);
+  const goldPct=portfolio.reduce((s,p)=>s+(p.instrument.id==='gold'||p.instrument.id==='silver'?p.pct/100:0),0);
+  const cryptoPct=portfolio.reduce((s,p)=>s+(p.instrument.cat==='Kryptowaluty'?p.pct/100:0),0);
+  return Math.max(0.3,Math.min(2.5,1-bondPct*0.6-goldPct*0.3+cryptoPct*1.0));
+}
+
+// ============================================================
+//  MONTE CARLO ENGINE
+// ============================================================
+let mcChartInst=null;
+let ikeChartInst=null;
+
+function runMonteCarlo(annualReturn,annualVol,initAmount,contribPerYear,years,N=1000){
+  const mu=annualReturn/100;
+  const sigma=annualVol;
+  const dt=1/12;
+  const muAdj=(mu-0.5*sigma*sigma)*dt;
+  const sigmaAdj=sigma*Math.sqrt(dt);
+  const contribMonthly=contribPerYear/12;
+  const crashProb=Math.min(0.14,Math.max(0.04,sigma*0.6));
+  const minSeverity=Math.max(0.08,sigma*0.7);
+  const maxSeverity=Math.min(0.72,sigma*2.5);
+  const pathsByYear=Array.from({length:years},()=>[]);
+  const crashCounts=[];
+  for(let i=0;i<N;i++){
+    let value=initAmount,cooldown=0,crashesThisPath=0;
+    for(let y=1;y<=years;y++){
+      if(cooldown<=0&&Math.random()<crashProb){
+        const sev=minSeverity+Math.random()*(maxSeverity-minSeverity);
+        value=Math.max(0,value*(1-sev));
+        cooldown=2;crashesThisPath++;
+      }
+      if(cooldown>0) cooldown--;
+      for(let m=0;m<12;m++){
+        const z=gaussianRandom();
+        value=Math.max(0,value*Math.exp(muAdj+sigmaAdj*z)+contribMonthly);
+      }
+      pathsByYear[y-1].push(value);
+    }
+    crashCounts.push(crashesThisPath);
+  }
+  const percentiles=pathsByYear.map(vals=>{
+    const s=vals.slice().sort((a,b)=>a-b);
+    return{p10:s[Math.floor(N*0.10)],p25:s[Math.floor(N*0.25)],p50:s[Math.floor(N*0.50)],p75:s[Math.floor(N*0.75)],p90:s[Math.floor(N*0.90)],mean:s.reduce((a,b)=>a+b,0)/N};
+  });
+  const avgCrashes=crashCounts.reduce((a,b)=>a+b,0)/N;
+  const pctLoss=crashCounts.filter(c=>c>0).length/N*100;
+  const finalVals=pathsByYear[years-1].slice().sort((a,b)=>a-b);
+  const pct20Loss=finalVals.filter(v=>v<initAmount+contribPerYear*years*0.5).length/N*100;
+  return{percentiles,avgCrashes,pctLoss,pct20Loss,finalVals,N};
+}
+
+function renderMonteCarloChart(mcData,deterministicRows,years){
+  const labels=Array.from({length:years},(_,i)=>`${t('tableYear')} ${i+1}`);
+  const p10=mcData.percentiles.map(p=>p.p10);
+  const p25=mcData.percentiles.map(p=>p.p25);
+  const p50=mcData.percentiles.map(p=>p.p50);
+  const p75=mcData.percentiles.map(p=>p.p75);
+  const p90=mcData.percentiles.map(p=>p.p90);
+  const det=deterministicRows.map(r=>r.netValue);
+  if(mcChartInst) mcChartInst.destroy();
+  const ctx=document.getElementById('mcChart').getContext('2d');
+  mcChartInst=new Chart(ctx,{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'P90',data:p90,borderColor:'transparent',backgroundColor:'rgba(200,168,75,0.07)',fill:'+1',pointRadius:0,borderWidth:0,tension:0.4},
+      {label:'P10',data:p10,borderColor:'transparent',backgroundColor:'rgba(200,168,75,0.07)',fill:false,pointRadius:0,borderWidth:0,tension:0.4},
+      {label:'P75',data:p75,borderColor:'transparent',backgroundColor:'rgba(200,168,75,0.16)',fill:'+1',pointRadius:0,borderWidth:0,tension:0.4},
+      {label:'P25',data:p25,borderColor:'transparent',backgroundColor:'rgba(200,168,75,0.16)',fill:false,pointRadius:0,borderWidth:0,tension:0.4},
+      {label:t('chartMedian'),data:p50,borderColor:'#C8A84B',backgroundColor:'transparent',fill:false,pointRadius:0,borderWidth:2.5,tension:0.4},
+      {label:t('chartDeterministic'),data:det,borderColor:'#4B82E2',backgroundColor:'transparent',fill:false,pointRadius:0,borderWidth:1.5,borderDash:[5,4],tension:0.4},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#182032',borderColor:'rgba(255,255,255,0.07)',borderWidth:1,
+          titleColor:'#4E6280',bodyColor:'#D8E2F0',padding:10,
+          filter:item=>[4,5].includes(item.datasetIndex),
+          callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`}
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#2A3848',font:{size:10}},grid:{color:'rgba(255,255,255,0.02)'}},
+        y:{ticks:{color:'#2A3848',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.03)'}}
+      }
+    }
+  });
+
+  const last=mcData.percentiles[years-1];
+  document.getElementById('mcStatsRow').innerHTML=`
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcP10')}</div><div class="mc-stat-val" style="color:var(--red);">${fmt(last.p10)}</div></div>
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcP25')}</div><div class="mc-stat-val" style="color:#fb923c;">${fmt(last.p25)}</div></div>
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcP50')}</div><div class="mc-stat-val" style="color:var(--amber);">${fmt(last.p50)}</div></div>
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcP75')}</div><div class="mc-stat-val" style="color:#86efac;">${fmt(last.p75)}</div></div>
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcP90')}</div><div class="mc-stat-val" style="color:var(--green);">${fmt(last.p90)}</div></div>
+    <div class="mc-stat"><div class="mc-stat-label">${t('mcAvgCrashes')}</div><div class="mc-stat-val" style="color:var(--red);">${mcData.avgCrashes.toFixed(1)}×</div></div>
+  `;
+  document.getElementById('mcRunBadge').textContent=`${mcData.N.toLocaleString()} ${t('mcBadge')} ${(getWeightedVolatility()*100).toFixed(0)}%${t('mcPerYear')}`;
+  document.getElementById('mcNote').innerHTML=
+    `<b style="color:var(--text);">${t('mcNoteTitle')}</b> ${t('mcNoteText')} ${mcData.pctLoss.toFixed(0)}% ${t('mcNoteText2')} <b style="color:var(--amber);">${(getWeightedVolatility()*100).toFixed(1)}% ${t('mcNoteText3')}</b>.`;
+}
+
+// ============================================================
+//  RENDER CRASH EVENTS
+// ============================================================
+function renderCrashEvents(initAmount,wReturn,years){
+  const vol=getWeightedVolatility();
+  const div=document.getElementById('crashContent');
+  const recovMult=portfolioRecoveryMultiplier();
+  const probPerYear=Math.min(14,Math.max(4,vol*60)).toFixed(0);
+  const expectedCrashes=(years*parseFloat(probPerYear)/100).toFixed(1);
+
+  let html=`<div class="crash-prob">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    ${t('crashProbText')} <b style="color:var(--red);">${probPerYear}%</b>
+    &nbsp;·&nbsp; ${t('crashExpected')} ${years} ${t('crashYears')}: <b style="color:var(--red);">${expectedCrashes}×</b>
+  </div><div class="crash-timeline">`;
+
+  CRASH_META.forEach((c,ci)=>{
+    const portfDrop=portfolioDropForCrash(ci);
+    if(portfDrop===null) return;
+    const dropPct=Math.round(portfDrop*10)/10;
+    const dropPLN=initAmount*Math.abs(dropPct)/100;
+    const adjRecovery=Math.round(c.recovery*recovMult);
+    const isPos=dropPct>0;
+    const clr=isPos?'var(--green)':'var(--red)';
+    const sign=isPos?'+':'';
+
+    const contributors=portfolio.map(p=>({
+      name:getInstName(p.instrument).split('(')[0].trim(),
+      icon:p.instrument.icon,
+      val:getCrashValue(p.instrument.id,p.instrument.cat,ci),
+      pct:p.pct,
+    })).filter(x=>x.val!==null).sort((a,b)=>isPos?b.val-a.val:a.val-b.val).slice(0,4);
+
+    html+=`<div class="crash-event" style="flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="crash-badge">${c.icon}</div>
+        <div class="crash-info">
+          <div class="crash-name">${currentLang==='en'?(c.nameEn||c.name):c.name} <span style="color:var(--text2);font-size:10px;font-weight:400;">${c.period}</span></div>
+          <div class="crash-year" style="margin-top:2px;">${currentLang==='en'?(c.descEn||c.desc):c.desc}</div>
+        </div>
+        <div class="crash-impact">
+          <div class="crash-drop" style="color:${clr};font-size:17px;">${sign}${dropPct}%</div>
+          <div class="crash-recov">${isPos?'+'+fmt(dropPLN):'−'+fmt(dropPLN)}</div>
+          ${!isPos?`<div class="crash-recov">${t('crashRecov')}${adjRecovery} ${t('crashMonths')}</div>`:`<div class="crash-recov" style="color:var(--green);">${t('crashGain')}</div>`}
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;padding-left:52px;">
+        ${contributors.map(x=>{
+          const vc=x.val>0?'var(--green)':'var(--red)';
+          const vs=x.val>0?'+':'';
+          return `<span style="background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;color:var(--text2);">${x.icon} ${x.name}: <b style="color:${vc};font-family:'JetBrains Mono',monospace;">${vs}${x.val}%</b> <span style="color:var(--text3);">(${x.pct}%)</span></span>`;
+        }).join('')}
+        ${portfolio.length>4?`<span style="font-size:10px;color:var(--text2);padding:2px 5px;align-self:center;">+${portfolio.length-4} ${t('crashMore')}</span>`:''}
+      </div>
+    </div>`;
+  });
+
+  html+=`</div><div class="info-note" style="margin-top:12px;">
+    <span class="ni"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+    <span>${t('crashNote')}
+    <b style="color:var(--green);">${t('crashGreenNote')}</b> ${t('crashGreenText')}</span>
+  </div>`;
+
+  div.innerHTML=html;
+}
+
+// ============================================================
+//  IKE / IKZE SIMULATION
+// ============================================================
+const IKE_LIMIT_2024=23472;
+const IKZE_LIMIT_2024=9388;
+
+function simulateIKEAccount(annualReturn,initAmount,contribPerYear,years,useTER,terRate){
+  const ikeContrib=Math.min(contribPerYear,IKE_LIMIT_2024);
+  const stdContrib=Math.max(0,contribPerYear-IKE_LIMIT_2024);
+  const ikeRows=simulate(annualReturn,initAmount,ikeContrib,years,false,false,0,useTER,terRate);
+  const stdRows=simulate(annualReturn,0,stdContrib,years,true,false,0,useTER,terRate);
+  return ikeRows.map((r,i)=>({year:r.year,value:r.netValue+stdRows[i].netValue,deposited:r.deposited+stdRows[i].deposited}));
+}
+
+function simulateIKZEAccount(annualReturn,initAmount,contribPerYear,years,useTER,terRate,pitRate){
+  const ikzeContrib=Math.min(contribPerYear,IKZE_LIMIT_2024);
+  const stdContrib=Math.max(0,contribPerYear-IKZE_LIMIT_2024);
+  const ikzeRows=simulate(annualReturn,initAmount,ikzeContrib*(1+pitRate),years,false,false,0,useTER,terRate);
+  const stdRows=simulate(annualReturn,0,stdContrib,years,true,false,0,useTER,terRate);
+  return ikzeRows.map((r,i)=>({year:r.year,value:r.netValue*0.9+stdRows[i].netValue,deposited:r.deposited+stdRows[i].deposited}));
+}
+
+function renderIKEIKZE(annualReturn,initAmount,contribPerYear,years,useTER,terRate,pitRate,normalRows){
+  const sec=document.getElementById('ikeSection');
+  sec.style.display='block';
+  const div=document.getElementById('ikeContent');
+  const ikeRows=simulateIKEAccount(annualReturn,initAmount,contribPerYear,years,useTER,terRate);
+  const ikzeRows=simulateIKZEAccount(annualReturn,initAmount,contribPerYear,years,useTER,terRate,pitRate);
+  const normalLast=normalRows[normalRows.length-1];
+  const ikeLast=ikeRows[ikeRows.length-1];
+  const ikzeLast=ikzeRows[ikzeRows.length-1];
+  const ikeSaving=ikeLast.value-normalLast.netValue;
+  const ikzeSaving=ikzeLast.value-normalLast.netValue;
+  const best=ikeLast.value>=ikzeLast.value&&ikeLast.value>=normalLast.netValue?'ike':ikzeLast.value>=ikeLast.value&&ikzeLast.value>=normalLast.netValue?'ikze':'std';
+
+  div.innerHTML=`
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.7;">
+      ${t('ikeDesc')}
+      ${t('ikeLimits')} <b style="color:var(--amber);">${IKE_LIMIT_2024.toLocaleString(currentLang==='en'?'en-US':'pl-PL')} ${t('ikeYear')}</b> ${t('ikeIKZE')} <b style="color:var(--blue);">${IKZE_LIMIT_2024.toLocaleString(currentLang==='en'?'en-US':'pl-PL')} ${t('ikeYear')}</b>.
+      ${contribPerYear<=IKE_LIMIT_2024?t('ikeWithin'):t('ikeExceed')}
+    </div>
+    <div class="ike-grid">
+      <div class="ike-card ${best==='std'?'highlight':''}">
+        <div class="ike-card-title">${t('ikeTitle')}</div>
+        <div class="ike-val">${fmt(normalLast.netValue)}</div>
+        <div class="ike-sub">${t('ikeAfterTax')}</div>
+        <div class="ike-sub" style="margin-top:5px;">${t('ikeTotalTax')} <span style="color:var(--red);">${fmt(normalLast.tax)}</span></div>
+      </div>
+      <div class="ike-card ${best==='ike'?'highlight':''}">
+        <div class="ike-card-title">${t('ikeTitle2')}</div>
+        <div class="ike-val ${ikeSaving>0?'green':''}">${fmt(ikeLast.value)}</div>
+        <div class="ike-sub">${t('ikeLimit')} ${IKE_LIMIT_2024.toLocaleString(currentLang==='en'?'en-US':'pl-PL')} ${t('ikeYear')}</div>
+        ${ikeSaving>0?`<div class="ike-saving">+${fmt(ikeSaving)} ${t('ikeMoreThanStd')}</div>`:''}
+      </div>
+      <div class="ike-card ${best==='ikze'?'highlight':''}">
+        <div class="ike-card-title">${t('ikeTitle3')} ${(pitRate*100).toFixed(0)}%</div>
+        <div class="ike-val ${ikzeSaving>0?'blue':''}">${fmt(ikzeLast.value)}</div>
+        <div class="ike-sub">${t('ikeLimit')} ${IKZE_LIMIT_2024.toLocaleString(currentLang==='en'?'en-US':'pl-PL')} ${t('ikeYear')} · ${t('ikeExitTax')}</div>
+        ${ikzeSaving>0?`<div class="ike-saving" style="background:rgba(75,130,226,0.08);border-color:rgba(75,130,226,0.18);color:var(--blue);">+${fmt(ikzeSaving)} ${t('ikeMoreThanStd')}</div>`:''}
+      </div>
+    </div>
+    <div class="ike-chart-wrap"><canvas id="ikeChart"></canvas></div>
+    <div class="info-note" style="margin-top:12px;">
+      <span class="ni"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+      <span><b>IKE</b> — ${t('ikeNoteIKE')}
+      <b>IKZE</b> — ${t('ikeNoteIKZE')} ${fmt(Math.min(contribPerYear,IKZE_LIMIT_2024)*pitRate)} ${t('ikeNoteIKZE2')}
+      ${best==='ike'?`${t('ikeBestIKE')} <b>IKE</b>.`:best==='ikze'?`${t('ikeBestIKE')} <b>IKZE</b> ${t('ikeBestIKZE')} ${Math.round(pitRate*100)}${t('ikeBestPIT')}`:t('ikeBestSame')}</span>
+    </div>`;
+
+  if(ikeChartInst) ikeChartInst.destroy();
+  const ctx2=document.getElementById('ikeChart').getContext('2d');
+  const labels2=ikeRows.map(r=>`${t('tableYear')} ${r.year}`);
+  ikeChartInst=new Chart(ctx2,{
+    type:'line',
+    data:{labels:labels2,datasets:[
+      {label:t('chartStdAccount'),data:normalRows.map(r=>r.netValue),borderColor:'#2A3848',backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:0,borderWidth:1.5,borderDash:[4,4]},
+      {label:t('chartIKE'),data:ikeRows.map(r=>r.value),borderColor:'#2AC97E',backgroundColor:'rgba(42,201,126,0.05)',fill:true,tension:0.4,pointRadius:0,borderWidth:2},
+      {label:t('chartIKZE'),data:ikzeRows.map(r=>r.value),borderColor:'#4B82E2',backgroundColor:'rgba(75,130,226,0.05)',fill:true,tension:0.4,pointRadius:0,borderWidth:2},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:true,labels:{color:'#4E6280',font:{size:11},boxWidth:22,boxHeight:3}},
+        tooltip:{backgroundColor:'#182032',borderColor:'rgba(255,255,255,0.07)',borderWidth:1,bodyColor:'#D8E2F0',padding:10,
+          callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`}}
+      },
+      scales:{
+        x:{ticks:{color:'#2A3848',font:{size:10}},grid:{color:'rgba(255,255,255,0.02)'}},
+        y:{ticks:{color:'#2A3848',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.03)'}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
