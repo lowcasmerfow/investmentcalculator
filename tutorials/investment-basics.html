@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podstawy inwestowania — akcje, obligacje, procent składany | Investiq</title>
+<meta name="description" content="Wszystko o inwestowaniu od zera — czym są akcje i obligacje, jak działa procent składany, ile trzeba odkładać i kiedy zacząć. Jasno i konkretnie.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investiq.pro/tutorials/investment-basics.html">
+<link rel="alternate" hreflang="pl" href="https://investiq.pro/tutorials/investment-basics.html">
+<link rel="alternate" hreflang="en" href="https://investiq.pro/en/tutorials/investment-basics.html">
+<link rel="alternate" hreflang="x-default" href="https://investiq.pro/tutorials/investment-basics.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #94AABF;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text2);
+  border:1px solid var(--border2);
+  padding:3px 9px;border-radius:4px;
+  letter-spacing:0.5px;
+}
+.header-disclaimer{
+  font-size:11px;color:var(--text2);
+}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.main{max-width:1320px;margin:0 auto;padding:32px 24px 80px;}
+.page-title{
+  font-family:'Outfit',sans-serif;
+  font-size:26px;font-weight:700;
+  letter-spacing:-0.4px;margin-bottom:4px;
+  color:var(--text);
+}
+.page-sub{color:var(--text2);font-size:13px;margin-bottom:36px;}
+
+/* ── SECTION LABEL ──────────────────────────────────── */
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;margin-top:28px;
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--blue);
+  opacity:0.7;letter-spacing:1px;
+}
+.section-title{
+  font-size:10px;font-weight:600;
+  letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--text2);
+}
+.section-line{
+  flex:1;height:1px;
+  background:var(--border);
+}
+
+/* ── GRID ────────────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* ── CARD ────────────────────────────────────────────── */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 22px;
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:var(--border2);}
+.card-title{
+  font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text2);
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-title-bar{
+  width:3px;height:12px;
+  background:var(--blue);
+  border-radius:2px;flex-shrink:0;
+}
+.card-title-bar.green{background:var(--green);}
+.card-title-bar.red{background:var(--red);}
+.card-title-bar.amber{background:var(--amber);}
+
+/* ── FORM ────────────────────────────────────────────── */
+label{display:block;font-size:11px;color:var(--text);margin-bottom:5px;font-weight:500;letter-spacing:0.3px;}
+input[type=number],input[type=text],select{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:8px;padding:9px 11px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  appearance:none;-webkit-appearance:none;
+}
+input[type=number]:focus,input[type=text]:focus,select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(75,130,226,0.10);
+}
+select option{background:var(--card2);color:var(--text);}
+.input-group{margin-bottom:14px;}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-suffix{position:relative;}
+.input-suffix input{padding-right:34px;}
+.suffix-label{
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  color:var(--text2);font-size:11px;font-family:'JetBrains Mono',monospace;
+}
+
+/* ── TABS ────────────────────────────────────────────── */
+.tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:8px;margin-bottom:14px;}
+.tab-btn{
+  flex:1;padding:7px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;
+  border-radius:5px;transition:all 0.2s;font-family:'Outfit',sans-serif;
+}
+.tab-btn.active{
+  background:var(--card2);color:var(--text);
+  border:1px solid var(--border2);
+}
+
+/* ── TOGGLE ──────────────────────────────────────────── */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;color:var(--text);font-weight:400;}
+.toggle-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{
+  position:absolute;inset:0;
+  background:var(--border2);border-radius:22px;transition:0.25s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;
+  width:16px;height:16px;left:3px;top:3px;
+  background:var(--text2);border-radius:50%;transition:0.25s;
+}
+.toggle input:checked+.toggle-slider{background:var(--blue);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff;}
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:8px;border:none;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:all 0.18s;text-decoration:none;
+  font-family:'Outfit',sans-serif;
+}
+.btn-primary{
+  background:var(--blue);color:#fff;
+}
+.btn-primary:hover{background:#3a72d4;transform:translateY(-1px);}
+.btn-outline{
+  background:transparent;border:1px solid var(--border2);color:var(--text);
+}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-ghost{
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+  padding:7px 12px;
+}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);}
+.btn-danger{
+  background:var(--red2);border:1px solid transparent;color:var(--red);
+  padding:6px 10px;font-size:11px;
+}
+.btn-danger:hover{border-color:var(--red);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn-full{width:100%;justify-content:center;}
+.btn-calc{
+  background:var(--blue);
+  color:#fff;font-family:'Outfit',sans-serif;
+  font-size:15px;font-weight:700;
+  padding:15px 28px;border-radius:10px;border:none;cursor:pointer;
+  width:100%;margin-top:20px;
+  transition:all 0.2s;letter-spacing:0.3px;
+  box-shadow:0 4px 20px rgba(75,130,226,0.25);
+}
+.btn-calc:hover{
+  background:#3a72d4;transform:translateY(-1px);
+  box-shadow:0 8px 28px rgba(75,130,226,0.35);
+}
+
+/* ── PORTFOLIO ───────────────────────────────────────── */
+.instrument-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.instrument-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:grid;grid-template-columns:auto 1fr auto auto;
+  gap:10px;align-items:center;
+  transition:border-color 0.2s;
+}
+.instrument-item:hover{border-color:var(--border2);}
+.inst-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.inst-info{min-width:0;}
+.inst-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inst-category{font-size:10px;color:var(--text2);margin-top:1px;letter-spacing:0.3px;}
+.inst-return{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--green);white-space:nowrap;
+}
+.inst-pct-wrap{display:flex;align-items:center;gap:6px;}
+.inst-pct-input{
+  width:64px;background:var(--card);border:1px solid var(--border2);
+  border-radius:6px;padding:6px 8px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;text-align:center;
+}
+.inst-pct-input:focus{border-color:var(--blue);}
+.pct-symbol{color:var(--text2);font-size:12px;}
+
+/* ── ALLOC BAR ───────────────────────────────────────── */
+.alloc-bar-wrap{margin-bottom:16px;}
+.alloc-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;}
+.alloc-total{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.alloc-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.alloc-fill{height:100%;border-radius:2px;transition:width 0.4s ease;background:var(--blue);}
+.alloc-fill.over{background:var(--red);}
+.alloc-msg{font-size:10px;margin-top:4px;color:var(--text2);}
+
+/* ── MODAL ───────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;width:min(540px,95vw);max-height:82vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:scale(0.96);transition:transform 0.2s;
+}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-header{
+  padding:18px 22px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:5px 9px;cursor:pointer;
+  color:var(--text2);font-size:12px;font-family:'Outfit',sans-serif;
+}
+.modal-close:hover{color:var(--red);border-color:var(--red);}
+.modal-search{padding:14px 22px;border-bottom:1px solid var(--border);}
+.modal-search input{width:100%;}
+.modal-body{overflow-y:auto;flex:1;padding:10px 22px 18px;}
+.modal-category{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--text2);padding:10px 0 5px;
+}
+.modal-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:background 0.12s;margin-bottom:2px;
+}
+.modal-item:hover{background:var(--card2);}
+.modal-item.selected{
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.18);
+}
+.mi-icon{
+  width:30px;height:30px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.mi-info{flex:1;}
+.mi-name{font-size:13px;font-weight:500;}
+.mi-desc{font-size:10px;color:var(--text2);margin-top:1px;}
+.mi-ret{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);white-space:nowrap;}
+
+/* ── RESULTS ─────────────────────────────────────────── */
+.results-section{display:none;}
+.results-section.visible{display:block;}
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:12px;margin-bottom:20px;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;
+}
+.stat-label{
+  font-size:10px;color:var(--text2);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:6px;
+}
+.stat-value{
+  font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;
+  color:var(--text);line-height:1.2;
+}
+.stat-value.amber{color:var(--amber);}
+.stat-value.green{color:var(--green);}
+.stat-value.blue{color:var(--blue);}
+.stat-sub{font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── CHART ───────────────────────────────────────────── */
+.chart-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:20px 22px;margin-bottom:16px;
+}
+.chart-title{
+  font-size:13px;font-weight:600;
+  margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;
+  color:var(--text);
+}
+.chart-container{position:relative;height:270px;}
+
+/* ── TABLE ───────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border2);}
+th{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.8px;color:var(--text2);
+  padding:9px 11px;text-align:right;white-space:nowrap;
+}
+th:first-child{text-align:left;}
+td{
+  padding:9px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  text-align:right;border-bottom:1px solid var(--border);color:var(--text2);
+}
+td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-pos{color:var(--green);}
+.td-neg{color:var(--red);}
+
+/* ── RISK METER ──────────────────────────────────────── */
+.risk-bar{display:flex;gap:3px;margin:8px 0;}
+.risk-seg{height:4px;flex:1;border-radius:2px;background:var(--border2);}
+.risk-seg.active-1{background:#2AC97E;}
+.risk-seg.active-2{background:#86efac;}
+.risk-seg.active-3{background:#f0b429;}
+.risk-seg.active-4{background:#fb923c;}
+.risk-seg.active-5{background:#E85959;}
+
+/* ── SCENARIOS ───────────────────────────────────────── */
+.scenario-card{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.sc-title{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:var(--amber);}
+.sc-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+/* ── PIE LEGEND ──────────────────────────────────────── */
+.pie-legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.pie-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ── INFO NOTE ───────────────────────────────────────── */
+.info-note{
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.15);
+  border-radius:8px;padding:11px 13px;font-size:12px;
+  color:#8BAEE8;
+  display:flex;gap:8px;align-items:flex-start;margin-top:12px;line-height:1.6;
+}
+.info-note .ni{flex-shrink:0;margin-top:2px;color:var(--blue);opacity:0.7;}
+
+/* ── RANGE SLIDER ────────────────────────────────────── */
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:3px;
+  background:var(--border2);border-radius:2px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:var(--blue);border-radius:50%;cursor:pointer;
+  border:2px solid var(--bg);
+}
+.range-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── PRESETS ─────────────────────────────────────────── */
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.preset-btn{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 11px;font-size:11px;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;
+}
+.preset-btn:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ── EMPTY STATE ─────────────────────────────────────── */
+.empty-state{
+  text-align:center;padding:28px 16px;color:var(--text2);
+}
+.empty-state .es-icon{
+  width:44px;height:44px;
+  margin:0 auto 10px;
+  color:var(--text3);
+}
+.empty-state p{font-size:12px;color:var(--text2);}
+
+/* ── TOOLTIP ─────────────────────────────────────────── */
+[data-tip]{position:relative;}
+[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 9px;font-size:10px;color:var(--text2);
+  white-space:nowrap;z-index:999;pointer-events:none;
+}
+
+/* ── SECTION GAP ─────────────────────────────────────── */
+.section-gap{margin-top:20px;}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:900px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  header{padding:14px 18px;}
+  .main{padding:20px 14px 56px;}
+  .page-title{font-size:22px;}
+}
+@media(max-width:600px){
+  .input-row,.input-row3{grid-template-columns:1fr;}
+  .results-grid{grid-template-columns:1fr 1fr;}
+  .ike-grid{grid-template-columns:1fr;}
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.results-section.visible{animation:fadeUp 0.35s ease;}
+.instrument-item{animation:fadeUp 0.2s ease;}
+
+/* ── CONTRIB PANELS ──────────────────────────────────── */
+.contrib-panel{display:none;}
+.contrib-panel.active{display:block;}
+
+/* ── MONTE CARLO ─────────────────────────────────────── */
+.mc-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:11px;}
+.mc-leg{display:flex;align-items:center;gap:6px;color:var(--text2);}
+.mc-dot{width:22px;height:4px;border-radius:2px;}
+.mc-stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:14px;}
+.mc-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.mc-stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:4px;}
+.mc-stat-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;}
+.mc-note{font-size:11px;color:var(--text2);margin-top:10px;line-height:1.65;}
+
+/* ── CRASH TIMELINE ──────────────────────────────────── */
+.crash-timeline{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.crash-event{
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+}
+.crash-badge{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--red2);border:1px solid rgba(232,89,89,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;font-weight:600;color:var(--red);
+  flex-shrink:0;letter-spacing:0.5px;
+}
+.crash-info{flex:1;}
+.crash-name{font-size:13px;font-weight:500;color:var(--text);}
+.crash-year{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-impact{text-align:right;}
+.crash-drop{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--red);font-weight:600;}
+.crash-recov{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-prob{
+  background:var(--red2);border:1px solid rgba(232,89,89,0.12);
+  border-radius:7px;padding:10px 13px;font-size:12px;color:var(--text2);
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+
+/* ── IKE / IKZE ──────────────────────────────────────── */
+.ike-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.ike-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;
+}
+.ike-card.highlight{border-color:var(--green);background:rgba(42,201,126,0.05);}
+.ike-card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:7px;}
+.ike-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:500;color:var(--text);}
+.ike-val.green{color:var(--green);}
+.ike-val.blue{color:var(--blue);}
+.ike-sub{font-size:10px;color:var(--text2);margin-top:3px;}
+.ike-saving{
+  background:rgba(42,201,126,0.08);border:1px solid rgba(42,201,126,0.18);
+  border-radius:6px;padding:7px 11px;font-size:11px;color:var(--green);
+  display:flex;align-items:center;gap:5px;margin-top:9px;
+}
+.pit-tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;margin-top:7px;width:fit-content;}
+.pit-tab{
+  padding:4px 11px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;
+}
+.pit-tab.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.ike-chart-wrap{height:190px;margin-top:12px;position:relative;}
+
+/* ── HEADER NAV ──────────────────────────────────────── */
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.header-nav-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:7px;
+  background:transparent;border:1px solid transparent;
+  color:var(--text2);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:color 0.18s,background 0.18s,border-color 0.18s;
+  letter-spacing:0.3px;text-decoration:none;
+}
+.header-nav-link:hover{color:var(--text);background:var(--bg2);}
+.header-nav-link.active{
+  color:var(--blue);background:var(--blue2);
+  border-color:rgba(75,130,226,0.18);
+}
+.header-nav-link svg{opacity:0.65;flex-shrink:0;}
+.header-nav-link.active svg{opacity:1;}
+@media(max-width:700px){
+  .header-nav{margin-left:10px;gap:1px;}
+  .header-nav-link{padding:5px 8px;font-size:11px;}
+  .header-nav-link span{display:none;}
+}
+@media(max-width:460px){
+  .header-disclaimer{display:none;}
+}
+
+/* ── TAX PRESETS ─────────────────────────────────────── */
+.tax-presets{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
+.tax-preset{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:4px 9px;font-size:11px;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.tax-preset:hover{border-color:var(--blue);color:var(--blue);}
+.tax-preset.active{
+  background:var(--blue2);border-color:rgba(75,130,226,0.35);color:var(--blue);
+}
+.tax-custom-row{display:flex;align-items:center;gap:9px;margin-top:9px;}
+.tax-custom-row input{width:90px;flex-shrink:0;}
+.tax-rate-display{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--amber);font-weight:500;
+}
+
+/* ── DISCLAIMER BAR ──────────────────────────────────── */
+.disclaimer-bar{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;
+  font-size:11px;color:var(--text2);
+  margin-bottom:24px;line-height:1.55;
+}
+
+/* ── LANG SWITCH ─────────────────────────────────────── */
+.lang-switch{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;border:1px solid var(--border);}
+.lang-btn{
+  padding:4px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;letter-spacing:0.5px;
+}
+.lang-btn.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+
+/* ── CHART EXPLAIN (collapsible) ─────────────────────── */
+.chart-explain{
+  margin-top:10px;
+}
+.chart-explain summary{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;color:#8BAEE8;cursor:pointer;
+  list-style:none;padding:5px 0;
+  user-select:none;
+  transition:color 0.15s;
+}
+.chart-explain summary::-webkit-details-marker{display:none;}
+.chart-explain summary::before{
+  content:'';
+  display:inline-block;
+  width:6px;height:6px;
+  border-right:1.5px solid #8BAEE8;
+  border-bottom:1.5px solid #8BAEE8;
+  transform:rotate(-45deg);
+  transition:transform 0.2s, border-color 0.15s;
+  margin-top:1px;
+}
+.chart-explain[open] summary::before{
+  transform:rotate(45deg);
+  margin-top:-2px;
+}
+.chart-explain summary:hover{color:var(--blue);}
+.chart-explain summary:hover::before{border-color:var(--blue);}
+.chart-explain-body{
+  margin-top:8px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:11px 13px;
+  font-size:12px;color:#8BAEE8;line-height:1.65;
+}
+
+/* ── ARTICLE LAYOUT ──────────────────────────────────── */
+.art-wrap{max-width:720px;margin:0 auto;padding:0 24px 96px;}
+.art-back{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 0;margin-bottom:32px;margin-top:28px;
+  font-size:12px;color:var(--text2);text-decoration:none;
+  font-weight:600;transition:color 0.15s;
+}
+.art-back:hover{color:var(--blue);}
+.art-back svg{transition:transform 0.15s;}
+.art-back:hover svg{transform:translateX(-3px);}
+.art-hero{margin-bottom:40px;}
+.art-hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.2);
+  border-radius:20px;padding:4px 12px;
+  font-size:10px;font-weight:700;color:var(--blue);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;
+}
+.art-hero-title{
+  font-size:28px;font-weight:700;letter-spacing:-0.5px;
+  color:var(--text);line-height:1.25;margin-bottom:12px;
+}
+.art-hero-meta{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;
+}
+.art-hero-meta span{display:flex;align-items:center;gap:5px;}
+.art-toc{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:18px 22px;margin-bottom:40px;
+}
+.art-toc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:12px;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.art-toc-list li a{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text2);text-decoration:none;padding:4px 0;transition:color 0.15s;
+}
+.art-toc-list li a:hover{color:var(--blue);}
+.art-toc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;width:20px;flex-shrink:0;}
+.art-section{margin-bottom:48px;scroll-margin-top:88px;}
+.art-section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.art-section-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;letter-spacing:1px;}
+.art-section-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text2);}
+.art-section-line{flex:1;height:1px;background:var(--border);}
+.art-h2{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;line-height:1.3;}
+.art-h3{font-size:14px;font-weight:700;color:var(--text);margin:24px 0 8px;}
+.art-p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.art-p strong{color:var(--text);font-weight:600;}
+.art-steps{display:flex;flex-direction:column;gap:0;}
+.art-step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);}
+.art-step:last-child{border-bottom:none;}
+.art-step-num{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);
+  flex-shrink:0;margin-top:2px;
+}
+.art-step-body{flex:1;}
+.art-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.art-step-desc{font-size:12px;color:var(--text2);line-height:1.75;}
+.art-step-desc strong{color:var(--text);}
+.art-options{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-option{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;}
+.art-option-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.art-option-body{flex:1;}
+.art-option-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.art-option-desc{font-size:11px;color:var(--text2);line-height:1.65;}
+.art-option-desc strong{color:var(--text);}
+.art-callout{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;line-height:1.7;}
+.art-callout.blue{background:var(--blue2);border:1px solid rgba(75,130,226,0.18);color:#8BAEE8;}
+.art-callout.amber{background:var(--amber2);border:1px solid rgba(200,168,75,0.18);color:#b8942a;}
+.art-callout.green{background:var(--green2);border:1px solid rgba(42,201,126,0.18);color:#1e9e62;}
+.art-callout.red{background:var(--red2);border:1px solid rgba(232,89,89,0.18);color:#c44;}
+.art-callout-icon{flex-shrink:0;margin-top:1px;}
+.art-callout strong{font-weight:700;}
+.art-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.art-compare-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.art-compare-card.good{border-color:rgba(42,201,126,0.25);background:rgba(42,201,126,0.04);}
+.art-compare-card.bad{border-color:rgba(232,89,89,0.2);background:rgba(232,89,89,0.03);}
+.art-compare-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-compare-label.green{color:var(--green);}
+.art-compare-label.red{color:var(--red);}
+.art-compare-item{font-size:11px;color:var(--text2);line-height:1.7;display:flex;gap:6px;margin-bottom:3px;}
+.art-compare-item::before{content:'✓';color:var(--green);font-size:10px;margin-top:1px;flex-shrink:0;}
+.art-compare-item.minus::before{content:'✗';color:var(--red);}
+.art-num-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;
+}
+.art-num-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:13px 15px;text-align:center;
+}
+.art-num-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;margin-bottom:4px;}
+.art-num-val.green{color:var(--green);}
+.art-num-val.amber{color:var(--amber);}
+.art-num-val.blue{color:var(--blue);}
+.art-num-val.red{color:var(--red);}
+.art-num-label{font-size:10px;color:var(--text2);line-height:1.5;}
+.art-nav-footer{
+  border-top:1px solid var(--border);padding-top:28px;margin-top:48px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.art-nav-next{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;
+  font-size:12px;font-weight:700;text-decoration:none;
+  transition:background 0.18s,transform 0.15s;font-family:'Outfit',sans-serif;
+}
+.art-nav-next:hover{background:#3a72d4;transform:translateX(2px);}
+.art-nav-back-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;
+}
+.art-nav-back-link:hover{color:var(--blue);}
+@media(max-width:600px){
+  .art-hero-title{font-size:22px;}
+  .art-compare{grid-template-columns:1fr;}
+  .art-num-row{grid-template-columns:1fr 1fr;}
+  .art-wrap{padding:0 14px 64px;}
+}
+
+
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0;">
+    <a class="logo" href="../index.html" style="text-decoration:none;">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="logo-text">Invest<span>IQ</span></div>
+    </a>
+    <nav class="header-nav">
+      <a class="header-nav-link" href="../index.html" id="navCalc">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="13" y2="15"/></svg>
+        <span id="navCalcLabel">Kalkulator</span>
+      </a>
+      <a class="header-nav-link active" href="../tutorials.html" id="navTuts">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span id="navTutsLabel">Poradniki</span>
+      </a>
+      <a class="header-nav-link" href="../articles.html" id="navArticles">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span id="navArticlesLabel">Artykuły</span>
+      </a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer" id="headerDisclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+    <div id="langDropdownWrap" style="position:relative;">
+      <button id="langTrigger" onclick="toggleLangMenu()" style="background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:5px 9px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;font-size:11px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </button>
+      <div id="langMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:80px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <a href="#" onclick="localStorage.setItem('investcalc_lang','pl');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text);background:var(--card);">PL</a>
+        <a href="../en/tutorials/investment-basics.html" onclick="localStorage.setItem('investcalc_lang','en');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text2);">EN</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="art-wrap">
+
+  <a href="../tutorials.html" class="art-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <span id="backLabel">Wróć do poradników</span>
+  </a>
+
+  <div class="art-hero">
+    <div class="art-hero-badge" id="heroBadge">Podstawy inwestowania</div>
+    <div class="art-hero-title" id="heroTitle">Podstawy inwestowania — wszystko od zera</div>
+    <div class="art-hero-meta">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="heroTime">10 min czytania</span>
+      </span>
+      <span>🏦 <span id="heroLevel">Poziom: podstawowy</span></span>
+    </div>
+  </div>
+
+  <div class="art-toc">
+    <div class="art-toc-title" id="tocTitle">Spis treści</div>
+    <ul class="art-toc-list"><li><a href="#sec1"><span class="art-toc-num">01</span><span>Akcje i obligacje</span></a></li><li><a href="#sec2"><span class="art-toc-num">02</span><span>Procent składany</span></a></li><li><a href="#sec3"><span class="art-toc-num">03</span><span>Rodzaje inwestowania</span></a></li><li><a href="#sec4"><span class="art-toc-num">04</span><span>Ile trzeba żeby być milionerem?</span></a></li><li><a href="#sec5"><span class="art-toc-num">05</span><span>Kiedy zacząć?</span></a></li><li><a href="#sec6"><span class="art-toc-num">06</span><span>Kiedy kupować, a kiedy sprzedawać?</span></a></li></ul>
+  </div>
+
+  <div class="art-section" id="sec1">
+    <div class="art-section-label">
+      <span class="art-section-num">01</span>
+      <span class="art-section-title">Instrumenty</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Akcje i obligacje — czym są i czym się różnią</div>
+    
+    <p class="art-p">Żeby inwestować, musisz wiedzieć co kupujesz. Dwa najważniejsze instrumenty to <strong>akcje</strong> i <strong>obligacje</strong> — różnią się fundamentalnie pod względem ryzyka i działania.</p>
+
+    <div class="art-h3">Akcje — kupujesz kawałek spółki</div>
+    <p class="art-p">Gdy kupujesz akcję Apple, dosłownie stajesz się współwłaścicielem Apple — w bardzo małej części. Jeśli spółka rośnie i zarabia więcej, wartość akcji rośnie. Jeśli spółka ma problemy, wartość spada. <strong>Nie ma gwarancji zysku.</strong></p>
+    <div class="art-options">
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(42,201,126,0.09);">📈</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Zalety akcji</div>
+            <div class="art-option-desc"><strong>Wysoki potencjał wzrostu</strong> — historycznie główne indeksy akcji zwracały ok. 7–10% rocznie po inflacji. Najlepszy instrument do budowania majątku w długim terminie.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(232,89,89,0.09);">📉</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Wady akcji</div>
+            <div class="art-option-desc"><strong>Duża zmienność</strong> — wartość może spaść o 30–50% w czasie kryzysu. Wymaga odporności psychicznej i długiego horyzontu inwestycji.</div>
+          </div>
+        </div>
+    </div>
+
+    <div class="art-h3">Obligacje — pożyczasz pieniądze</div>
+    <p class="art-p">Kupując obligację, pożyczasz pieniądze — rządowi lub firmie. W zamian dostajesz z góry ustalone odsetki przez określony czas, a na końcu zwrot pożyczonej kwoty. Obligacje są przewidywalne i bezpieczniejsze niż akcje, ale zyski są niższe.</p>
+    <div class="art-compare">
+      <div class="art-compare-card good">
+        <div class="art-compare-label green">Obligacje</div>
+        <div class="art-compare-item">Stały, przewidywalny zysk</div>
+        <div class="art-compare-item">Niższe ryzyko straty</div>
+        <div class="art-compare-item">Stabilizują portfel podczas kryzysów</div>
+        <div class="art-compare-item minus">Zwrot 2–4% rocznie — niezbyt ekscytujące</div>
+      </div>
+      <div class="art-compare-card">
+        <div class="art-compare-label" style="color:var(--text2);">Akcje</div>
+        <div class="art-compare-item">Wyższy potencjał wzrostu (7–10%/rok)</div>
+        <div class="art-compare-item">Dywidendy = regularny dochód pasywny</div>
+        <div class="art-compare-item minus">Mogą spaść o 50% w złym roku</div>
+        <div class="art-compare-item minus">Wymagają długiego horyzontu</div>
+      </div>
+    </div>
+    <div class="art-callout blue">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>Większość inwestorów trzyma <strong>mieszankę akcji i obligacji</strong>. Im jesteś młodszy i masz dłuższy horyzont, tym więcej akcji możesz sobie pozwolić. Im bliżej emerytury, tym więcej obligacji dla stabilności.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec2">
+    <div class="art-section-label">
+      <span class="art-section-num">02</span>
+      <span class="art-section-title">Procent składany</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Jak pieniądze zarabiają na sobie</div>
+    
+    <p class="art-p">Procent składany to <strong>najważniejsza zasada w całym inwestowaniu</strong>. Albert Einstein miał podobno powiedzieć, że to ósmy cud świata. Idea jest prosta: zarabiasz nie tylko na swoich pieniądzach, ale też na poprzednich zyskach.</p>
+
+    <div class="art-h3">Przykład na liczbach</div>
+    <p class="art-p">Masz 10 000 zł i inwestujesz przez 30 lat ze średnim zwrotem 8% rocznie:</p>
+    <div class="art-num-row">
+      <div class="art-num-card">
+          <div class="art-num-val">10 000 zł</div>
+          <div class="art-num-label">Kwota startowa<br>(wkład własny)</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val amber">100 627 zł</div>
+          <div class="art-num-label">Wartość po 30 latach<br>(8% rocznie)</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val green">90 627 zł</div>
+          <div class="art-num-label">Zysk<br>(pieniądze które zrobiły pieniądze)</div>
+        </div>
+    </div>
+    <p class="art-p">Twoje 10 000 zł przez 30 lat urosło do ponad 100 000 zł — <strong>bez żadnych dodatkowych wpłat</strong>. 90% końcowej kwoty to zyski, które same zrobiły kolejne zyski.</p>
+
+    <div class="art-h3">Dlaczego czas jest ważniejszy niż kwota</div>
+    <p class="art-p">Porównaj dwie osoby: Anna zaczyna inwestować 500 zł miesięcznie w wieku 25 lat. Bartek zaczyna dopiero w wieku 35 lat — ale wpłaca 1000 zł miesięcznie, dwa razy tyle. Oboje kończą w wieku 65 lat.</p>
+    <div class="art-num-row" style="grid-template-columns:1fr 1fr;">
+      <div class="art-num-card">
+          <div class="art-num-val green">765 000 zł</div>
+          <div class="art-num-label">Anna — 40 lat inwestowania<br>$500/mies. | wpłaciła 240 000 zł</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val red">679 000 zł</div>
+          <div class="art-num-label">Bartek — 30 lat inwestowania<br>1000/mies. | wpłacił 360 000 zł</div>
+        </div>
+    </div>
+    <p class="art-p">Anna wpłaciła <strong>120 000 mniej</strong> niż Bartek, a wyszła z <strong>86 000 więcej</strong>. To jest siła wczesnego startu i procentu składanego.</p>
+    <div class="art-callout green">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Kluczowy wniosek:</strong> Czas w rynku bije kwotę inwestycji. Najlepszy moment żeby zacząć to jak najwcześniej — nawet z małymi kwotami.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec3">
+    <div class="art-section-label">
+      <span class="art-section-num">03</span>
+      <span class="art-section-title">Strategie</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Jakie są rodzaje inwestowania?</div>
+    
+    <p class="art-p">Inwestowanie nie jest jednorodne — istnieje kilka podejść, które różnią się horyzontem, zaangażowaniem i ryzykiem. Warto wiedzieć co wybrać dla siebie.</p>
+    <div class="art-options">
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(75,130,226,0.10);">🧘</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Pasywne inwestowanie długoterminowe</div>
+            <div class="art-option-desc"><strong>Kupuj i trzymaj.</strong> Wybierasz szeroki ETF na indeks (np. MSCI World), dokładasz regularnie co miesiąc i nie ruszasz przez 10–30 lat. Minimalny wysiłek, historycznie najlepsze wyniki dla przeciętnego inwestora. To podejście opisuje cały ten serwis.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(200,168,75,0.10);">📅</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Aktywne inwestowanie</div>
+            <div class="art-option-desc">Samodzielny dobór akcji i obligacji, śledzenie wyników spółek, częstsze zmiany portfela. Wymaga dużo czasu i wiedzy. <strong>Większość aktywnych inwestorów indywidualnych osiąga gorsze wyniki niż pasywny indeks</strong> — bo rynek jest trudny do pobicia.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(232,89,89,0.09);">⚡</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Trading krótkoterminowy</div>
+            <div class="art-option-desc">Kupowanie i sprzedawanie akcji w ciągu dni lub tygodni, próbując zarabiać na wahaniach cen. Bardzo wysokie ryzyko, statystycznie ok. <strong>80–90% traderów traci pieniądze</strong>. Nie jest to inwestowanie — to spekulacja.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(42,201,126,0.09);">🏠</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Nieruchomości</div>
+            <div class="art-option-desc">Zakup mieszkań lub domów na wynajem, albo REITy (fundusze nieruchomościowe). Stabilny dochód pasywny z najmu, ale wymaga dużego kapitału startowego i zajmuje się zarządzaniem. REITy pozwalają inwestować w nieruchomości już od małych kwot.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(75,130,226,0.08);">💰</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Lokaty i obligacje skarbowe</div>
+            <div class="art-option-desc">Najbezpieczniejsze opcje — stały zysk, brak ryzyka utraty kapitału. Ale zysk często nie bije inflacji w długim terminie. Dobre jako poduszka finansowa i krótkoterminowe oszczędzanie, niezbyt dobre do budowania majątku.</div>
+          </div>
+        </div>
+    </div>
+    <div class="art-callout amber">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><strong>Dla większości ludzi najlepsze jest pasywne inwestowanie długoterminowe.</strong> Wymaga najmniej czasu, ma najniższe koszty i historycznie bije większość aktywnych funduszy. Resztę można potraktować jako uzupełnienie po zbudowaniu solidnej bazy.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec4">
+    <div class="art-section-label">
+      <span class="art-section-num">04</span>
+      <span class="art-section-title">Cel</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Ile trzeba inwestować żeby być milionerem?</div>
+    
+    <p class="art-p">Milion złotych brzmi jak astronomiczna kwota. Ale przy regularnym inwestowaniu i procencie składanym jest to całkowicie osiągalne dla przeciętnej osoby — pod warunkiem że zaczniesz odpowiednio wcześnie.</p>
+
+    <div class="art-h3">Ile miesięcznie, żeby dojść do miliona?</div>
+    <p class="art-p">Zakładając średni roczny zwrot 8% (historyczna średnia zdywersyfikowanego portfela akcyjnego):</p>
+    <div class="art-num-row">
+      <div class="art-num-card">
+          <div class="art-num-val green">860 zł</div>
+          <div class="art-num-label">miesięcznie przez 30 lat<br><span style="color:var(--text3);font-size:9px;">start w wieku 25 lat → milion w wieku 55</span></div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val amber">1 700 zł</div>
+          <div class="art-num-label">miesięcznie przez 25 lat<br><span style="color:var(--text3);font-size:9px;">start w wieku 30 lat → milion w wieku 55</span></div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val red">3 700 zł</div>
+          <div class="art-num-label">miesięcznie przez 20 lat<br><span style="color:var(--text3);font-size:9px;">start w wieku 35 lat → milion w wieku 55</span></div>
+        </div>
+    </div>
+    <p class="art-p">Każde 5 lat opóźnienia <strong>podwaja wymaganą miesięczną kwotę</strong>. To jest właśnie dlaczego mówi się że czas to najdroższy zasób inwestora.</p>
+    <div class="art-callout blue">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>Nie musisz celować w milion. Nawet 500 zł miesięcznie przez 30 lat przy 8% rocznie daje ponad <strong>745 000 zł</strong>. Chodzi o regularność i czas — nie o wielkie kwoty na starcie.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec5">
+    <div class="art-section-label">
+      <span class="art-section-num">05</span>
+      <span class="art-section-title">Timing startu</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Kiedy zacząć inwestować?</div>
+    
+    <p class="art-p">Na to pytanie jest jedna prosta odpowiedź: <strong>jak najwcześniej</strong>. Nie jutro, nie po podwyżce, nie gdy rynek będzie tańszy. Dziś.</p>
+
+    <div class="art-h3">Nie czekaj na "właściwy moment"</div>
+    <p class="art-p">Większość ludzi odkłada start inwestowania bo czeka na lepszy moment — aż rynek spadnie, aż dostanie podwyżkę, aż „ogarna finanse". To kosztowny błąd. Każdy rok opóźnienia to mniej lat działania procentu składanego.</p>
+    <div class="art-options">
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(42,201,126,0.09);">✅</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Dobry moment na start</div>
+            <div class="art-option-desc"><strong>Teraz.</strong> Nawet przy wysokich wycenach rynkowych, inwestorzy którzy wchodzili regularnie co miesiąc przez 20+ lat wychodzili na plus. Kluczem jest regularność, nie timing.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(232,89,89,0.09);">❌</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Zły powód żeby czekać</div>
+            <div class="art-option-desc">„Poczekam aż rynek spadnie" — brzmi rozsądnie, ale nikt nie wie kiedy to nastąpi. Możesz czekać 2 lata i przegapić 40% wzrostów. A jeśli rynek spadnie o 20%, to i tak kupisz drożej niż gdybyś zaczął rok wcześniej.</div>
+          </div>
+        </div>
+    </div>
+    <div class="art-callout green">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Zacznij od małej kwoty.</strong> 200–300 zł miesięcznie wystarczy żeby zacząć i nabrać nawyku. Możesz zwiększać kwotę z czasem. Ważne żeby zacząć teraz.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec6">
+    <div class="art-section-label">
+      <span class="art-section-num">06</span>
+      <span class="art-section-title">Kupno i sprzedaż</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Kiedy kupować, a kiedy sprzedawać?</div>
+    
+    <p class="art-p">Zasada brzmi prosto: <strong>kup tanio, sprzedaj drogo</strong>. W praktyce prawie nikt tego konsekwentnie nie robi — bo ludzki mózg działa dokładnie odwrotnie.</p>
+
+    <div class="art-h3">Jak naprawdę wygląda psychologia inwestowania</div>
+    <p class="art-p">Gdy rynek rośnie od roku i wszyscy wokół mówią o zyskach — masz ochotę kupić. To właśnie szczyt euforii i często najgorszy moment na wejście. Gdy rynek spada o 30% i media piszą o katastrofie — masz ochotę sprzedać i uciec. To właśnie moment gdy jest najtaniej.</p>
+    <div class="art-compare">
+      <div class="art-compare-card good">
+        <div class="art-compare-label green">Kiedy warto kupować</div>
+        <div class="art-compare-item">Regularnie co miesiąc — niezależnie od ceny (DCA)</div>
+        <div class="art-compare-item">Gdy rynek spada o 20–30% (okazja zakupowa)</div>
+        <div class="art-compare-item">Gdy masz nadwyżkę gotówki i długi horyzont</div>
+      </div>
+      <div class="art-compare-card bad">
+        <div class="art-compare-label red">Kiedy warto sprzedawać</div>
+        <div class="art-compare-item">Gdy zbliżasz się do celu (emerytura, zakup mieszkania)</div>
+        <div class="art-compare-item">Gdy rebalancujesz portfel (np. akcje urosły za bardzo)</div>
+        <div class="art-compare-item minus">NIE: gdy rynek spada i boisz się dalszych strat</div>
+        <div class="art-compare-item minus">NIE: bo znajomy sprzedał albo media straszą</div>
+      </div>
+    </div>
+
+    <div class="art-h3">Strategia DCA — rozwiązanie problemu timingu</div>
+    <p class="art-p">Skoro nikt nie wie kiedy rynek jest najtańszy, najprościej jest <strong>kupować regularnie co miesiąc — niezależnie od ceny</strong>. Gdy rynek jest drogi, kupujesz mniej jednostek. Gdy tani, kupujesz więcej. W długim terminie uśredniasz cenę zakupu i nie musisz zgadywać niczego.</p>
+    <div class="art-callout amber">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div><strong>Najdroższy błąd inwestora:</strong> paniczna sprzedaż podczas krachu. Badania pokazują, że inwestorzy którzy sprzedali podczas kryzysu 2008–2009 i czekali na spokojniejsze czasy, stracili dziesiątki procent zysku w porównaniu z tymi, którzy po prostu nic nie robili.</div>
+      </div>
+
+  </div>
+
+  <div class="art-nav-footer">
+    <a href="../tutorials.html" class="art-nav-back-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="footerBack">Wszystkie poradniki</span>
+    </a>
+    <a href="risk-and-horizon.html" class="art-nav-next">
+      <span id="footerNext">Następny: Ryzyko i horyzont</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+localStorage.setItem('investcalc_lang','pl');
+function toggleLangMenu(){
+  var m=document.getElementById('langMenu');
+  if(m)m.style.display=m.style.display==='block'?'none':'block';
+}
+document.addEventListener('click',function(e){
+  var w=document.getElementById('langDropdownWrap');
+  if(w&&!w.contains(e.target)){var m=document.getElementById('langMenu');if(m)m.style.display='none';}
+});
+</script>
+</body>
+</html>

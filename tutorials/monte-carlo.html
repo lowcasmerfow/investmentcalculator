@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte Carlo — jak symulacje pomagają przewidzieć przyszłość portfela | Investiq</title>
+<meta name="description" content="Czym jest symulacja Monte Carlo w inwestowaniu? Jak czytać percentyle p10, p50 (medianę) i p90 oraz dlaczego to pomaga zrozumieć kierunek i ryzyko portfela.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investiq.pro/tutorials/monte-carlo.html">
+<link rel="alternate" hreflang="pl" href="https://investiq.pro/tutorials/monte-carlo.html">
+<link rel="alternate" hreflang="en" href="https://investiq.pro/en/tutorials/monte-carlo.html">
+<link rel="alternate" hreflang="x-default" href="https://investiq.pro/tutorials/monte-carlo.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* --- CAŁY STYL IDENTYCZNY JAK W POPRZEDNICH TUTORIALACH (kopiujemy) --- */
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #94AABF;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image: radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-disclaimer{font-size:11px;color:var(--text2);}
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.header-nav-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;background:transparent;border:1px solid transparent;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:color 0.18s,background 0.18s,border-color 0.18s;letter-spacing:0.3px;text-decoration:none;}
+.header-nav-link:hover{color:var(--text);background:var(--bg2);}
+.header-nav-link.active{color:var(--blue);background:var(--blue2);border-color:rgba(75,130,226,0.18);}
+.header-nav-link svg{opacity:0.65;flex-shrink:0;}
+.header-nav-link.active svg{opacity:1;}
+@media(max-width:700px){
+  .header-nav{margin-left:10px;gap:1px;}
+  .header-nav-link{padding:5px 8px;font-size:11px;}
+  .header-nav-link span{display:none;}
+}
+@media(max-width:460px){
+  .header-disclaimer{display:none;}
+}
+.art-wrap{max-width:720px;margin:0 auto;padding:0 24px 96px;}
+.art-back{display:inline-flex;align-items:center;gap:7px;padding:8px 0;margin-bottom:32px;margin-top:28px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-back:hover{color:var(--blue);}
+.art-back svg{transition:transform 0.15s;}
+.art-back:hover svg{transform:translateX(-3px);}
+.art-hero{margin-bottom:40px;}
+.art-hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.art-hero-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1.25;margin-bottom:12px;}
+.art-hero-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.art-hero-meta span{display:flex;align-items:center;gap:5px;}
+.art-toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:40px;}
+.art-toc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:12px;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.art-toc-list li a{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);text-decoration:none;padding:4px 0;transition:color 0.15s;}
+.art-toc-list li a:hover{color:var(--blue);}
+.art-toc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;width:20px;flex-shrink:0;}
+.art-section{margin-bottom:48px;scroll-margin-top:88px;}
+.art-section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.art-section-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;letter-spacing:1px;}
+.art-section-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text2);}
+.art-section-line{flex:1;height:1px;background:var(--border);}
+.art-h2{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;line-height:1.3;}
+.art-h3{font-size:14px;font-weight:700;color:var(--text);margin:24px 0 8px;}
+.art-p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.art-p strong{color:var(--text);font-weight:600;}
+.art-steps{display:flex;flex-direction:column;gap:0;}
+.art-step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);}
+.art-step:last-child{border-bottom:none;}
+.art-step-num{width:30px;height:30px;border-radius:8px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0;margin-top:2px;}
+.art-step-body{flex:1;}
+.art-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.art-step-desc{font-size:12px;color:var(--text2);line-height:1.75;}
+.art-step-desc strong{color:var(--text);}
+.art-options{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-option{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;}
+.art-option-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.art-option-body{flex:1;}
+.art-option-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.art-option-desc{font-size:11px;color:var(--text2);line-height:1.65;}
+.art-option-desc strong{color:var(--text);}
+.art-callout{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;line-height:1.7;}
+.art-callout.blue{background:var(--blue2);border:1px solid rgba(75,130,226,0.18);color:#8BAEE8;}
+.art-callout.amber{background:var(--amber2);border:1px solid rgba(200,168,75,0.18);color:#b8942a;}
+.art-callout.green{background:var(--green2);border:1px solid rgba(42,201,126,0.18);color:#1e9e62;}
+.art-callout.red{background:var(--red2);border:1px solid rgba(232,89,89,0.18);color:#c44;}
+.art-callout-icon{flex-shrink:0;margin-top:1px;}
+.art-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.art-compare-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.art-compare-card.good{border-color:rgba(42,201,126,0.25);background:rgba(42,201,126,0.04);}
+.art-compare-card.bad{border-color:rgba(232,89,89,0.2);background:rgba(232,89,89,0.03);}
+.art-compare-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-compare-label.green{color:var(--green);}
+.art-compare-label.red{color:var(--red);}
+.art-compare-item{font-size:11px;color:var(--text2);line-height:1.7;display:flex;gap:6px;margin-bottom:3px;}
+.art-compare-item::before{content:'✓';color:var(--green);font-size:10px;margin-top:1px;flex-shrink:0;}
+.art-compare-item.minus::before{content:'✗';color:var(--red);}
+.art-num-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;}
+.art-num-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;text-align:center;}
+.art-num-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;margin-bottom:4px;}
+.art-num-val.green{color:var(--green);}
+.art-num-val.amber{color:var(--amber);}
+.art-num-val.blue{color:var(--blue);}
+.art-num-val.red{color:var(--red);}
+.art-num-label{font-size:10px;color:var(--text2);line-height:1.5;}
+.art-nav-footer{border-top:1px solid var(--border);padding-top:28px;margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.art-nav-next{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;transition:background 0.18s,transform 0.15s;font-family:'Outfit',sans-serif;}
+.art-nav-next:hover{background:#3a72d4;transform:translateX(2px);}
+.art-nav-back-link{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-nav-back-link:hover{color:var(--blue);}
+@media(max-width:600px){
+  .art-hero-title{font-size:22px;}
+  .art-compare{grid-template-columns:1fr;}
+  .art-num-row{grid-template-columns:1fr 1fr;}
+  .art-wrap{padding:0 14px 64px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0;">
+    <a class="logo" href="../index.html" style="text-decoration:none;">
+      <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="logo-text">Invest<span>IQ</span></div>
+    </a>
+    <nav class="header-nav">
+      <a class="header-nav-link" href="../index.html" id="navCalc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="13" y2="15"/></svg><span id="navCalcLabel">Kalkulator</span></a>
+      <a class="header-nav-link" href="../tutorials.html" id="navTuts"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span id="navTutsLabel">Poradniki</span></a>
+      <a class="header-nav-link" href="../articles.html" id="navArticles"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span id="navArticlesLabel">Artykuły</span></a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer" id="headerDisclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+    <div id="langDropdownWrap" style="position:relative;"><button id="langTrigger" onclick="toggleLangMenu()" style="background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:5px 9px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button><div id="langMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:80px;z-index:200;">
+        <a href="#" onclick="localStorage.setItem('investcalc_lang','pl');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text);background:var(--card);">PL</a>
+        <a href="../en/tutorials/monte-carlo.html" onclick="localStorage.setItem('investcalc_lang','en');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text2);">EN</a>
+      </div></div>
+  </div>
+</header>
+
+<div class="art-wrap">
+  <a href="../tutorials.html" class="art-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span id="backLabel">Wróć do poradników</span></a>
+
+  <div class="art-hero">
+    <div class="art-hero-badge" id="heroBadge">Symulacje i ryzyko</div>
+    <div class="art-hero-title" id="heroTitle">Monte Carlo — jak symulacje pomagają przewidzieć przyszłość portfela</div>
+    <div class="art-hero-meta"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="heroTime">7 min czytania</span></span><span>🎲 <span id="heroLevel">Poziom: średniozaawansowany</span></span></div>
+  </div>
+
+  <div class="art-toc">
+    <div class="art-toc-title" id="tocTitle">Spis treści</div>
+    <ul class="art-toc-list">
+      <li><a href="#sec1"><span class="art-toc-num">01</span><span>Co to jest symulacja Monte Carlo?</span></a></li>
+      <li><a href="#sec2"><span class="art-toc-num">02</span><span>Jak czytać percentyle: p10, p50 (mediana), p90</span></a></li>
+      <li><a href="#sec3"><span class="art-toc-num">03</span><span>Mediana – środek możliwych scenariuszy</span></a></li>
+      <li><a href="#sec4"><span class="art-toc-num">04</span><span>Dlaczego Monte Carlo jest ważne dla inwestora?</span></a></li>
+      <li><a href="#sec5"><span class="art-toc-num">05</span><span>Jak interpretować wykres Monte Carlo w kalkulatorze</span></a></li>
+    </ul>
+  </div>
+
+  <div class="art-section" id="sec1">
+    <div class="art-section-label"><span class="art-section-num">01</span><span class="art-section-title">Symulacje</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Co to jest symulacja Monte Carlo?</div>
+    <p class="art-p"><strong>Symulacja Monte Carlo</strong> to metoda statystyczna, która zamiast opierać się na jednym, „średnim” scenariuszu, generuje tysiące możliwych przyszłych ścieżek dla Twojego portfela. Każda ścieżka uwzględnia losowe wahania rynkowe – okresy hossy i bessy, różne stopy zwrotu z poszczególnych lat. Wynikiem jest rozkład możliwych końcowych wartości portfela, a nie jedna liczba.</p>
+    <p class="art-p">W inwestowaniu nikt nie zna przyszłości. Możemy jednak oszacować zakres możliwych wyników, zakładając, że przyszłość będzie w pewnym sensie podobna do przeszłości (pod względem średniego zwrotu i zmienności). Monte Carlo bierze te parametry i tworzy realistyczny wachlarz scenariuszy.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div>Zamiast pytać: „Ile będę miał za 20 lat, jeśli rynek da średnio 7%?” – Monte Carlo pyta: „W 90% przypadków mój kapitał będzie między X a Y, a w połowie przypadków powyżej Z”. To o wiele bardziej praktyczne.</div></div>
+  </div>
+
+  <div class="art-section" id="sec2">
+    <div class="art-section-label"><span class="art-section-num">02</span><span class="art-section-title">Percentyle</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak czytać percentyle: p10, p50 (mediana), p90</div>
+    <p class="art-p">Po wykonaniu symulacji Monte Carlo (np. 10 000 ścieżek) wyniki są sortowane od najgorszego do najlepszego. Percentyle dzielą ten zbiór na sto równych części.</p>
+    <div class="art-options">
+      <div class="art-option"><div class="art-option-icon">📉</div><div class="art-option-body"><div class="art-option-name">p10 (10. percentyl)</div><div class="art-option-desc">To wynik, który jest lepszy niż 10% wszystkich ścieżek. Innymi słowy: w 10% scenariuszy wynik jest gorszy niż p10, a w 90% – lepszy. p10 to często przyjmowany <strong>pesymistyczny scenariusz</strong> – warto go znać, żeby przygotować się na trudne czasy.</div></div></div>
+      <div class="art-option"><div class="art-option-icon">⚖️</div><div class="art-option-body"><div class="art-option-name">p50 (mediana)</div><div class="art-option-desc">Środkowy wynik – dokładnie połowa ścieżek jest lepsza, połowa gorsza. To <strong>realistyczny, centralny scenariusz</strong>. W przeciwieństwie do średniej arytmetycznej, mediana nie jest zaburzona przez skrajne wartości (bardzo dobre lub bardzo złe wyniki).</div></div></div>
+      <div class="art-option"><div class="art-option-icon">📈</div><div class="art-option-body"><div class="art-option-name">p90 (90. percentyl)</div><div class="art-option-desc">Wynik lepszy niż 90% ścieżek – tylko 10% symulacji osiąga taki lub wyższy wynik. To <strong>optymistyczny scenariusz</strong>, pokazujący potencjał w sprzyjających warunkach rynkowych.</div></div></div>
+    </div>
+    <p class="art-p">Przykład: Symulacja dla portfela 100 000 zł po 20 latach może pokazać: p10 = 180 000 zł, mediana = 320 000 zł, p90 = 580 000 zł. Oznacza to, że w 80% przypadków wynik będzie między 180 000 a 580 000 zł, a w połowie przypadków przekroczy 320 000 zł.</p>
+    <div class="art-callout green"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div>Im szerszy przedział między p10 a p90, tym większe ryzyko (zmienność) portfela. Wąski przedział oznacza bardziej przewidywalne wyniki.</div></div>
+  </div>
+
+  <div class="art-section" id="sec3">
+    <div class="art-section-label"><span class="art-section-num">03</span><span class="art-section-title">Mediana</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Mediana – środek możliwych scenariuszy</div>
+    <p class="art-p">Mediana (p50) to najważniejsza wartość z symulacji Monte Carlo. Dlaczego? Ponieważ w przeciwieństwie do średniej arytmetycznej, mediana nie jest wyciągana w górę przez kilka bardzo dobrych lat. Daje bardziej realistyczny obraz tego, czego możesz się spodziewać w typowym przypadku.</p>
+    <p class="art-p">W finansach często używa się średniej rocznej stopy zwrotu, ale ta średnia może być myląca – jeśli raz stracisz 50%, a potem zyskasz 100%, średnia arytmetyczna wynosi 25%, ale Twój kapitał wrócił do punktu wyjścia. Mediana uwzględnia taką sekwencję i daje bardziej uczciwy obraz.</p>
+    <div class="art-num-row">
+      <div class="art-num-card"><div class="art-num-val green">320 000 zł</div><div class="art-num-label">Mediana (p50) – typowy oczekiwany wynik</div></div>
+      <div class="art-num-card"><div class="art-num-val amber">280 000 zł</div><div class="art-num-label">Średnia arytmetyczna – może być wyższa niż mediana</div></div>
+    </div>
+    <p class="art-p">W kalkulatorze Investiq pokazujemy medianę jako podstawowy wynik – to właśnie jej powinieneś używać do planowania długoterminowego.</p>
+  </div>
+
+  <div class="art-section" id="sec4">
+    <div class="art-section-label"><span class="art-section-num">04</span><span class="art-section-title">Znaczenie</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Dlaczego Monte Carlo jest ważne dla inwestora?</div>
+    <div class="art-steps">
+      <div class="art-step"><div class="art-step-num">1</div><div class="art-step-body"><div class="art-step-title">Zrozumienie ryzyka</div><div class="art-step-desc">Monte Carlo pokazuje nie tylko „średni” wynik, ale także rozkład możliwych rezultatów. Widzisz, jak duża może być różnica między pesymistycznym a optymistycznym scenariuszem.</div></div></div>
+      <div class="art-step"><div class="art-step-num">2</div><div class="art-step-body"><div class="art-step-title">Planowanie finansowe</div><div class="art-step-desc">Dzięki percentylom możesz oszacować, jaki kapitał jest realistyczny w pesymistycznym wariancie (p10). Jeśli ten dolny wynik nadal spełnia Twoje cele, Twój plan jest bezpieczny.</div></div></div>
+      <div class="art-step"><div class="art-step-num">3</div><div class="art-step-body"><div class="art-step-title">Unikanie złudzenia determinizmu</div><div class="art-step-desc">Jedna projekcja liniowa (np. „7% rocznie”) może dać fałszywe poczucie bezpieczeństwa. Monte Carlo uświadamia, że przyszłość jest niepewna, ale można się do niej przygotować.</div></div></div>
+    </div>
+    <div class="art-callout amber"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div>Kluczowa lekcja: nawet jeśli mediana pokazuje wzrost, w pesymistycznym scenariuszu (p10) możesz mieć stratę lub niski zwrot. Dywersyfikacja i długi horyzont przesuwają rozkład w prawo – zwiększają medianę i zawężają przedział.</div></div>
+  </div>
+
+  <div class="art-section" id="sec5">
+    <div class="art-section-label"><span class="art-section-num">05</span><span class="art-section-title">Wykres</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak interpretować wykres Monte Carlo w kalkulatorze</div>
+    <p class="art-p">W kalkulatorze Investiq po obliczeniu wyników zobaczysz wykres Monte Carlo. Na osi X są lata, na osi Y wartość portfela. Na wykresie znajdują się trzy linie:</p>
+    <ul style="margin-left: 24px; margin-bottom: 16px; color: var(--text2); font-size: 13px; line-height: 1.7;">
+      <li><strong>Linia dolna (p10)</strong> – pesymistyczny scenariusz; tylko 10% symulacji kończy się gorzej.</li>
+      <li><strong>Linia środkowa (p50 / mediana)</strong> – centralny scenariusz; połowa symulacji kończy się lepiej, połowa gorzej.</li>
+      <li><strong>Linia górna (p90)</strong> – optymistyczny scenariusz; tylko 10% symulacji kończy się lepiej.</li>
+    </ul>
+    <p class="art-p">Pomiędzy p10 a p90 znajduje się 80% wszystkich możliwych wyników. Im szerszy ten korytarz, tym większe ryzyko (zmienność). Możesz też zobaczyć poszczególne ścieżki – każda z nich reprezentuje jeden losowy scenariusz rynkowy.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div>Praktyczna wskazówka: gdy analizujesz swój portfel, zawsze patrz na medianę (p50) jako na najbardziej realistyczny wynik. Jeśli p10 jest dla Ciebie akceptowalne (nie rujnuje planów), to znaczy, że Twoja strategia jest dobrze przygotowana na gorsze lata.</div></div>
+  </div>
+
+  <div class="art-nav-footer">
+    <a href="../tutorials.html" class="art-nav-back-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span id="footerBack">Wszystkie poradniki</span></a>
+    <a href="ter-and-inflation.html" class="art-nav-next"><span id="footerNext">Następny: TER i inflacja</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+  </div>
+</div>
+
+<script>
+localStorage.setItem('investcalc_lang','pl');
+function toggleLangMenu(){
+  var m=document.getElementById('langMenu');
+  if(m)m.style.display=m.style.display==='block'?'none':'block';
+}
+document.addEventListener('click',function(e){
+  var w=document.getElementById('langDropdownWrap');
+  if(w&&!w.contains(e.target)){var m=document.getElementById('langMenu');if(m)m.style.display='none';}
+});
+</script>
+</body>
+</html>

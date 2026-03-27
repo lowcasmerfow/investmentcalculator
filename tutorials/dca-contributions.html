@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCA — regularne wpłaty krok po kroku | Investiq</title>
+<meta name="description" content="Czym jest Dollar Cost Averaging, dlaczego regularne małe wpłaty często biją jednorazową dużą inwestycję i jak ustawić DCA w kalkulatorze.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investiq.pro/tutorials/dca-contributions.html">
+<link rel="alternate" hreflang="pl" href="https://investiq.pro/tutorials/dca-contributions.html">
+<link rel="alternate" hreflang="en" href="https://investiq.pro/en/tutorials/dca-contributions.html">
+<link rel="alternate" hreflang="x-default" href="https://investiq.pro/tutorials/dca-contributions.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #94AABF;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text2);
+  border:1px solid var(--border2);
+  padding:3px 9px;border-radius:4px;
+  letter-spacing:0.5px;
+}
+.header-disclaimer{
+  font-size:11px;color:var(--text2);
+}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+.main{max-width:1320px;margin:0 auto;padding:32px 24px 80px;}
+.page-title{
+  font-family:'Outfit',sans-serif;
+  font-size:26px;font-weight:700;
+  letter-spacing:-0.4px;margin-bottom:4px;
+  color:var(--text);
+}
+.page-sub{color:var(--text2);font-size:13px;margin-bottom:36px;}
+
+/* ── SECTION LABEL ──────────────────────────────────── */
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;margin-top:28px;
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--blue);
+  opacity:0.7;letter-spacing:1px;
+}
+.section-title{
+  font-size:10px;font-weight:600;
+  letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--text2);
+}
+.section-line{
+  flex:1;height:1px;
+  background:var(--border);
+}
+
+/* ── GRID ────────────────────────────────────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+
+/* ── CARD ────────────────────────────────────────────── */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 22px;
+  transition:border-color 0.2s;
+}
+.card:hover{border-color:var(--border2);}
+.card-title{
+  font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--text2);
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-title-bar{
+  width:3px;height:12px;
+  background:var(--blue);
+  border-radius:2px;flex-shrink:0;
+}
+.card-title-bar.green{background:var(--green);}
+.card-title-bar.red{background:var(--red);}
+.card-title-bar.amber{background:var(--amber);}
+
+/* ── FORM ────────────────────────────────────────────── */
+label{display:block;font-size:11px;color:var(--text);margin-bottom:5px;font-weight:500;letter-spacing:0.3px;}
+input[type=number],input[type=text],select{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:8px;padding:9px 11px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  appearance:none;-webkit-appearance:none;
+}
+input[type=number]:focus,input[type=text]:focus,select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(75,130,226,0.10);
+}
+select option{background:var(--card2);color:var(--text);}
+.input-group{margin-bottom:14px;}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.input-suffix{position:relative;}
+.input-suffix input{padding-right:34px;}
+.suffix-label{
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  color:var(--text2);font-size:11px;font-family:'JetBrains Mono',monospace;
+}
+
+/* ── TABS ────────────────────────────────────────────── */
+.tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:8px;margin-bottom:14px;}
+.tab-btn{
+  flex:1;padding:7px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;
+  border-radius:5px;transition:all 0.2s;font-family:'Outfit',sans-serif;
+}
+.tab-btn.active{
+  background:var(--card2);color:var(--text);
+  border:1px solid var(--border2);
+}
+
+/* ── TOGGLE ──────────────────────────────────────────── */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-label{font-size:13px;color:var(--text);font-weight:400;}
+.toggle-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{
+  position:absolute;inset:0;
+  background:var(--border2);border-radius:22px;transition:0.25s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;
+  width:16px;height:16px;left:3px;top:3px;
+  background:var(--text2);border-radius:50%;transition:0.25s;
+}
+.toggle input:checked+.toggle-slider{background:var(--blue);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff;}
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:8px;border:none;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:all 0.18s;text-decoration:none;
+  font-family:'Outfit',sans-serif;
+}
+.btn-primary{
+  background:var(--blue);color:#fff;
+}
+.btn-primary:hover{background:#3a72d4;transform:translateY(-1px);}
+.btn-outline{
+  background:transparent;border:1px solid var(--border2);color:var(--text);
+}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.btn-ghost{
+  background:var(--bg2);border:1px solid var(--border);color:var(--text2);
+  padding:7px 12px;
+}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);}
+.btn-danger{
+  background:var(--red2);border:1px solid transparent;color:var(--red);
+  padding:6px 10px;font-size:11px;
+}
+.btn-danger:hover{border-color:var(--red);}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn-full{width:100%;justify-content:center;}
+.btn-calc{
+  background:var(--blue);
+  color:#fff;font-family:'Outfit',sans-serif;
+  font-size:15px;font-weight:700;
+  padding:15px 28px;border-radius:10px;border:none;cursor:pointer;
+  width:100%;margin-top:20px;
+  transition:all 0.2s;letter-spacing:0.3px;
+  box-shadow:0 4px 20px rgba(75,130,226,0.25);
+}
+.btn-calc:hover{
+  background:#3a72d4;transform:translateY(-1px);
+  box-shadow:0 8px 28px rgba(75,130,226,0.35);
+}
+
+/* ── PORTFOLIO ───────────────────────────────────────── */
+.instrument-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.instrument-item{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:grid;grid-template-columns:auto 1fr auto auto;
+  gap:10px;align-items:center;
+  transition:border-color 0.2s;
+}
+.instrument-item:hover{border-color:var(--border2);}
+.inst-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.inst-info{min-width:0;}
+.inst-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.inst-category{font-size:10px;color:var(--text2);margin-top:1px;letter-spacing:0.3px;}
+.inst-return{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--green);white-space:nowrap;
+}
+.inst-pct-wrap{display:flex;align-items:center;gap:6px;}
+.inst-pct-input{
+  width:64px;background:var(--card);border:1px solid var(--border2);
+  border-radius:6px;padding:6px 8px;
+  color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;
+  outline:none;text-align:center;
+}
+.inst-pct-input:focus{border-color:var(--blue);}
+.pct-symbol{color:var(--text2);font-size:12px;}
+
+/* ── ALLOC BAR ───────────────────────────────────────── */
+.alloc-bar-wrap{margin-bottom:16px;}
+.alloc-bar-header{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px;}
+.alloc-total{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.alloc-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.alloc-fill{height:100%;border-radius:2px;transition:width 0.4s ease;background:var(--blue);}
+.alloc-fill.over{background:var(--red);}
+.alloc-msg{font-size:10px;margin-top:4px;color:var(--text2);}
+
+/* ── MODAL ───────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(8px);z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;width:min(540px,95vw);max-height:82vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:scale(0.96);transition:transform 0.2s;
+}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-header{
+  padding:18px 22px 14px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-title{font-size:15px;font-weight:600;}
+.modal-close{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:6px;padding:5px 9px;cursor:pointer;
+  color:var(--text2);font-size:12px;font-family:'Outfit',sans-serif;
+}
+.modal-close:hover{color:var(--red);border-color:var(--red);}
+.modal-search{padding:14px 22px;border-bottom:1px solid var(--border);}
+.modal-search input{width:100%;}
+.modal-body{overflow-y:auto;flex:1;padding:10px 22px 18px;}
+.modal-category{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--text2);padding:10px 0 5px;
+}
+.modal-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 10px;border-radius:8px;cursor:pointer;
+  transition:background 0.12s;margin-bottom:2px;
+}
+.modal-item:hover{background:var(--card2);}
+.modal-item.selected{
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.18);
+}
+.mi-icon{
+  width:30px;height:30px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+.mi-info{flex:1;}
+.mi-name{font-size:13px;font-weight:500;}
+.mi-desc{font-size:10px;color:var(--text2);margin-top:1px;}
+.mi-ret{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);white-space:nowrap;}
+
+/* ── RESULTS ─────────────────────────────────────────── */
+.results-section{display:none;}
+.results-section.visible{display:block;}
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(175px,1fr));
+  gap:12px;margin-bottom:20px;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;
+}
+.stat-label{
+  font-size:10px;color:var(--text2);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:6px;
+}
+.stat-value{
+  font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;
+  color:var(--text);line-height:1.2;
+}
+.stat-value.amber{color:var(--amber);}
+.stat-value.green{color:var(--green);}
+.stat-value.blue{color:var(--blue);}
+.stat-sub{font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── CHART ───────────────────────────────────────────── */
+.chart-wrap{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:20px 22px;margin-bottom:16px;
+}
+.chart-title{
+  font-size:13px;font-weight:600;
+  margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;
+  color:var(--text);
+}
+.chart-container{position:relative;height:270px;}
+
+/* ── TABLE ───────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:1px solid var(--border2);}
+th{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.8px;color:var(--text2);
+  padding:9px 11px;text-align:right;white-space:nowrap;
+}
+th:first-child{text-align:left;}
+td{
+  padding:9px 11px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  text-align:right;border-bottom:1px solid var(--border);color:var(--text2);
+}
+td:first-child{text-align:left;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-pos{color:var(--green);}
+.td-neg{color:var(--red);}
+
+/* ── RISK METER ──────────────────────────────────────── */
+.risk-bar{display:flex;gap:3px;margin:8px 0;}
+.risk-seg{height:4px;flex:1;border-radius:2px;background:var(--border2);}
+.risk-seg.active-1{background:#2AC97E;}
+.risk-seg.active-2{background:#86efac;}
+.risk-seg.active-3{background:#f0b429;}
+.risk-seg.active-4{background:#fb923c;}
+.risk-seg.active-5{background:#E85959;}
+
+/* ── SCENARIOS ───────────────────────────────────────── */
+.scenario-card{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.sc-title{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:var(--amber);}
+.sc-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+/* ── PIE LEGEND ──────────────────────────────────────── */
+.pie-legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.pie-leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.pie-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+/* ── INFO NOTE ───────────────────────────────────────── */
+.info-note{
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.15);
+  border-radius:8px;padding:11px 13px;font-size:12px;
+  color:#8BAEE8;
+  display:flex;gap:8px;align-items:flex-start;margin-top:12px;line-height:1.6;
+}
+.info-note .ni{flex-shrink:0;margin-top:2px;color:var(--blue);opacity:0.7;}
+
+/* ── RANGE SLIDER ────────────────────────────────────── */
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:3px;
+  background:var(--border2);border-radius:2px;outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:var(--blue);border-radius:50%;cursor:pointer;
+  border:2px solid var(--bg);
+}
+.range-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text2);margin-top:4px;}
+
+/* ── PRESETS ─────────────────────────────────────────── */
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.preset-btn{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 11px;font-size:11px;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;
+}
+.preset-btn:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ── EMPTY STATE ─────────────────────────────────────── */
+.empty-state{
+  text-align:center;padding:28px 16px;color:var(--text2);
+}
+.empty-state .es-icon{
+  width:44px;height:44px;
+  margin:0 auto 10px;
+  color:var(--text3);
+}
+.empty-state p{font-size:12px;color:var(--text2);}
+
+/* ── TOOLTIP ─────────────────────────────────────────── */
+[data-tip]{position:relative;}
+[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);
+  background:var(--card2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 9px;font-size:10px;color:var(--text2);
+  white-space:nowrap;z-index:999;pointer-events:none;
+}
+
+/* ── SECTION GAP ─────────────────────────────────────── */
+.section-gap{margin-top:20px;}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:900px){
+  .grid2,.grid3{grid-template-columns:1fr;}
+  header{padding:14px 18px;}
+  .main{padding:20px 14px 56px;}
+  .page-title{font-size:22px;}
+}
+@media(max-width:600px){
+  .input-row,.input-row3{grid-template-columns:1fr;}
+  .results-grid{grid-template-columns:1fr 1fr;}
+  .ike-grid{grid-template-columns:1fr;}
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.results-section.visible{animation:fadeUp 0.35s ease;}
+.instrument-item{animation:fadeUp 0.2s ease;}
+
+/* ── CONTRIB PANELS ──────────────────────────────────── */
+.contrib-panel{display:none;}
+.contrib-panel.active{display:block;}
+
+/* ── MONTE CARLO ─────────────────────────────────────── */
+.mc-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:11px;}
+.mc-leg{display:flex;align-items:center;gap:6px;color:var(--text2);}
+.mc-dot{width:22px;height:4px;border-radius:2px;}
+.mc-stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:14px;}
+.mc-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.mc-stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:4px;}
+.mc-stat-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;}
+.mc-note{font-size:11px;color:var(--text2);margin-top:10px;line-height:1.65;}
+
+/* ── CRASH TIMELINE ──────────────────────────────────── */
+.crash-timeline{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.crash-event{
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+}
+.crash-badge{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--red2);border:1px solid rgba(232,89,89,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;font-weight:600;color:var(--red);
+  flex-shrink:0;letter-spacing:0.5px;
+}
+.crash-info{flex:1;}
+.crash-name{font-size:13px;font-weight:500;color:var(--text);}
+.crash-year{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-impact{text-align:right;}
+.crash-drop{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--red);font-weight:600;}
+.crash-recov{font-size:10px;color:var(--text2);margin-top:2px;}
+.crash-prob{
+  background:var(--red2);border:1px solid rgba(232,89,89,0.12);
+  border-radius:7px;padding:10px 13px;font-size:12px;color:var(--text2);
+  display:flex;align-items:center;gap:8px;margin-bottom:12px;
+}
+
+/* ── IKE / IKZE ──────────────────────────────────────── */
+.ike-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px;}
+.ike-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;
+}
+.ike-card.highlight{border-color:var(--green);background:rgba(42,201,126,0.05);}
+.ike-card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:7px;}
+.ike-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:500;color:var(--text);}
+.ike-val.green{color:var(--green);}
+.ike-val.blue{color:var(--blue);}
+.ike-sub{font-size:10px;color:var(--text2);margin-top:3px;}
+.ike-saving{
+  background:rgba(42,201,126,0.08);border:1px solid rgba(42,201,126,0.18);
+  border-radius:6px;padding:7px 11px;font-size:11px;color:var(--green);
+  display:flex;align-items:center;gap:5px;margin-top:9px;
+}
+.pit-tabs{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;margin-top:7px;width:fit-content;}
+.pit-tab{
+  padding:4px 11px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;
+}
+.pit-tab.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+.ike-chart-wrap{height:190px;margin-top:12px;position:relative;}
+
+/* ── HEADER NAV ──────────────────────────────────────── */
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.header-nav-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:7px;
+  background:transparent;border:1px solid transparent;
+  color:var(--text2);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:color 0.18s,background 0.18s,border-color 0.18s;
+  letter-spacing:0.3px;text-decoration:none;
+}
+.header-nav-link:hover{color:var(--text);background:var(--bg2);}
+.header-nav-link.active{
+  color:var(--blue);background:var(--blue2);
+  border-color:rgba(75,130,226,0.18);
+}
+.header-nav-link svg{opacity:0.65;flex-shrink:0;}
+.header-nav-link.active svg{opacity:1;}
+@media(max-width:700px){
+  .header-nav{margin-left:10px;gap:1px;}
+  .header-nav-link{padding:5px 8px;font-size:11px;}
+  .header-nav-link span{display:none;}
+}
+@media(max-width:460px){
+  .header-disclaimer{display:none;}
+}
+
+/* ── TAX PRESETS ─────────────────────────────────────── */
+.tax-presets{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
+.tax-preset{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;padding:4px 9px;font-size:11px;
+  color:var(--text2);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.tax-preset:hover{border-color:var(--blue);color:var(--blue);}
+.tax-preset.active{
+  background:var(--blue2);border-color:rgba(75,130,226,0.35);color:var(--blue);
+}
+.tax-custom-row{display:flex;align-items:center;gap:9px;margin-top:9px;}
+.tax-custom-row input{width:90px;flex-shrink:0;}
+.tax-rate-display{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--amber);font-weight:500;
+}
+
+/* ── DISCLAIMER BAR ──────────────────────────────────── */
+.disclaimer-bar{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;
+  font-size:11px;color:var(--text2);
+  margin-bottom:24px;line-height:1.55;
+}
+
+/* ── LANG SWITCH ─────────────────────────────────────── */
+.lang-switch{display:flex;gap:3px;background:var(--bg2);padding:3px;border-radius:7px;border:1px solid var(--border);}
+.lang-btn{
+  padding:4px 10px;background:transparent;border:none;
+  color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;
+  border-radius:4px;transition:all 0.18s;font-family:'Outfit',sans-serif;letter-spacing:0.5px;
+}
+.lang-btn.active{background:var(--card2);color:var(--text);border:1px solid var(--border2);}
+
+/* ── CHART EXPLAIN (collapsible) ─────────────────────── */
+.chart-explain{
+  margin-top:10px;
+}
+.chart-explain summary{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;color:#8BAEE8;cursor:pointer;
+  list-style:none;padding:5px 0;
+  user-select:none;
+  transition:color 0.15s;
+}
+.chart-explain summary::-webkit-details-marker{display:none;}
+.chart-explain summary::before{
+  content:'';
+  display:inline-block;
+  width:6px;height:6px;
+  border-right:1.5px solid #8BAEE8;
+  border-bottom:1.5px solid #8BAEE8;
+  transform:rotate(-45deg);
+  transition:transform 0.2s, border-color 0.15s;
+  margin-top:1px;
+}
+.chart-explain[open] summary::before{
+  transform:rotate(45deg);
+  margin-top:-2px;
+}
+.chart-explain summary:hover{color:var(--blue);}
+.chart-explain summary:hover::before{border-color:var(--blue);}
+.chart-explain-body{
+  margin-top:8px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:11px 13px;
+  font-size:12px;color:#8BAEE8;line-height:1.65;
+}
+
+/* ── ARTICLE LAYOUT ──────────────────────────────────── */
+.art-wrap{max-width:720px;margin:0 auto;padding:0 24px 96px;}
+.art-back{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 0;margin-bottom:32px;margin-top:28px;
+  font-size:12px;color:var(--text2);text-decoration:none;
+  font-weight:600;transition:color 0.15s;
+}
+.art-back:hover{color:var(--blue);}
+.art-back svg{transition:transform 0.15s;}
+.art-back:hover svg{transform:translateX(-3px);}
+.art-hero{margin-bottom:40px;}
+.art-hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.2);
+  border-radius:20px;padding:4px 12px;
+  font-size:10px;font-weight:700;color:var(--blue);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;
+}
+.art-hero-title{
+  font-size:28px;font-weight:700;letter-spacing:-0.5px;
+  color:var(--text);line-height:1.25;margin-bottom:12px;
+}
+.art-hero-meta{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;
+}
+.art-hero-meta span{display:flex;align-items:center;gap:5px;}
+.art-toc{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:18px 22px;margin-bottom:40px;
+}
+.art-toc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:12px;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.art-toc-list li a{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text2);text-decoration:none;padding:4px 0;transition:color 0.15s;
+}
+.art-toc-list li a:hover{color:var(--blue);}
+.art-toc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;width:20px;flex-shrink:0;}
+.art-section{margin-bottom:48px;scroll-margin-top:88px;}
+.art-section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.art-section-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;letter-spacing:1px;}
+.art-section-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text2);}
+.art-section-line{flex:1;height:1px;background:var(--border);}
+.art-h2{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;line-height:1.3;}
+.art-h3{font-size:14px;font-weight:700;color:var(--text);margin:24px 0 8px;}
+.art-p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.art-p strong{color:var(--text);font-weight:600;}
+.art-steps{display:flex;flex-direction:column;gap:0;}
+.art-step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);}
+.art-step:last-child{border-bottom:none;}
+.art-step-num{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--blue2);border:1px solid rgba(75,130,226,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);
+  flex-shrink:0;margin-top:2px;
+}
+.art-step-body{flex:1;}
+.art-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.art-step-desc{font-size:12px;color:var(--text2);line-height:1.75;}
+.art-step-desc strong{color:var(--text);}
+.art-options{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-option{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;}
+.art-option-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.art-option-body{flex:1;}
+.art-option-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.art-option-desc{font-size:11px;color:var(--text2);line-height:1.65;}
+.art-option-desc strong{color:var(--text);}
+.art-callout{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;line-height:1.7;}
+.art-callout.blue{background:var(--blue2);border:1px solid rgba(75,130,226,0.18);color:#8BAEE8;}
+.art-callout.amber{background:var(--amber2);border:1px solid rgba(200,168,75,0.18);color:#b8942a;}
+.art-callout.green{background:var(--green2);border:1px solid rgba(42,201,126,0.18);color:#1e9e62;}
+.art-callout.red{background:var(--red2);border:1px solid rgba(232,89,89,0.18);color:#c44;}
+.art-callout-icon{flex-shrink:0;margin-top:1px;}
+.art-callout strong{font-weight:700;}
+.art-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.art-compare-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.art-compare-card.good{border-color:rgba(42,201,126,0.25);background:rgba(42,201,126,0.04);}
+.art-compare-card.bad{border-color:rgba(232,89,89,0.2);background:rgba(232,89,89,0.03);}
+.art-compare-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-compare-label.green{color:var(--green);}
+.art-compare-label.red{color:var(--red);}
+.art-compare-item{font-size:11px;color:var(--text2);line-height:1.7;display:flex;gap:6px;margin-bottom:3px;}
+.art-compare-item::before{content:'✓';color:var(--green);font-size:10px;margin-top:1px;flex-shrink:0;}
+.art-compare-item.minus::before{content:'✗';color:var(--red);}
+.art-num-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;
+}
+.art-num-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:13px 15px;text-align:center;
+}
+.art-num-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;margin-bottom:4px;}
+.art-num-val.green{color:var(--green);}
+.art-num-val.amber{color:var(--amber);}
+.art-num-val.blue{color:var(--blue);}
+.art-num-val.red{color:var(--red);}
+.art-num-label{font-size:10px;color:var(--text2);line-height:1.5;}
+.art-nav-footer{
+  border-top:1px solid var(--border);padding-top:28px;margin-top:48px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.art-nav-next{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;
+  font-size:12px;font-weight:700;text-decoration:none;
+  transition:background 0.18s,transform 0.15s;font-family:'Outfit',sans-serif;
+}
+.art-nav-next:hover{background:#3a72d4;transform:translateX(2px);}
+.art-nav-back-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;
+}
+.art-nav-back-link:hover{color:var(--blue);}
+@media(max-width:600px){
+  .art-hero-title{font-size:22px;}
+  .art-compare{grid-template-columns:1fr;}
+  .art-num-row{grid-template-columns:1fr 1fr;}
+  .art-wrap{padding:0 14px 64px;}
+}
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0;">
+    <a class="logo" href="../index.html" style="text-decoration:none;">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="logo-text">Invest<span>IQ</span></div>
+    </a>
+    <nav class="header-nav">
+      <a class="header-nav-link" href="../index.html" id="navCalc">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="13" y2="15"/></svg>
+        <span id="navCalcLabel">Kalkulator</span>
+      </a>
+      <a class="header-nav-link active" href="../tutorials.html" id="navTuts">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        <span id="navTutsLabel">Poradniki</span>
+      </a>
+      <a class="header-nav-link" href="../articles.html" id="navArticles">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span id="navArticlesLabel">Artykuły</span>
+      </a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer" id="headerDisclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+    <div id="langDropdownWrap" style="position:relative;">
+      <button id="langTrigger" onclick="toggleLangMenu()" style="background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:5px 9px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;font-size:11px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </button>
+      <div id="langMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:80px;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <a href="#" onclick="localStorage.setItem('investcalc_lang','pl');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text);background:var(--card);">PL</a>
+        <a href="../en/tutorials/dca-contributions.html" onclick="localStorage.setItem('investcalc_lang','en');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text2);">EN</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="art-wrap">
+
+  <a href="../tutorials.html" class="art-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <span id="backLabel">Wróć do poradników</span>
+  </a>
+
+  <div class="art-hero">
+    <div class="art-hero-badge" id="heroBadge">Jak zbudować portfel</div>
+    <div class="art-hero-title" id="heroTitle">DCA — regularne wpłaty krok po kroku</div>
+    <div class="art-hero-meta">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="heroTime">8 min czytania</span>
+      </span>
+      <span>🔁 <span id="heroLevel">Poziom: podstawowy</span></span>
+    </div>
+  </div>
+
+  <div class="art-toc">
+    <div class="art-toc-title" id="tocTitle">Spis treści</div>
+    <ul class="art-toc-list"><li><a href="#sec1"><span class="art-toc-num">01</span><span>Co to jest DCA?</span></a></li><li><a href="#sec2"><span class="art-toc-num">02</span><span>DCA vs jednorazowa wpłata — liczby</span></a></li><li><a href="#sec3"><span class="art-toc-num">03</span><span>Psychologiczna przewaga DCA</span></a></li><li><a href="#sec4"><span class="art-toc-num">04</span><span>Kiedy jednorazowa wpłata wygrywa?</span></a></li><li><a href="#sec5"><span class="art-toc-num">05</span><span>Jak ustawić DCA w kalkulatorze?</span></a></li></ul>
+  </div>
+
+  <div class="art-section" id="sec1">
+    <div class="art-section-label">
+      <span class="art-section-num">01</span>
+      <span class="art-section-title">Definicja</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Co to jest Dollar Cost Averaging?</div>
+    
+    <p class="art-p">DCA (Dollar Cost Averaging) to strategia inwestowania polegająca na <strong>regularnym kupowaniu za stałą kwotę</strong> — np. 500 zł co miesiąc — niezależnie od tego czy rynek rośnie, spada czy stoi w miejscu.</p>
+    <p class="art-p">Nie próbujesz zgadnąć kiedy rynek jest najtańszy. Po prostu kupujesz co miesiąc i pozwalasz mechanizmowi działać.</p>
+
+    <div class="art-h3">Jak to działa w praktyce?</div>
+    <div class="art-steps">
+      <div class="art-step">
+        <div class="art-step-num">1</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Ustalasz stałą kwotę i częstotliwość</div>
+          <div class="art-step-desc">Np. 500 zł miesięcznie. Może to być tygodniowo, miesięcznie lub kwartalnie — najważniejsza jest regularność.</div>
+        </div>
+      </div>
+      <div class="art-step">
+        <div class="art-step-num">2</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Kupujesz zawsze — bez wyjątków</div>
+          <div class="art-step-desc">Gdy rynek rośnie — kupujesz. Gdy rynek spada — kupujesz. Gdy jest krach — kupujesz. Nie zatrzymujesz się, nie czekasz na lepszy moment.</div>
+        </div>
+      </div>
+      <div class="art-step">
+        <div class="art-step-num">3</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Automatycznie kupujesz więcej gdy tanio, mniej gdy drogo</div>
+          <div class="art-step-desc">To kluczowy mechanizm DCA. Stała kwota (np. 500 zł) kupuje więcej jednostek ETF-u gdy cena jest niska, i mniej gdy cena jest wysoka. Bez żadnego wysiłku z Twojej strony.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="art-callout blue">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div>Nazwa pochodzi od angielskiego pojęcia uśredniania ceny w dolarach — ale strategia działa tak samo w każdej walucie i na każdym rynku. Stosują ją zarówno inwestorzy indywidualni jak i duże fundusze.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec2">
+    <div class="art-section-label">
+      <span class="art-section-num">02</span>
+      <span class="art-section-title">DCA vs wpłata jednorazowa</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Regularne wpłaty vs jednorazowa — na liczbach</div>
+    
+    <p class="art-p">Porównajmy dwie osoby z tą samą kwotą — 12 000 zł — i tym samym ETF-em przez rok, w którym rynek jest zmienny.</p>
+
+    <div class="art-h3">Jednorazowa wpłata — wszystko na raz</div>
+    <p class="art-p">Tomek wpłaca całe 12 000 zł w styczniu, gdy cena jednostki ETF wynosi 100 zł. Dostaje 120 jednostek. Przez rok rynek spada, a na koniec jednostka kosztuje 90 zł. Wartość portfela Tomka: <strong>10 800 zł — strata 10%</strong>.</p>
+
+    <div class="art-h3">DCA — 1 000 zł każdego miesiąca</div>
+    <p class="art-p">Kasia wpłaca 1 000 zł co miesiąc przez cały rok. Gdy cena spada, jej miesięczna wpłata kupuje więcej jednostek. Pod koniec roku ma <strong>więcej jednostek niż Tomek</strong> za tę samą łączną kwotę, bo część zakupów zrobiła po niższych cenach.</p>
+
+    <div class="art-compare">
+      <div class="art-compare-card bad">
+        <div class="art-compare-label red">Tomek — jednorazowo</div>
+        <div class="art-compare-item">Kupił 120 jednostek po 100 zł</div>
+        <div class="art-compare-item minus">Cała kwota wystawiona na ryzyko od dnia 1</div>
+        <div class="art-compare-item minus">Przy cenie 90 zł: wartość 10 800 zł</div>
+        <div class="art-compare-item minus">Strata: –10% na koniec roku</div>
+      </div>
+      <div class="art-compare-card good">
+        <div class="art-compare-label green">Kasia — DCA co miesiąc</div>
+        <div class="art-compare-item">Kupuje co miesiąc po różnych cenach</div>
+        <div class="art-compare-item">Tańsze miesiące dają więcej jednostek</div>
+        <div class="art-compare-item">Uśredniona cena zakupu poniżej 100 zł</div>
+        <div class="art-compare-item">Mniejsza lub zerowa strata na koniec roku</div>
+      </div>
+    </div>
+
+    <div class="art-num-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="art-num-card">
+          <div class="art-num-val ">100 zł</div>
+          <div class="art-num-label">Cena zakupu Tomka — jeden zakup w styczniu</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val green">~88 zł</div>
+          <div class="art-num-label">Średnia cena zakupu Kasi — 12 zakupów przez rok</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val green">~136</div>
+          <div class="art-num-label">Liczba jednostek Kasi — vs 120 Tomka</div>
+        </div>
+    </div>
+
+    <div class="art-callout green">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>DCA nie gwarantuje zysku — jeśli rynek spada przez cały rok, obie osoby tracą. Ale DCA <strong>obniża średnią cenę zakupu</strong> i zmniejsza ryzyko kupienia wszystkiego na szczycie. W długim terminie to ma ogromne znaczenie.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec3">
+    <div class="art-section-label">
+      <span class="art-section-num">03</span>
+      <span class="art-section-title">Psychologia</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Dlaczego DCA chroni przed błędami?</div>
+    
+    <p class="art-p">DCA to nie tylko matematyka — to też <strong>psychologiczne zabezpieczenie</strong> przed najczęstszymi błędami inwestorów.</p>
+
+    <div class="art-h3">Problem z jednorazową wpłatą</div>
+    <p class="art-p">Gdy masz dużą kwotę do zainwestowania, pojawia się paraliżujące pytanie: czy teraz jest dobry moment? Gdy rynek jest wysoko — boisz się że za chwilę spadnie. Gdy rynek spada — boisz się że spadnie jeszcze bardziej. Efekt: wiele osób w ogóle nie inwestuje, czekając na idealny moment który nigdy nie nadchodzi.</p>
+
+    <div class="art-options">
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(232,89,89,0.09);">😰</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Pułapka timingu</div>
+            <div class="art-option-desc">Badania pokazują, że przeciętny inwestor indywidualny zarabia znacznie mniej niż sam fundusz w który inwestuje — bo kupuje po wzrostach (z euforią) i sprzedaje po spadkach (z paniki). DCA eliminuje tę pułapkę przez automatyzację.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(75,130,226,0.09);">🤖</div>
+          <div class="art-option-body">
+            <div class="art-option-name">DCA usuwa emocje z decyzji</div>
+            <div class="art-option-desc">Gdy masz zlecenie stałe na 500 zł co miesiąc, nie musisz podejmować decyzji. Rynek spada 20%? Zakup następuje automatycznie. To ważne, bo <strong>emocjonalne decyzje inwestycyjne są prawie zawsze złe</strong>.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(42,201,126,0.09);">😌</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Mniejszy stres podczas krachów</div>
+            <div class="art-option-desc">Inwestor DCA inaczej patrzy na krachy — zamiast widzieć stratę, widzi <strong>okazję do tańszych zakupów</strong>. Każdy spadek ceny oznacza że za tę samą comiesięczną kwotę kupi więcej jednostek.</div>
+          </div>
+        </div>
+    </div>
+    <div class="art-callout amber">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><strong>Najlepsza implementacja DCA:</strong> ustaw stałe zlecenie bankowe na dzień po wypłacie. Pieniądze znikają zanim zdążysz je wydać. Nie musisz pamiętać, nie musisz podejmować decyzji.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec4">
+    <div class="art-section-label">
+      <span class="art-section-num">04</span>
+      <span class="art-section-title">Kiedy wpłata jednorazowa wygrywa?</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Słabości DCA i kiedy wpłata jednorazowa jest lepsza</div>
+    
+    <p class="art-p">DCA ma jedną słabość: jeśli rynek rośnie bez przerwy, jednorazowa wpłata na początku daje lepszy wynik. Im wcześniej kupisz więcej jednostek, tym dłużej pracują na Ciebie.</p>
+
+    <div class="art-h3">Statystyki mówią: wpłata jednorazowa wygrywa ~2/3 czasu</div>
+    <p class="art-p">Badania Vanguard na danych historycznych pokazują, że jednorazowa wpłata całej kwoty na początku bije DCA przez 12 miesięcy w ok. 68% przypadków na rynku amerykańskim, europejskim i australijskim. Wynika to z prostego faktu: <strong>rynki akcji rosną częściej niż spadają</strong>.</p>
+
+    <div class="art-num-row">
+      <div class="art-num-card">
+          <div class="art-num-val amber">~68%</div>
+          <div class="art-num-label">Przypadków gdy wpłata jednorazowa bije DCA przez rok (dane Vanguard)</div>
+        </div>
+      <div class="art-num-card">
+          <div class="art-num-val green">~32%</div>
+          <div class="art-num-label">Przypadków gdy DCA daje lepszy wynik (głównie w bessach)</div>
+        </div>
+    </div>
+
+    <div class="art-h3">Dlaczego mimo to DCA jest lepsze dla większości ludzi?</div>
+    <div class="art-options">
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(75,130,226,0.09);">💸</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Większość ludzi nie ma dużej kwoty na starcie</div>
+            <div class="art-option-desc">Wpłata jednorazowa wymaga że masz całą kwotę naraz. Dla większości inwestorów DCA jest jedyną realną opcją — zarabiasz co miesiąc, więc inwestujesz co miesiąc.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(244,114,182,0.09);">🧠</div>
+          <div class="art-option-body">
+            <div class="art-option-name">Wpłata jednorazowa wymaga odwagi której często nie mamy</div>
+            <div class="art-option-desc">Nawet jeśli masz dużą kwotę — wsadzenie jej wszystkiej naraz w rynek jest psychologicznie trudne. DCA rozłoży tę decyzję w czasie i zmniejszy żal jeśli rynek zaraz po wpłacie spadnie.</div>
+          </div>
+        </div>
+      <div class="art-option">
+          <div class="art-option-icon" style="background:rgba(200,168,75,0.09);">📅</div>
+          <div class="art-option-body">
+            <div class="art-option-name">DCA to nawyk który buduje majątek</div>
+            <div class="art-option-desc">Nawet jeśli jednorazowa wpłata jest statystycznie lepsza, wielu inwestorów czeka z wejściem na właściwy moment i nigdy nie wchodzi. Regularny DCA gwarantuje że faktycznie inwestujesz.</div>
+          </div>
+        </div>
+    </div>
+    <div class="art-callout blue">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div><strong>Kompromis:</strong> Jeśli masz dużą kwotę naraz (np. premię, spadek), możesz połączyć obie strategie — wpłać 50% od razu, a resztę rozkładaj przez 6–12 miesięcy co miesiąc. Korzystasz z obu podejść.</div>
+      </div>
+
+  </div>
+  <div class="art-section" id="sec5">
+    <div class="art-section-label">
+      <span class="art-section-num">05</span>
+      <span class="art-section-title">Kalkulator</span>
+      <div class="art-section-line"></div>
+    </div>
+    <div class="art-h2">Jak symulować DCA w kalkulatorze?</div>
+    
+    <p class="art-p">W kalkulatorze Investiq możesz dokładnie zasymulować strategię DCA i zobaczyć jak regularne wpłaty wpływają na wynik końcowy.</p>
+
+    <div class="art-steps">
+      <div class="art-step">
+        <div class="art-step-num">1</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Ustaw inwestycję początkową</div>
+          <div class="art-step-desc">Może być 0 zł — jeśli zaczynasz wyłącznie od regularnych wpłat. Albo dowolna kwota którą masz teraz.</div>
+        </div>
+      </div>
+      <div class="art-step">
+        <div class="art-step-num">2</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Wybierz zakładkę regularne wpłaty</div>
+          <div class="art-step-desc">W sekcji Regularne wpłaty kliknij zakładkę odpowiadającą Twojej częstotliwości — miesięcznie, kwartalnie lub rocznie — i wpisz kwotę.</div>
+        </div>
+      </div>
+      <div class="art-step">
+        <div class="art-step-num">3</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Porównaj DCA z jednorazową wpłatą</div>
+          <div class="art-step-desc">Oblicz raz z regularnymi wpłatami i zanotuj wynik. Potem ustaw tę samą łączną kwotę jako jednorazową inwestycję początkową bez wpłat. Porównaj wartości końcowe i wykres wzrostu.</div>
+        </div>
+      </div>
+      <div class="art-step">
+        <div class="art-step-num">4</div>
+        <div class="art-step-body">
+          <div class="art-step-title">Sprawdź Monte Carlo</div>
+          <div class="art-step-desc">Symulacja Monte Carlo pokaże jak DCA zachowuje się w różnych scenariuszach rynkowych — w tym w bessie. Wstęga wyników dla regularnych wpłat jest zwykle węższa niż dla jednorazowej inwestycji.</div>
+        </div>
+      </div>
+    </div>
+    <div class="art-callout green">
+        <div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>Mały eksperyment: wpisz 0 zł inwestycji początkowej i 500 zł miesięcznie przez 30 lat. Potem wpisz 180 000 zł inwestycji początkowej (łączna suma wpłat) i 0 zł regularnie. Wyniki będą inne — bo czas wejścia ma znaczenie.</div>
+      </div>
+
+  </div>
+
+  <div class="art-nav-footer">
+    <a href="choosing-instruments.html" class="art-nav-back-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <span id="footerPrev">Poprzedni: Dobór instrumentów</span>
+    </a>
+    <a href="diversification.html" class="art-nav-next">
+      <span id="footerNext">Następny: Dywersyfikacja</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<script>
+localStorage.setItem('investcalc_lang','pl');
+function toggleLangMenu(){
+  var m=document.getElementById('langMenu');
+  if(m)m.style.display=m.style.display==='block'?'none':'block';
+}
+document.addEventListener('click',function(e){
+  var w=document.getElementById('langDropdownWrap');
+  if(w&&!w.contains(e.target)){var m=document.getElementById('langMenu');if(m)m.style.display='none';}
+});
+</script>
+</body>
+</html>

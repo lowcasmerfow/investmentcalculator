@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TER i inflacja — jak koszty i wzrost cen wpływają na Twoje inwestycje | Investiq</title>
+<meta name="description" content="Czym jest TER (opłata za zarządzanie ETF) i jak wpływa na długoterminowe zyski. Jak inflacja obniża realną wartość oszczędności i jak chronić kapitał.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investiq.pro/tutorials/ter-and-inflation.html">
+<link rel="alternate" hreflang="pl" href="https://investiq.pro/tutorials/ter-and-inflation.html">
+<link rel="alternate" hreflang="en" href="https://investiq.pro/en/tutorials/ter-and-inflation.html">
+<link rel="alternate" hreflang="x-default" href="https://investiq.pro/tutorials/ter-and-inflation.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* --- CAŁY STYL IDENTYCZNY JAK W POPRZEDNICH TUTORIALACH (kopiujemy) --- */
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #94AABF;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image: radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-disclaimer{font-size:11px;color:var(--text2);}
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.header-nav-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;background:transparent;border:1px solid transparent;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:color 0.18s,background 0.18s,border-color 0.18s;letter-spacing:0.3px;text-decoration:none;}
+.header-nav-link:hover{color:var(--text);background:var(--bg2);}
+.header-nav-link.active{color:var(--blue);background:var(--blue2);border-color:rgba(75,130,226,0.18);}
+.header-nav-link svg{opacity:0.65;flex-shrink:0;}
+.header-nav-link.active svg{opacity:1;}
+@media(max-width:700px){
+  .header-nav{margin-left:10px;gap:1px;}
+  .header-nav-link{padding:5px 8px;font-size:11px;}
+  .header-nav-link span{display:none;}
+}
+@media(max-width:460px){
+  .header-disclaimer{display:none;}
+}
+.art-wrap{max-width:720px;margin:0 auto;padding:0 24px 96px;}
+.art-back{display:inline-flex;align-items:center;gap:7px;padding:8px 0;margin-bottom:32px;margin-top:28px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-back:hover{color:var(--blue);}
+.art-back svg{transition:transform 0.15s;}
+.art-back:hover svg{transform:translateX(-3px);}
+.art-hero{margin-bottom:40px;}
+.art-hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.art-hero-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1.25;margin-bottom:12px;}
+.art-hero-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.art-hero-meta span{display:flex;align-items:center;gap:5px;}
+.art-toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:40px;}
+.art-toc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:12px;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.art-toc-list li a{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);text-decoration:none;padding:4px 0;transition:color 0.15s;}
+.art-toc-list li a:hover{color:var(--blue);}
+.art-toc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;width:20px;flex-shrink:0;}
+.art-section{margin-bottom:48px;scroll-margin-top:88px;}
+.art-section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.art-section-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;letter-spacing:1px;}
+.art-section-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text2);}
+.art-section-line{flex:1;height:1px;background:var(--border);}
+.art-h2{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;line-height:1.3;}
+.art-h3{font-size:14px;font-weight:700;color:var(--text);margin:24px 0 8px;}
+.art-p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.art-p strong{color:var(--text);font-weight:600;}
+.art-steps{display:flex;flex-direction:column;gap:0;}
+.art-step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);}
+.art-step:last-child{border-bottom:none;}
+.art-step-num{width:30px;height:30px;border-radius:8px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0;margin-top:2px;}
+.art-step-body{flex:1;}
+.art-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.art-step-desc{font-size:12px;color:var(--text2);line-height:1.75;}
+.art-step-desc strong{color:var(--text);}
+.art-options{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-option{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;}
+.art-option-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.art-option-body{flex:1;}
+.art-option-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.art-option-desc{font-size:11px;color:var(--text2);line-height:1.65;}
+.art-option-desc strong{color:var(--text);}
+.art-callout{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;line-height:1.7;}
+.art-callout.blue{background:var(--blue2);border:1px solid rgba(75,130,226,0.18);color:#8BAEE8;}
+.art-callout.amber{background:var(--amber2);border:1px solid rgba(200,168,75,0.18);color:#b8942a;}
+.art-callout.green{background:var(--green2);border:1px solid rgba(42,201,126,0.18);color:#1e9e62;}
+.art-callout.red{background:var(--red2);border:1px solid rgba(232,89,89,0.18);color:#c44;}
+.art-callout-icon{flex-shrink:0;margin-top:1px;}
+.art-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.art-compare-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.art-compare-card.good{border-color:rgba(42,201,126,0.25);background:rgba(42,201,126,0.04);}
+.art-compare-card.bad{border-color:rgba(232,89,89,0.2);background:rgba(232,89,89,0.03);}
+.art-compare-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-compare-label.green{color:var(--green);}
+.art-compare-label.red{color:var(--red);}
+.art-compare-item{font-size:11px;color:var(--text2);line-height:1.7;display:flex;gap:6px;margin-bottom:3px;}
+.art-compare-item::before{content:'✓';color:var(--green);font-size:10px;margin-top:1px;flex-shrink:0;}
+.art-compare-item.minus::before{content:'✗';color:var(--red);}
+.art-num-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;}
+.art-num-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;text-align:center;}
+.art-num-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;margin-bottom:4px;}
+.art-num-val.green{color:var(--green);}
+.art-num-val.amber{color:var(--amber);}
+.art-num-val.blue{color:var(--blue);}
+.art-num-val.red{color:var(--red);}
+.art-num-label{font-size:10px;color:var(--text2);line-height:1.5;}
+.art-nav-footer{border-top:1px solid var(--border);padding-top:28px;margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.art-nav-next{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;transition:background 0.18s,transform 0.15s;font-family:'Outfit',sans-serif;}
+.art-nav-next:hover{background:#3a72d4;transform:translateX(2px);}
+.art-nav-back-link{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-nav-back-link:hover{color:var(--blue);}
+@media(max-width:600px){
+  .art-hero-title{font-size:22px;}
+  .art-compare{grid-template-columns:1fr;}
+  .art-num-row{grid-template-columns:1fr 1fr;}
+  .art-wrap{padding:0 14px 64px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0;">
+    <a class="logo" href="../index.html" style="text-decoration:none;">
+      <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="logo-text">Invest<span>IQ</span></div>
+    </a>
+    <nav class="header-nav">
+      <a class="header-nav-link" href="../index.html" id="navCalc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="13" y2="15"/></svg><span id="navCalcLabel">Kalkulator</span></a>
+      <a class="header-nav-link" href="../tutorials.html" id="navTuts"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span id="navTutsLabel">Poradniki</span></a>
+      <a class="header-nav-link" href="../articles.html" id="navArticles"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span id="navArticlesLabel">Artykuły</span></a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer" id="headerDisclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+    <div id="langDropdownWrap" style="position:relative;"><button id="langTrigger" onclick="toggleLangMenu()" style="background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:5px 9px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></button><div id="langMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--card2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;min-width:80px;z-index:200;">
+        <a href="#" onclick="localStorage.setItem('investcalc_lang','pl');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text);background:var(--card);">PL</a>
+        <a href="../en/tutorials/ter-and-inflation.html" onclick="localStorage.setItem('investcalc_lang','en');" style="display:block;width:100%;padding:8px 14px;text-decoration:none;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;color:var(--text2);">EN</a>
+      </div></div>
+  </div>
+</header>
+
+<div class="art-wrap">
+  <a href="../tutorials.html" class="art-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span id="backLabel">Wróć do poradników</span></a>
+
+  <div class="art-hero">
+    <div class="art-hero-badge" id="heroBadge">Koszty i siła nabywcza</div>
+    <div class="art-hero-title" id="heroTitle">TER i inflacja — jak koszty ETF i wzrost cen wpływają na Twoje pieniądze</div>
+    <div class="art-hero-meta"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="heroTime">8 min czytania</span></span><span>📉 <span id="heroLevel">Poziom: podstawowy</span></span></div>
+  </div>
+
+  <div class="art-toc">
+    <div class="art-toc-title" id="tocTitle">Spis treści</div>
+    <ul class="art-toc-list">
+      <li><a href="#sec1"><span class="art-toc-num">01</span><span>Czym jest TER?</span></a></li>
+      <li><a href="#sec2"><span class="art-toc-num">02</span><span>Jak inflacja obniża realną wartość pieniądza</span></a></li>
+      <li><a href="#sec3"><span class="art-toc-num">03</span><span>Inflacja a oprocentowanie obligacji</span></a></li>
+      <li><a href="#sec4"><span class="art-toc-num">04</span><span>Jak chronić się przed inflacją?</span></a></li>
+      <li><a href="#sec5"><span class="art-toc-num">05</span><span>TER + inflacja – podwójny wróg inwestora</span></a></li>
+    </ul>
+  </div>
+
+  <div class="art-section" id="sec1">
+    <div class="art-section-label"><span class="art-section-num">01</span><span class="art-section-title">Koszty</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Czym jest TER?</div>
+    <p class="art-p"><strong>TER (Total Expense Ratio)</strong> to roczna opłata za zarządzanie ETF-em. Wyrażana jest w procentach i automatycznie odejmowana od wartości funduszu. Nie widzisz jej bezpośrednio na koncie – zmniejsza ona po prostu codzienną wycenę jednostki.</p>
+    <p class="art-p">Przykład: ETF na S&P 500 z TER 0,07%. Jeśli indeks wzrośnie w danym roku o 10%, ETF wzrośnie o około 9,93% – różnica to właśnie opłata. TER dotyczy wszystkich ETF-ów, niezależnie od tego, czy są akumulujące, czy dystrybuujące.</p>
+    <div class="art-num-row">
+      <div class="art-num-card"><div class="art-num-val green">0,07%</div><div class="art-num-label">Vanguard FTSE All-World (VWCE) – bardzo niski TER</div></div>
+      <div class="art-num-card"><div class="art-num-val amber">0,20%</div><div class="art-num-label">Typowy ETF sektorowy</div></div>
+      <div class="art-num-card"><div class="art-num-val red">0,50%+</div><div class="art-num-label">Droższe ETF-y lub fundusze aktywne</div></div>
+    </div>
+    <p class="art-p">Nawet pozornie mała różnica w TER robi ogromną różnicę w długim terminie. Przy inwestycji 100 000 zł przez 30 lat i średnim rocznym zysku 7%, różnica między TER 0,07% a 0,5% to około 30 000 zł mniej w końcowym kapitale.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div>Zawsze sprawdzaj TER przed zakupem ETF. Dla indeksów globalnych dobry TER to poniżej 0,2%. Im niższy, tym więcej zostaje w Twojej kieszeni.</div></div>
+  </div>
+
+  <div class="art-section" id="sec2">
+    <div class="art-section-label"><span class="art-section-num">02</span><span class="art-section-title">Inflacja</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak inflacja obniża realną wartość pieniądza?</div>
+    <p class="art-p">Inflacja to wzrost cen towarów i usług w gospodarce. Oznacza, że za tę samą kwotę pieniędzy możesz kupić mniej z czasem. Jeśli inflacja wynosi 3% rocznie, to za 10 lat 100 000 zł będzie miało realną siłę nabywczą około 74 000 zł (przy założeniu, że nie inwestujesz tych pieniędzy).</p>
+    <p class="art-p">Dla inwestora liczy się <strong>realna stopa zwrotu</strong> – czyli nominalny zysk pomniejszony o inflację. Jeśli Twoja lokata daje 4%, a inflacja wynosi 5%, to realnie tracisz 1% siły nabywczej. Inwestowanie w akcje czy ETF-y ma sens właśnie dlatego, że w długim terminie ich nominalne zyski przewyższają inflację.</p>
+    <div class="art-num-row">
+      <div class="art-num-card"><div class="art-num-val red">2–3%</div><div class="art-num-label">Typowa roczna inflacja (cel NBP / ECB / Fed)</div></div>
+      <div class="art-num-card"><div class="art-num-val green">7–10%</div><div class="art-num-label">Średni długoterminowy zwrot z akcji</div></div>
+      <div class="art-num-card"><div class="art-num-val amber">~5%</div><div class="art-num-label">Realny zwrot z akcji (po odjęciu inflacji)</div></div>
+    </div>
+    <div class="art-callout amber"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div>Trzymanie gotówki pod materacem to gwarantowana utrata wartości. Inflacja to cichy zabójca oszczędności – aby jej przeciwdziałać, trzeba inwestować.</div></div>
+  </div>
+
+  <div class="art-section" id="sec3">
+    <div class="art-section-label"><span class="art-section-num">03</span><span class="art-section-title">Obligacje</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Inflacja a oprocentowanie obligacji</div>
+    <p class="art-p">Obligacje są papierami dłużnymi – pożyczasz pieniądze emitentowi (rządowi lub firmie) w zamian za odsetki. Wysokość tych odsetek (kupon) jest ściśle związana z oczekiwaną inflacją. Jeśli inflacja rośnie, nowo emitowane obligacje muszą oferować wyższe oprocentowanie, żeby być atrakcyjne dla inwestorów.</p>
+    <p class="art-p">Dlatego w czasach wysokiej inflacji ceny już istniejących obligacji o stałym kuponie spadają – nikt nie chce płacić pełnej ceny za obligację, która płaci niższe odsetki niż nowe emisje. To podstawowe ryzyko inwestowania w obligacje stałokuponowe.</p>
+    <p class="art-p">Istnieją też obligacje <strong>indeksowane inflacją</strong> (w Polsce obligacje detaliczne EDO, COI). Ich oprocentowanie składa się z marży plus wskaźnik inflacji. W ten sposób realna wartość kapitału jest chroniona – jeśli inflacja rośnie, odsetki też rosną.</p>
+    <div class="art-compare">
+      <div class="art-compare-card good"><div class="art-compare-label green">Obligacje skarbowe indeksowane inflacją</div><div class="art-compare-item">Oprocentowanie = inflacja + marża (np. 1%)</div><div class="art-compare-item">Chronią realną wartość kapitału</div><div class="art-compare-item">Dobre na okresy wysokiej inflacji</div></div>
+      <div class="art-compare-card bad"><div class="art-compare-label red">Obligacje o stałym kuponie</div><div class="art-compare-item minus">Kupon stały przez cały okres</div><div class="art-compare-item minus">W czasie wzrostu inflacji tracą na wartości</div><div class="art-compare-item minus">Ryzyko spadku ceny przed terminem wykupu</div></div>
+    </div>
+  </div>
+
+  <div class="art-section" id="sec4">
+    <div class="art-section-label"><span class="art-section-num">04</span><span class="art-section-title">Ochrona</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak chronić się przed inflacją?</div>
+    <div class="art-options">
+      <div class="art-option"><div class="art-option-icon">📈</div><div class="art-option-body"><div class="art-option-name">Inwestuj w akcje / ETF-y</div><div class="art-option-desc">Spółki mogą podnosić ceny swoich produktów, więc w długim terminie zyski z akcji przewyższają inflację.</div></div></div>
+      <div class="art-option"><div class="art-option-icon">🏦</div><div class="art-option-body"><div class="art-option-name">Wybieraj obligacje indeksowane inflacją</div><div class="art-option-desc">W Polsce są to obligacje EDO, COI, ROS. Chronią kapitał przed utratą siły nabywczej.</div></div></div>
+      <div class="art-option"><div class="art-option-icon">🥇</div><div class="art-option-body"><div class="art-option-name">Surowce i złoto</div><div class="art-option-desc">W czasach wysokiej inflacji złoto i surowce często zachowują swoją wartość lub drożeją.</div></div></div>
+      <div class="art-option"><div class="art-option-icon">🏠</div><div class="art-option-body"><div class="art-option-name">Nieruchomości</div><div class="art-option-desc">Ceny najmu i wartości nieruchomości zazwyczaj rosną wraz z inflacją.</div></div></div>
+    </div>
+    <div class="art-callout green"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div>Najprostsza strategia: globalny ETF akcyjny (np. MSCI World) + część w obligacjach indeksowanych inflacją. W kalkulatorze możesz dodać oba składniki i zobaczyć, jak radzą sobie w różnych scenariuszach inflacyjnych.</div></div>
+  </div>
+
+  <div class="art-section" id="sec5">
+    <div class="art-section-label"><span class="art-section-num">05</span><span class="art-section-title">Razem</span><div class="art-section-line"></div></div>
+    <div class="art-h2">TER + inflacja – podwójny wróg inwestora</div>
+    <p class="art-p">Inflacja obniża realną wartość Twoich pieniędzy, a TER pomniejsza nominalne zyski z inwestycji. Razem mogą znacząco ograniczyć efekt procentu składanego.</p>
+    <div class="art-num-row">
+      <div class="art-num-card"><div class="art-num-val red">7%</div><div class="art-num-label">Nominalny zwrot z ETF</div></div>
+      <div class="art-num-card"><div class="art-num-val red">-0,2%</div><div class="art-num-label">TER</div></div>
+      <div class="art-num-card"><div class="art-num-val red">-2,5%</div><div class="art-num-label">Inflacja</div></div>
+      <div class="art-num-card"><div class="art-num-val green">~4,3%</div><div class="art-num-label">Realny zwrot netto</div></div>
+    </div>
+    <p class="art-p">Aby osiągnąć realny zysk, nominalny zwrot musi przewyższać sumę inflacji i kosztów. Wybierając ETF-y z niskim TER i inwestując w aktywa, które historycznie radziły sobie z inflacją (akcje, obligacje indeksowane), zwiększasz swoje szanse na ochronę siły nabywczej.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div>Podsumowanie: kontroluj koszty (wybieraj niski TER) i nie trzymaj gotówki bezczynnie – inwestuj w aktywa, które w długim terminie pokonują inflację. To podstawa skutecznego budowania majątku.</div></div>
+  </div>
+
+  <div class="art-nav-footer">
+    <a href="../tutorials.html" class="art-nav-back-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span id="footerBack">Wszystkie poradniki</span></a>
+    <a href="monte-carlo.html" class="art-nav-next"><span id="footerNext">Następny: Monte Carlo</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+  </div>
+</div>
+
+<script>
+localStorage.setItem('investcalc_lang','pl');
+function toggleLangMenu(){
+  var m=document.getElementById('langMenu');
+  if(m)m.style.display=m.style.display==='block'?'none':'block';
+}
+document.addEventListener('click',function(e){
+  var w=document.getElementById('langDropdownWrap');
+  if(w&&!w.contains(e.target)){var m=document.getElementById('langMenu');if(m)m.style.display='none';}
+});
+</script>
+</body>
+</html>

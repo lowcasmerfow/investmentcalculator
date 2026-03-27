@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IKE i IKZE — przewaga podatkowa i jak oszczędzać na emeryturę | Investiq</title>
+<meta name="description" content="IKE i IKZE – indywidualne konta emerytalne w Polsce. Jak działają, jakie dają korzyści podatkowe i dlaczego warto z nich korzystać. Porównanie i symulacja oszczędności.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://investiq.pro/tutorials/ike-ikze.html">
+<link rel="alternate" hreflang="pl" href="https://investiq.pro/tutorials/ike-ikze.html">
+<link rel="alternate" hreflang="en" href="https://investiq.pro/en/tutorials/ike-ikze.html">
+<link rel="alternate" hreflang="x-default" href="https://investiq.pro/tutorials/ike-ikze.html">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* --- CAŁY STYL IDENTYCZNY JAK W ORYGINALNYM PLIKU (kopiujemy) --- */
+:root {
+  --bg:      #080C12;
+  --bg2:     #0E1420;
+  --card:    #121928;
+  --card2:   #182032;
+  --border:  rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --blue:    #4B82E2;
+  --blue2:   rgba(75,130,226,0.11);
+  --green:   #2AC97E;
+  --green2:  rgba(42,201,126,0.09);
+  --red:     #E85959;
+  --red2:    rgba(232,89,89,0.09);
+  --amber:   #C8A84B;
+  --amber2:  rgba(200,168,75,0.10);
+  --text:    #D8E2F0;
+  --text2:   #94AABF;
+  --text3:   #2A3848;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:14px;
+  min-height:100vh;
+  background-image: radial-gradient(ellipse 70% 40% at 90% 0%, rgba(75,130,226,0.04) 0%, transparent 60%);
+}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,12,18,0.92);
+  backdrop-filter:blur(16px);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:32px;height:32px;
+  background:var(--blue2);
+  border:1px solid rgba(75,130,226,0.2);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.logo-text{
+  font-family:'Outfit',sans-serif;
+  font-size:16px;font-weight:700;
+  letter-spacing:-0.2px;
+  color:var(--text);
+}
+.logo-text span{color:var(--blue);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.header-disclaimer{font-size:11px;color:var(--text2);}
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.header-nav-link{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;background:transparent;border:1px solid transparent;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:color 0.18s,background 0.18s,border-color 0.18s;letter-spacing:0.3px;text-decoration:none;}
+.header-nav-link:hover{color:var(--text);background:var(--bg2);}
+.header-nav-link.active{color:var(--blue);background:var(--blue2);border-color:rgba(75,130,226,0.18);}
+.header-nav-link svg{opacity:0.65;flex-shrink:0;}
+.header-nav-link.active svg{opacity:1;}
+@media(max-width:700px){
+  .header-nav{margin-left:10px;gap:1px;}
+  .header-nav-link{padding:5px 8px;font-size:11px;}
+  .header-nav-link span{display:none;}
+}
+@media(max-width:460px){
+  .header-disclaimer{display:none;}
+}
+.art-wrap{max-width:720px;margin:0 auto;padding:0 24px 96px;}
+.art-back{display:inline-flex;align-items:center;gap:7px;padding:8px 0;margin-bottom:32px;margin-top:28px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-back:hover{color:var(--blue);}
+.art-back svg{transition:transform 0.15s;}
+.art-back:hover svg{transform:translateX(-3px);}
+.art-hero{margin-bottom:40px;}
+.art-hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.art-hero-title{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--text);line-height:1.25;margin-bottom:12px;}
+.art-hero-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.art-hero-meta span{display:flex;align-items:center;gap:5px;}
+.art-toc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:40px;}
+.art-toc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2);margin-bottom:12px;}
+.art-toc-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.art-toc-list li a{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);text-decoration:none;padding:4px 0;transition:color 0.15s;}
+.art-toc-list li a:hover{color:var(--blue);}
+.art-toc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;width:20px;flex-shrink:0;}
+.art-section{margin-bottom:48px;scroll-margin-top:88px;}
+.art-section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.art-section-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);opacity:0.7;letter-spacing:1px;}
+.art-section-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text2);}
+.art-section-line{flex:1;height:1px;background:var(--border);}
+.art-h2{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.3px;margin-bottom:10px;line-height:1.3;}
+.art-h3{font-size:14px;font-weight:700;color:var(--text);margin:24px 0 8px;}
+.art-p{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px;}
+.art-p strong{color:var(--text);font-weight:600;}
+.art-steps{display:flex;flex-direction:column;gap:0;}
+.art-step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);}
+.art-step:last-child{border-bottom:none;}
+.art-step-num{width:30px;height:30px;border-radius:8px;background:var(--blue2);border:1px solid rgba(75,130,226,0.2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0;margin-top:2px;}
+.art-step-body{flex:1;}
+.art-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.art-step-desc{font-size:12px;color:var(--text2);line-height:1.75;}
+.art-step-desc strong{color:var(--text);}
+.art-options{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.art-option{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;}
+.art-option-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.art-option-body{flex:1;}
+.art-option-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.art-option-desc{font-size:11px;color:var(--text2);line-height:1.65;}
+.art-option-desc strong{color:var(--text);}
+.art-callout{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;line-height:1.7;}
+.art-callout.blue{background:var(--blue2);border:1px solid rgba(75,130,226,0.18);color:#8BAEE8;}
+.art-callout.amber{background:var(--amber2);border:1px solid rgba(200,168,75,0.18);color:#b8942a;}
+.art-callout.green{background:var(--green2);border:1px solid rgba(42,201,126,0.18);color:#1e9e62;}
+.art-callout.red{background:var(--red2);border:1px solid rgba(232,89,89,0.18);color:#c44;}
+.art-callout-icon{flex-shrink:0;margin-top:1px;}
+.art-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.art-compare-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.art-compare-card.good{border-color:rgba(42,201,126,0.25);background:rgba(42,201,126,0.04);}
+.art-compare-card.bad{border-color:rgba(232,89,89,0.2);background:rgba(232,89,89,0.03);}
+.art-compare-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.art-compare-label.green{color:var(--green);}
+.art-compare-label.red{color:var(--red);}
+.art-compare-item{font-size:11px;color:var(--text2);line-height:1.7;display:flex;gap:6px;margin-bottom:3px;}
+.art-compare-item::before{content:'✓';color:var(--green);font-size:10px;margin-top:1px;flex-shrink:0;}
+.art-compare-item.minus::before{content:'✗';color:var(--red);}
+.art-num-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;}
+.art-num-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;text-align:center;}
+.art-num-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;margin-bottom:4px;}
+.art-num-val.green{color:var(--green);}
+.art-num-val.amber{color:var(--amber);}
+.art-num-val.blue{color:var(--blue);}
+.art-num-val.red{color:var(--red);}
+.art-num-label{font-size:10px;color:var(--text2);line-height:1.5;}
+.art-nav-footer{border-top:1px solid var(--border);padding-top:28px;margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+.art-nav-next{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;font-size:12px;font-weight:700;text-decoration:none;transition:background 0.18s,transform 0.15s;font-family:'Outfit',sans-serif;}
+.art-nav-next:hover{background:#3a72d4;transform:translateX(2px);}
+.art-nav-back-link{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);text-decoration:none;font-weight:600;transition:color 0.15s;}
+.art-nav-back-link:hover{color:var(--blue);}
+@media(max-width:600px){
+  .art-hero-title{font-size:22px;}
+  .art-compare{grid-template-columns:1fr;}
+  .art-num-row{grid-template-columns:1fr 1fr;}
+  .art-wrap{padding:0 14px 64px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:0;">
+    <a class="logo" href="../index.html" style="text-decoration:none;">
+      <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="logo-text">Invest<span>IQ</span></div>
+    </a>
+    <nav class="header-nav">
+      <a class="header-nav-link" href="../index.html" id="navCalc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="13" y2="15"/></svg><span>Kalkulator</span></a>
+      <a class="header-nav-link active" href="../tutorials.html" id="navTuts"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span>Poradniki</span></a>
+      <a class="header-nav-link" href="../articles.html" id="navArticles"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Artykuły</span></a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <span class="header-disclaimer">Tylko dla celów edukacyjnych — nie stanowi porady inwestycyjnej</span>
+  </div>
+</header>
+
+<div class="art-wrap">
+  <a href="../tutorials.html" class="art-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span>Wróć do poradników</span></a>
+
+  <div class="art-hero">
+    <div class="art-hero-badge">Emerytura podatkowa</div>
+    <div class="art-hero-title">IKE i IKZE — jak oszczędzać na emeryturę bez podatku Belki</div>
+    <div class="art-hero-meta"><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>10 min czytania</span></span><span>🏦 <span>Poziom: średniozaawansowany</span></span></div>
+  </div>
+
+  <div class="art-toc">
+    <div class="art-toc-title">Spis treści</div>
+    <ul class="art-toc-list">
+      <li><a href="#sec1"><span class="art-toc-num">01</span><span>Czym są IKE i IKZE?</span></a></li>
+      <li><a href="#sec2"><span class="art-toc-num">02</span><span>Jak działa IKE (Indywidualne Konto Emerytalne)?</span></a></li>
+      <li><a href="#sec3"><span class="art-toc-num">03</span><span>Jak działa IKZE (Indywidualne Konto Zabezpieczenia Emerytalnego)?</span></a></li>
+      <li><a href="#sec4"><span class="art-toc-num">04</span><span>Różnice między IKE a IKZE – który wybrać?</span></a></li>
+      <li><a href="#sec5"><span class="art-toc-num">05</span><span>Ile zyskujesz na IKE? Przewaga nad zwykłym rachunkiem</span></a></li>
+      <li><a href="#sec6"><span class="art-toc-num">06</span><span>Jak założyć IKE/IKZE i co kupować?</span></a></li>
+    </ul>
+  </div>
+
+  <div class="art-section" id="sec1">
+    <div class="art-section-label"><span class="art-section-num">01</span><span class="art-section-title">Wprowadzenie</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Czym są IKE i IKZE?</div>
+    <p class="art-p"><strong>IKE (Indywidualne Konto Emerytalne)</strong> i <strong>IKZE (Indywidualne Konto Zabezpieczenia Emerytalnego)</strong> to dobrowolne formy oszczędzania na emeryturę oferowane w Polsce. Ich główną zaletą są <strong>ulgi podatkowe</strong> – pozwalają uniknąć podatku Belki (19% od zysków kapitałowych) oraz w przypadku IKZE dodatkowo obniżyć bieżący podatek dochodowy (PIT).</p>
+    <p class="art-p">Oba konta prowadzone są przez instytucje finansowe: banki, domy maklerskie, towarzystwa funduszy inwestycyjnych (TFI) oraz firmy ubezpieczeniowe. Możesz na nich inwestować w te same instrumenty co na zwykłym rachunku maklerskim – akcje, ETF-y, obligacje, fundusze inwestycyjne – ale z zupełnie innym traktowaniem podatkowym.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><strong>Dlaczego warto?</strong> Dzięki IKE/IKZE możesz przez kilkadziesiąt lat pomijać podatek od zysków, a efekt procentu składanego działa na pełnej wartości. Różnica w końcowym kapitale w porównaniu do zwykłego konta potrafi sięgnąć kilkudziesięciu procent.</div></div>
+  </div>
+
+  <div class="art-section" id="sec2">
+    <div class="art-section-label"><span class="art-section-num">02</span><span class="art-section-title">IKE</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak działa IKE (Indywidualne Konto Emerytalne)?</div>
+    <p class="art-p"><strong>IKE</strong> to najprostsze konto emerytalne. Zasada: wpłacasz środki, inwestujesz, a po osiągnięciu 60. roku życia możesz wypłacić zgromadzony kapitał <strong>bez podatku Belki</strong>. Wypłata może być jednorazowa lub w ratach – nadal zwolniona z podatku od zysków kapitałowych.</p>
+    <div class="art-steps">
+      <div class="art-step"><div class="art-step-num">1</div><div class="art-step-body"><div class="art-step-title">Wpłaty – dobrowolne, bez limitu ulgi podatkowej</div><div class="art-step-desc">Na IKE możesz wpłacać dowolną kwotę, ale istnieje <strong>limit roczny</strong> (w 2024 roku to 23 472 zł). Wpłaty nie są odejmowane od dochodu – nie obniżają bieżącego podatku PIT.</div></div></div>
+      <div class="art-step"><div class="art-step-num">2</div><div class="art-step-body"><div class="art-step-title">Inwestowanie – pełna dowolność</div><div class="art-step-desc">W ramach IKE możesz kupować akcje, ETF-y, obligacje, fundusze inwestycyjne. <strong>Nie płacisz podatku Belki</strong> od zysków w trakcie oszczędzania – nawet jeśli sprzedajesz i kupujesz w ramach konta, transakcje są wolne od podatku.</div></div></div>
+      <div class="art-step"><div class="art-step-num">3</div><div class="art-step-body"><div class="art-step-title">Wypłata po 60. roku życia – całkowicie wolna od podatku</div><div class="art-step-desc">Po ukończeniu 60 lat możesz wypłacić całość (lub część) środków. Nie płacisz podatku Belki, niezależnie od wysokości zysku. Wypłaty wcześniejsze (przed 60. rokiem życia) są opodatkowane podatkiem Belki, ale bez dodatkowych kar.</div></div></div>
+    </div>
+    <div class="art-callout green"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>Korzyść IKE:</strong> całkowite uniknięcie podatku od zysków kapitałowych przy długoterminowym oszczędzaniu. Przez 20–30 lat oszczędności to może być dodatkowe kilkadziesiąt procent końcowego kapitału w porównaniu do zwykłego konta.</div></div>
+  </div>
+
+  <div class="art-section" id="sec3">
+    <div class="art-section-label"><span class="art-section-num">03</span><span class="art-section-title">IKZE</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak działa IKZE (Indywidualne Konto Zabezpieczenia Emerytalnego)?</div>
+    <p class="art-p"><strong>IKZE</strong> to bardziej rozbudowana wersja – daje ulgę podatkową już na etapie wpłat, ale wypłaty są opodatkowane (jednak niższą stawką). Model przypomina amerykańskie konto 401(k) lub tradycyjne IRA.</p>
+    <div class="art-steps">
+      <div class="art-step"><div class="art-step-num">1</div><div class="art-step-body"><div class="art-step-title">Wpłaty – odliczenie od dochodu (ulga w PIT)</div><div class="art-step-desc">Wpłaty na IKZE pomniejszają Twój dochód do opodatkowania. Limit roczny (2024: 10 800 zł) – wpłacając maksymalną kwotę, możesz zaoszczędzić na podatku dochodowym nawet 1 944 zł (przy skali podatkowej 18%) lub 3 564 zł (przy 32%).</div></div></div>
+      <div class="art-step"><div class="art-step-num">2</div><div class="art-step-body"><div class="art-step-title">Inwestowanie – tak jak w IKE</div><div class="art-step-desc">W ramach IKZE również możesz inwestować w akcje, ETF-y, obligacje. Tak samo <strong>nie płacisz podatku Belki</strong> od zysków w trakcie oszczędzania – to kluczowa wspólna cecha obu kont.</div></div></div>
+      <div class="art-step"><div class="art-step-num">3</div><div class="art-step-body"><div class="art-step-title">Wypłata po 65. roku życia – zryczałtowany podatek 10% (lub 0% w niektórych przypadkach)</div><div class="art-step-desc">Przy wypłacie środków z IKZE po 65. roku życia (lub po 60. roku życia przy wcześniejszej niezdolności do pracy) płacisz <strong>10% zryczałtowanego podatku dochodowego</strong> od wypłaconej kwoty. To znacznie mniej niż standardowy podatek Belki (19% od zysku). Wcześniejsza wypłata skutkuje opodatkowaniem podatkiem Belki od zysków oraz doliczeniem ulgi podatkowej do dochodu.</div></div></div>
+    </div>
+    <div class="art-callout amber"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div><strong>Korzyść IKZE:</strong> natychmiastowa ulga w PIT + odroczenie podatku od zysków. Dla osób w wyższych przedziałach podatkowych to bardzo opłacalna forma oszczędzania.</div></div>
+  </div>
+
+  <div class="art-section" id="sec4">
+    <div class="art-section-label"><span class="art-section-num">04</span><span class="art-section-title">Porównanie</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Różnice między IKE a IKZE – który wybrać?</div>
+    <div class="art-compare">
+      <div class="art-compare-card good"><div class="art-compare-label green">IKE</div><div class="art-compare-item">Brak ulgi w PIT przy wpłacie</div><div class="art-compare-item">Brak podatku Belki w trakcie inwestowania</div><div class="art-compare-item">Wypłata po 60. roku życia – <strong>0% podatku</strong></div><div class="art-compare-item">Limit wpłat: ok. 23,5 tys. zł (2024)</div><div class="art-compare-item">Lepsze dla osób na niższym progu podatkowym lub gdy zależy na maksymalnie prostej konstrukcji</div></div>
+      <div class="art-compare-card"><div class="art-compare-label" style="color:var(--text2);">IKZE</div><div class="art-compare-item">Ulga w PIT – wpłaty pomniejszają dochód</div><div class="art-compare-item">Brak podatku Belki w trakcie inwestowania</div><div class="art-compare-item">Wypłata po 65. roku życia – <strong>10% ryczałt</strong></div><div class="art-compare-item">Limit wpłat: ok. 10,8 tys. zł (2024)</div><div class="art-compare-item">Lepsze dla osób w II progu podatkowym (32%) oraz tych, którzy chcą dodatkowo obniżyć bieżący podatek</div></div>
+    </div>
+    <p class="art-p"><strong>Wybór zależy od Twojej sytuacji:</strong> Jeśli jesteś w niższym przedziale podatkowym (12% lub 18% według starej skali) i chcesz mieć całkowicie wolne od podatku wypłaty, lepsze będzie IKE. Jeśli płacisz 32% PIT i chcesz odzyskać część podatku już dziś, IKZE daje wyraźną korzyść. Nic nie stoi na przeszkodzie, aby mieć oba konta – możesz maksymalizować wpłaty na IKE i IKZE w tym samym roku.</p>
+  </div>
+
+  <div class="art-section" id="sec5">
+    <div class="art-section-label"><span class="art-section-num">05</span><span class="art-section-title">Przewaga IKE</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Ile zyskujesz na IKE? Przewaga nad zwykłym rachunkiem</div>
+    <p class="art-p">Przyjrzyjmy się symulacji: zakładamy, że przez 30 lat inwestujesz 10 000 zł rocznie (średnia stopa zwrotu 7% rocznie). Na zwykłym rachunku co roku płaciłbyś podatek Belki od zysków (jeśli realizujesz je regularnie) lub dopiero na koniec – ale w każdym przypadku <strong>podatek od zysku wynosi 19%</strong>. Na IKE podatku od zysków nie ma w ogóle.</p>
+    <div class="art-num-row">
+      <div class="art-num-card"><div class="art-num-val green">1 050 000 zł</div><div class="art-num-label">Wartość końcowa na IKE (30 lat, 7% rocznie, 10 tys. zł rocznie)</div></div>
+      <div class="art-num-card"><div class="art-num-val amber">~850 000 zł</div><div class="art-num-label">Wartość końcowa na zwykłym koncie (po podatku Belki, jeśli sprzedaż na koniec)</div></div>
+      <div class="art-num-card"><div class="art-num-val red">~200 000 zł</div><div class="art-num-label">Różnica – tyle zyskujesz dzięki IKE</div></div>
+    </div>
+    <p class="art-p">Różnica wynika z efektu procentu składanego na pełnej kwocie – podatek od zysku, który przy zwykłym koncie pomniejsza kapitał, na IKE pozostaje zainwestowany i przez lata generuje dodatkowe zyski. Im dłuższy horyzont, tym przewaga IKE jest większa.</p>
+    <div class="art-callout blue"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><strong>IKE to najpotężniejsze narzędzie dla długoterminowego inwestora w Polsce.</strong> Nie ma żadnego powodu, by nie korzystać z IKE przy oszczędzaniu na emeryturę – to czysty zysk podatkowy bez ryzyka.</div></div>
+  </div>
+
+  <div class="art-section" id="sec6">
+    <div class="art-section-label"><span class="art-section-num">06</span><span class="art-section-title">Praktyka</span><div class="art-section-line"></div></div>
+    <div class="art-h2">Jak założyć IKE/IKZE i co kupować?</div>
+    <div class="art-steps">
+      <div class="art-step"><div class="art-step-num">1</div><div class="art-step-body"><div class="art-step-title">Wybierz dostawcę</div><div class="art-step-desc">IKE/IKZE możesz założyć w banku, domu maklerskim lub TFI. Dla inwestorów giełdowych najlepsze są konta maklerskie – np. w BOŚ, mBanku, XTB (IKE/IKZE w XTB dostępne od 2024), DM PKO BP. Sprawdź opłaty za prowadzenie konta oraz prowizje od transakcji.</div></div></div>
+      <div class="art-step"><div class="art-step-num">2</div><div class="art-step-body"><div class="art-step-title">Dokonuj wpłat w ciągu roku</div><div class="art-step-desc">Wpłaty na IKE/IKZE możesz robić w dowolnych kwotach, ale nie przekraczając rocznego limitu. W przypadku IKZE wpłaty za dany rok możesz odliczyć w rocznym zeznaniu PIT (składanym w kolejnym roku).</div></div></div>
+      <div class="art-step"><div class="art-step-num">3</div><div class="art-step-body"><div class="art-step-title">Inwestuj w ETF-y lub akcje – unikaj kosztownych funduszy</div><div class="art-step-desc">W ramach IKE/IKZE najlepiej wybierać tanie ETF-y na indeksy globalne (MSCI World, S&P 500) lub akcje spółek dywidendowych (w IKE dywidendy też są wolne od podatku). Dzięki niskim kosztom (TER) zmaksymalizujesz korzyść podatkową.</div></div></div>
+      <div class="art-step"><div class="art-step-num">4</div><div class="art-step-body"><div class="art-step-title">Nie wypłacaj przedwcześnie bez konieczności</div><div class="art-step-desc">Wypłata z IKE przed 60. rokiem życia lub z IKZE przed 65. rokiem życia skutkuje utratą korzyści podatkowych (opodatkowanie zysków podatkiem Belki). Jeśli musisz wycofać środki, zastanów się, czy nie lepiej zostawić je na koncie.</div></div></div>
+    </div>
+    <div class="art-callout green"><div class="art-callout-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>Podsumowanie:</strong> IKE i IKZE to największe „darmowe” zyski, jakie możesz uzyskać jako inwestor w Polsce. Korzystanie z nich nie wymaga dodatkowej pracy – wystarczy otworzyć konto i regularnie wpłacać. W kalkulatorze Investiq możesz porównać zwykłe konto z IKE, włączając opcję „Konto IKE/IKZE” i zobaczyć różnicę na własnych danych.</div></div>
+  </div>
+
+  <div class="art-nav-footer">
+    <a href="../tutorials.html" class="art-nav-back-link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg><span>Wszystkie poradniki</span></a>
+    <a href="ter-and-inflation.html" class="art-nav-next"><span>Następny: TER i inflacja</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+  </div>
+</div>
+
+<script>
+// Nie ma potrzeby przełączania języka – tylko polska wersja, ale pozostawiam puste dla spójności
+document.querySelectorAll('.lang-opt')?.forEach(el => el.remove());
+</script>
+</body>
+</html>
