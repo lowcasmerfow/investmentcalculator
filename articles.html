@@ -1,6 +1,31 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+  <script>
+  // Auto language detection - redirect only on manual URL entry
+  (function() {
+    // Check if this is the first visit (not a redirect)
+    if (sessionStorage.getItem('lang_detected')) return;
+    sessionStorage.setItem('lang_detected', 'true');
+    
+    // Detect browser language
+    var lang = (navigator.language || navigator.userLanguage).toLowerCase();
+    var currentPath = window.location.pathname;
+    
+    // If user has Polish browser and is on English page -> redirect to Polish
+    if (lang.startsWith('pl') && currentPath.includes('/en/')) {
+      window.location.href = '/index.html';
+    }
+    // If user has English browser and is on Polish page -> redirect to English
+    else if (lang.startsWith('en') && !currentPath.includes('/en/')) {
+      window.location.href = '/en/index.html';
+    }
+    // For other languages, default to English
+    else if (!lang.startsWith('pl') && !lang.startsWith('en') && !currentPath.includes('/en/')) {
+      window.location.href = '/en/index.html';
+    }
+  })();
+  </script
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Artykuły | Investiq</title>
